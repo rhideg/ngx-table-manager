@@ -1,0 +1,21 @@
+<div fxLayout="column" style="height: 100%; overflow: hidden;">
+    <div fxFlex="20" fxLayoutAlign="space-between stretch">
+        <div fxLayoutAlign="start center">
+            <mat-icon style="margin-right: 10px; margin-left: 10px; margin-top: 5px;">warning</mat-icon>
+            <span style="margin-top: 5px; margin-left:2%; font-weight: bold; font-size: 20px;">
+                {{title}}
+            </span>
+        </div>
+        <button mat-icon-button style="color: black;" [mat-dialog-close]>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div fxFlex fxLayoutAlign="start center" fxLayout="row"
+        style="border-top: 1px solid lightgray;border-bottom: 1px solid lightgray;">
+        <span style="margin-left: 2%;">{{message}}</span>
+    </div>
+    <div fxFlex="20" fxLayoutAlign="end center " fxLayout="row">
+        <button mat-button [mat-dialog-close]="{result: true}" style="color:red" cdkFocusInitial>Törlés</button>
+        <button mat-button (click)="btnNo_Click()">Mégse</button>
+    </div>
+</div>

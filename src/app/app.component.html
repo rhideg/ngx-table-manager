@@ -1,0 +1,35 @@
+
+
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <ngx-tm-select
+    style="margin: 10px;"
+        [input]="tsTest"
+        [column]="'type'"
+        [name]="'Type'"
+        (output)="selectTest($event)"
+        >
+    </ngx-tm-select> 
+
+    <ngx-table-manager
+    style="margin: 10px;"
+        [input]="tsTest" 
+        [selectedColor]="'red'"
+        [advencedSearch]="true"
+        [fastSearch]="true"
+        [displayColumns]="true"
+        [inputSearch]="true"
+        [startSearch]="true"
+
+        (output)="onSearchTest($event)"  
+        (dispColsSelect)="onDispColsSelect($event)"
+        >
+    </ngx-table-manager>
+</div>
+
+<ngx-table 
+    [input]="tsTest" 
+    [extraCols]="extraCols"
+    [isSelectable]="isSelectable"
+    (output)="onEvent($event)"
+    >
+</ngx-table>

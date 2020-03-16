@@ -1,0 +1,60 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column">
+  <div class="example-container">
+
+    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="first" [cdkDropListConnectedTo]="[doneList]"
+      class="example-list" (cdkDropListDropped)="dropGroup($event)">
+      <div class="example-box" *ngFor="let item of first;  let i = index" cdkDrag fxLayout="row"
+        fxLayoutAlign="space-between center"
+        [ngStyle]="{'background-color':item.show === true ? selectedColor : 'gray','color':item.show === true ? 'white' : 'lightgray'}">
+        <span style="margin-left: 10px">{{i + 1}}. {{item.title}}</span>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <button mat-icon-button *ngIf="item.show" (click)="setVisibility(item)" class="btn-set"
+            matTooltip="Oszlop elrejtése">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="!item.show" (click)="setVisibility(item)" class="btn-set"
+            matTooltip="Oszlop megjelenítése">
+            <mat-icon>visibility_off</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="item.sticky" (click)="setSticky(item)" class="btn-set"
+            matTooltip="Oszlop rögzítésének feloldása">
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="!item.sticky" (click)="setSticky(item)" class="btn-set"
+            matTooltip="Oszlop rögzítése">
+            <mat-icon>lock_open</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="example-container">
+    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="second" [cdkDropListConnectedTo]="[todoList]"
+      class="example-list" (cdkDropListDropped)="dropGroup($event)">
+      <div class="example-box" *ngFor="let item of second;  let i = index" cdkDrag fxLayout="row"
+        fxLayoutAlign="space-between center"
+        [ngStyle]="{'background-color':item.show === true ? selectedColor : 'gray','color':item.show === true ? 'white' : 'lightgray'}">
+        <span style="margin-left: 10px">{{i + first.length + 1}}. {{item.title}}</span>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <button mat-icon-button *ngIf="item.show" (click)="setVisibility(item)" class="btn-set"
+            matTooltip="Oszlop elrejtése">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="!item.show" (click)="setVisibility(item)" class="btn-set"
+            matTooltip="Oszlop megjelenítése">
+            <mat-icon>visibility_off</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="item.sticky" (click)="setSticky(item)" class="btn-set"
+            matTooltip="Oszlop rögzítésének feloldása">
+            <mat-icon>lock</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="!item.sticky" (click)="setSticky(item)" class="btn-set"
+            matTooltip="Oszlop rögzítése">
+            <mat-icon>lock_open</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

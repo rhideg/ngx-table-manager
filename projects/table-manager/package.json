@@ -1,0 +1,17 @@
+{
+  "name": "ngx-table-manager",
+  "version": "1.0.15",
+  "peerDependencies": {
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0"
+  },
+  "keywords": [
+    "angular",
+    "table",
+    "sort",
+    "search",
+    "show columns",
+    "sticky"
+  ],
+  "license": "MIT"
+}

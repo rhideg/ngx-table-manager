@@ -1,0 +1,7 @@
+<mat-form-field>
+    <mat-select [placeholder]="name" multiple (selectionChange)="selectOption($event)">
+        <mat-option *ngFor="let option of arrSelect" [value]="option.key">
+            {{option.value}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

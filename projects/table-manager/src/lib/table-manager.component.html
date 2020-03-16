@@ -1,0 +1,34 @@
+<div *ngIf="loaded" fxLayout="row" fxLayoutAlign="end center" >
+    <mat-form-field *ngIf="inputSearch">
+      <span matSuffix>
+        <button *ngIf="advencedSearch" matTooltip="Részletes keresés." mat-icon-button style="font-size: large" (click)="btnAdvSearch_Click()">
+          <mat-icon>build</mat-icon>
+        </button>
+      </span>
+      <span matSuffix>
+        <button *ngIf="fastSearch" matTooltip="Gyorskereső." mat-icon-button style="font-size: large" [matMenuTriggerFor]="menu">
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <section class="example-section">
+            <div fxLayout="column" fxLayoutAlign="center start">
+              <mat-selection-list (selectionChange)="slQuickSearch_SelectionChange($event)">
+                <mat-list-option *ngFor="let item of input.arrCols" [value]="item">
+                  {{item.title}}
+                </mat-list-option>
+              </mat-selection-list>
+            </div>
+          </section>
+        </mat-menu>
+      </span>
+      <input matInput (keyup.enter)="btnSearch_Click()" [(ngModel)]="searchValue" [placeholder]="input.search.title" >
+    </mat-form-field>
+  
+    <button *ngIf="startSearch" matTooltip="Keresés indítása." mat-icon-button (click)="btnSearch_Click()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button *ngIf="displayColumns" matTooltip="Oszlopok megjelenítése." mat-icon-button (click)="btnShowColumns_Click()" style="margin: 5px">
+      <mat-icon>remove_red_eye</mat-icon>
+    </button>
+  
+  </div>
