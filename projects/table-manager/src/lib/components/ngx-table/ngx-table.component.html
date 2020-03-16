@@ -1,5 +1,4 @@
 <div fxFlex style="overflow: auto;" (scroll)="scrollTable($event)">
-    <div style="height: 88vh;">
 
         <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort
             [dataSource]="input.ds">
@@ -55,5 +54,4 @@
             <tr mat-row *matRowDef="let row; columns: input.arrDispCols;"></tr>
 
         </table>
-    </div>
 </div>
