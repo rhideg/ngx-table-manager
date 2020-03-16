@@ -1,6 +1,6 @@
 {
   "name": "ngx-table-manager",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0"
@@ -13,5 +13,9 @@
     "show columns",
     "sticky"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhideg/ngx-table-manager"
+  }
 }
