@@ -1,67 +1,68 @@
 <div fxFlex style="overflow: auto;" (scroll)="scrollTable($event)">
 
-        <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort
-            [dataSource]="input.ds">
+    <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
 
-            <ng-container matColumnDef="chboxSelect">
-                <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox *ngIf="isSelectable == 2" (change)="chboxAll_select()" [(ngModel)]="selectAll">
-                    </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-checkbox (change)="chboxItem_Selected(element)" [(ngModel)]="element.select">
-                    </mat-checkbox>
-                </td>
-            </ng-container>
+        <!-- <ng-container [matColumnDef]="isSelectable.type">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [(ngModel)]="selectAll">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox *ngIf="returnTrue(element, isSelectable)" (change)="chboxItem_Selected(element)" [(ngModel)]="element.select">
+                </mat-checkbox>
+            </td>
+        </ng-container> -->
 
-            <ng-container [matColumnDef]="item.name" [sticky]="item.sticky" *ngFor="let item of input.arrCols">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!item.show" [ngStyle]="item.style">
-                    {{item.title}} </th>
-                <td mat-cell *matCellDef="let element" [hidden]="!item.show" [ngStyle]="item.style">
-                    <span *ngIf="item.format === 'date'">
-                        {{element[item.name] | date: 'yyyy-MM-dd'}}
-                    </span>
-                    <span *ngIf="item.format === 'percent'">
-                        {{element[item.name] | percent}}
-                    </span>
-                    <span *ngIf="item.format === 'number'">
-                        {{element[item.name] | number:'':''}}
-                    </span>
-                    <span *ngIf="item.format === 'string'">
-                        {{element[item.name]}}
-                    </span>
-                    <span *ngIf="item.format === 'boolean'">
-                        <span *ngIf="element[item.name]" style="color: #81c784;">
-                            <mat-icon>done</mat-icon>
-                        </span>
-                        <span *ngIf="!element[item.name]" style="color: #e57373;">
-                            <mat-icon>close</mat-icon>
-                        </span>
-                    </span>
-                </td>
-            </ng-container>
+        <ng-container matColumnDef="chboxSelect">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox *ngIf="isSelectable == 2" (change)="chboxAll_select()" [(ngModel)]="selectAll">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-checkbox (change)="chboxItem_Selected(element)" [(ngModel)]="element.select">
+                </mat-checkbox>
+            </td>
+        </ng-container>
 
-            <ng-container *ngFor="let item of extraCols" matColumnDef={{item.type}}>
-                <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button (click)="btnCustom(element, item)" [ngStyle]="item.style">
-                        <mat-icon>{{item.icon}}</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-<!-- 
-            <ng-container *ngFor="let item of extraCols" matColumnDef={{item.type}}>
-                <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element">
-                    <span>{{!item.filter}}</span>
-                    <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="!item.filter" [ngStyle]="item.style">
-                        <mat-icon>{{item.icon}}</mat-icon>
-                    </button>
-                </td>
-            </ng-container> -->
-            ​
-            <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: input.arrDispCols;"></tr>
+        <ng-container [matColumnDef]="item.name" [sticky]="item.sticky" *ngFor="let item of input.arrCols">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!item.show" [ngStyle]="item.style">
+                {{item.title}} </th>
+            <td mat-cell *matCellDef="let element" [hidden]="!item.show" [ngStyle]="item.style">
+                <span *ngIf="item.format === 'date'">
+                    {{element[item.name] | date: 'yyyy-MM-dd'}}
+                </span>
+                <span *ngIf="item.format === 'percent'">
+                    {{element[item.name] | percent}}
+                </span>
+                <span *ngIf="item.format === 'number'">
+                    {{element[item.name] | number:'':''}}
+                </span>
+                <span *ngIf="item.format === 'string'">
+                    {{element[item.name]}}
+                </span>
+                <span *ngIf="item.format === 'boolean'">
+                    <span *ngIf="element[item.name]" style="color: #81c784;">
+                        <mat-icon>done</mat-icon>
+                    </span>
+                    <span *ngIf="!element[item.name]" style="color: #e57373;">
+                        <mat-icon>close</mat-icon>
+                    </span>
+                </span>
+            </td>
+        </ng-container>
 
-        </table>
+        <ng-container *ngFor="let item of extraCols" matColumnDef={{item.type}}>
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="returnTrue(element, item)"
+                    [ngStyle]="item.style">
+                    <mat-icon>{{item.icon}}</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        ​
+        <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;"></tr>
+
+    </table>
 </div>

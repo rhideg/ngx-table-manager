@@ -40,6 +40,10 @@ export class NgxTableComponent implements OnChanges {
       }
       this.input = changes.input.currentValue;
 
+      /* if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
+        this.input.arrDispCols.unshift(this.isSelectable.type);
+      } */
+
       if ([1, 2].includes(this.isSelectable) && !this.input.arrDispCols.includes('chboxSelect')) {
         this.input.arrDispCols.unshift('chboxSelect');
       }
@@ -88,6 +92,44 @@ export class NgxTableComponent implements OnChanges {
         this.selectAll = false;
       }
     })();
+  }
+
+  returnTrue(element, item) {
+    let ret = false;
+    if (item.filter) {
+      const arrRet = [];
+      item.filter.forEach(filterElement => {
+        if (filterElement.relation === '===') {
+          if (!(element[filterElement.col] === filterElement.value)) {
+            arrRet.push(false);
+          }
+        } else if (filterElement.relation === '!==') {
+          if (!(element[filterElement.col] !== filterElement.value)) {
+            arrRet.push(false);
+          }
+        } else if (filterElement.relation === '<') {
+          if (!(element[filterElement.col] < filterElement.value)) {
+            arrRet.push(false);
+          }
+        } else if (filterElement.relation === '<=') {
+          if (!(element[filterElement.col] <= filterElement.value)) {
+            arrRet.push(false);
+          }
+        } else if (filterElement.relation === '>') {
+          if (!(element[filterElement.col] > filterElement.value)) {
+            arrRet.push(false);
+          }
+        } else if (filterElement.relation === '>=') {
+          if (!(element[filterElement.col] >= filterElement.value)) {
+            arrRet.push(false);
+          }
+        }
+      });
+      ret = true ? !arrRet.includes(false) : ret = false;
+      return ret;
+    } else {
+      return true;
+    }
   }
 
   /**
