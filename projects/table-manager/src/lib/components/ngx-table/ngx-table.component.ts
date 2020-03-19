@@ -88,6 +88,16 @@ export class NgxTableComponent implements OnChanges {
     // Create arrays of property names
     const aProps = Object.getOwnPropertyNames(a);
     const bProps = Object.getOwnPropertyNames(b);
+
+    const index = aProps.indexOf('select', 0);
+    const index2 = bProps.indexOf('select', 0);
+    if (index > -1) {
+      aProps.splice(index, 1);
+    }
+    if (index2 > -1) {
+      bProps.splice(index2, 1);
+    }
+
     // If number of properties is different,
     // objects are not equivalent
     if (aProps.length !== bProps.length) {
@@ -237,7 +247,6 @@ export class NgxTableComponent implements OnChanges {
           this.selectAll = true;
         }
 
-        item.select = true;
         if (!this.arrSelected.includes(item)) {
           this.arrSelected.push(item);
         }
@@ -246,11 +255,13 @@ export class NgxTableComponent implements OnChanges {
         if (foundIndex2 !== -1) {
           this.input.arr[foundIndex2].select = true;
         }
+
+        item.select = true;
       } else {
         if (!this.input.arr.every(item => item.select)) {
           this.selectAll = false;
         }
-        item.select = false;
+
         const foundIndex = this.arrSelected.findIndex(element => this.objectsAreEquivalent(item, element));
         if (foundIndex !== -1) {
           this.arrSelected.splice(foundIndex, 1);
@@ -260,6 +271,8 @@ export class NgxTableComponent implements OnChanges {
         if (foundIndex2 !== -1) {
           this.input.arr[foundIndex2].select = false;
         }
+
+        item.select = false;
       }
     }
 
