@@ -1,6 +1,6 @@
 {
   "name": "ngx-table-manager",
-  "version": "1.0.19",
+  "version": "1.0.21",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0"
