@@ -46,21 +46,25 @@ export class AppComponent implements OnInit {
       {
         type: 'btnEdit',
         icon: 'search',
+        filter: '',
       },
       {
         type: 'del',
         icon: 'delete',
         style: {
           color: '#FF6859'
-        }
+        },
+        filter: '',
       },
       {
         type: 'btnDownload',
         icon: 'pets',
+        filter: '',
       },
       {
         type: 'btnPrint',
         icon: '4k',
+        filter: 'element.id !== 1',
       }
     ];
     this.isSelectable = 2;
