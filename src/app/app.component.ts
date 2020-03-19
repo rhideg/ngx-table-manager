@@ -56,13 +56,12 @@ export class AppComponent implements OnInit {
         },
       },
     ];
-    this.isSelectable = 2;
 
-    /* this.isSelectable = {
+    this.isSelectable = {
       type: 'select',
       multi: true,
-      filter: [{ col: 'name', value: 'test1', relation: '===' }],
-    }; */
+      filter: [{ col: 'type', value: 'a', relation: '===' }],
+    };
   }
 
   /**

@@ -2,24 +2,13 @@
 
     <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
 
-        <!-- <ng-container [matColumnDef]="isSelectable.type">
+        <ng-container [matColumnDef]="isSelectable.type">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [(ngModel)]="selectAll">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let element">
                 <mat-checkbox *ngIf="returnTrue(element, isSelectable)" (change)="chboxItem_Selected(element)" [(ngModel)]="element.select">
-                </mat-checkbox>
-            </td>
-        </ng-container> -->
-
-        <ng-container matColumnDef="chboxSelect">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox *ngIf="isSelectable == 2" (change)="chboxAll_select()" [(ngModel)]="selectAll">
-                </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let element">
-                <mat-checkbox (change)="chboxItem_Selected(element)" [(ngModel)]="element.select">
                 </mat-checkbox>
             </td>
         </ng-container>
