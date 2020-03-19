@@ -17,8 +17,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rhideg/ngx-table-manager"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   }
 }
