@@ -72,7 +72,18 @@ export class NgxTableComponent implements OnChanges {
       this.input.ds.sort = this.sortTest;
 
       if (this.input.ds.data.every(item => item.select) && this.input.ds.data.length !== 0) {
-        this.selectAll = true;
+        let withoutSelect = true;
+        for (var i = 0; i < this.input.ds.data.length; i++) {
+          if (this.input.ds.data[i].select) {
+            withoutSelect = false;
+            break;
+          }
+        }
+        if (withoutSelect) {
+          this.selectAll = false;
+        } else {
+          this.selectAll = true;
+        }
       } else if (!this.input.ds.data.every(item => item.select) || this.input.ds.data.length === 0) {
         this.selectAll = false;
       }
