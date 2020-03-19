@@ -66,16 +66,16 @@ export class NgxTableComponent implements OnChanges {
       if (this.input.arr === null) {
         this.input.arr = [];
         this.selectAll = false;
-      } else {
-        if (this.input.arr.filter(a => a.select === true).length === this.input.arr.length) {
-          this.selectAll = true;
-        } else {
-          this.selectAll = false;
-        }
       }
 
       this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       this.input.ds.sort = this.sortTest;
+
+      if (this.input.ds.data.every(item => item.select) && this.input.ds.data.length !== 0) {
+        this.selectAll = true;
+      } else if (!this.input.ds.data.every(item => item.select) || this.input.ds.data.length === 0) {
+        this.selectAll = false;
+      }
     })();
   }
 
