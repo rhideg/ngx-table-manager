@@ -71,7 +71,7 @@ export class NgxTableComponent implements OnChanges {
       this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       this.input.ds.sort = this.sortTest;
 
-      const arrTmp = this.input.arr.filter(item => this.returnTrue(item, this.isSelectable));
+      const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
       if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
         let withoutSelect = true;
         for (var i = 0; i < arrTmp.length; i++) {
@@ -91,38 +91,49 @@ export class NgxTableComponent implements OnChanges {
     })();
   }
 
-  returnTrue(element, item) {
+  checkFilter(element, item) {
     let ret = false;
     if (item.filter) {
       const arrRet = [];
       item.filter.forEach(filterElement => {
-        if (filterElement.relation === '===') {
-          if (!(element[filterElement.col] === filterElement.value)) {
-            arrRet.push(false);
-          }
-        } else if (filterElement.relation === '!==') {
-          if (!(element[filterElement.col] !== filterElement.value)) {
-            arrRet.push(false);
-          }
-        } else if (filterElement.relation === '<') {
-          if (!(element[filterElement.col] < filterElement.value)) {
-            arrRet.push(false);
-          }
-        } else if (filterElement.relation === '<=') {
-          if (!(element[filterElement.col] <= filterElement.value)) {
-            arrRet.push(false);
-          }
-        } else if (filterElement.relation === '>') {
-          if (!(element[filterElement.col] > filterElement.value)) {
-            arrRet.push(false);
-          }
-        } else if (filterElement.relation === '>=') {
-          if (!(element[filterElement.col] >= filterElement.value)) {
-            arrRet.push(false);
-          }
+        switch (filterElement.relation) {
+          case '===':
+            filterElement.value.forEach(valueElement => {
+              if ((element[filterElement.col] === valueElement)) {
+                arrRet.push(false);
+              }
+            });
+            break;
+          case '!==':
+            filterElement.value.forEach(valueElement => {
+              if (!(element[filterElement.col] !== valueElement)) {
+                arrRet.push(false);
+              }
+            });
+            break;
+          case '<':
+            if (!(element[filterElement.col] <= filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '<=':
+            if (!(element[filterElement.col] < filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '>':
+            if (!(element[filterElement.col] >= filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '>=':
+            if (!(element[filterElement.col] > filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
         }
       });
-      ret = true ? !arrRet.includes(false) : ret = false;
+      ret = true ? (arrRet.includes(false) && item.filter.length === arrRet.length) : ret = false;
       return ret;
     } else {
       return true;
@@ -218,7 +229,7 @@ export class NgxTableComponent implements OnChanges {
    */
   async chboxAll_select() {
     // ha a ds.length === arrCopy.length -el (Nincs leszűrve a táblázat adatai)
-    const arrTmp = this.input.arr.filter(item => this.returnTrue(item, this.isSelectable));
+    const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
     if (this.input.arr.length === this.input.arrCopy.length) {
       if (!arrTmp.every(item => item.select)) {
         this.arrSelected = [];
@@ -308,7 +319,7 @@ export class NgxTableComponent implements OnChanges {
       }
       // multi select !
     } else if (this.isSelectable.multi) {
-      const arrTmp = this.input.arr.filter(element => this.returnTrue(element, this.isSelectable));
+      const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
       if (item.select) {
         if (arrTmp.every(item => item.select)) {
           this.selectAll = true;

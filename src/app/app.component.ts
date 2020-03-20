@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
       {
         type: 'btnEdit',
         icon: 'edit',
-        filter: [{ col: 'name', value: 'test1', relation: '===' }],
+        filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
         type: 'del',
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
     this.isSelectable = {
       type: 'select',
       multi: true,
-      filter: [{ col: 'type', value: 'a', relation: '===' }],
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
     };
   }
 
