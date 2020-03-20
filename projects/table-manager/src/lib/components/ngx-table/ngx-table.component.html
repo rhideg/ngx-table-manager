@@ -2,7 +2,7 @@
 
     <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
 
-        <ng-container [matColumnDef]="isSelectable.type">
+        <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
             <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [(ngModel)]="selectAll">
                 </mat-checkbox>
