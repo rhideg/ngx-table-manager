@@ -44,11 +44,13 @@ export class NgxTableComponent implements OnChanges {
         this.input.arrDispCols.unshift(this.isSelectable.type);
       }
 
-      this.extraCols.forEach(element => {
-        if (!this.input.arrDispCols.includes(element.type)) {
-          this.input.arrDispCols.push(element.type);
-        }
-      });
+      if (this.extraCols) {
+        this.extraCols.forEach(element => {
+          if (!this.input.arrDispCols.includes(element.type)) {
+            this.input.arrDispCols.push(element.type);
+          }
+        });
+      }
 
       if (this.input.count >= 30) {
         this.input.count = 30;
@@ -71,22 +73,24 @@ export class NgxTableComponent implements OnChanges {
       this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       this.input.ds.sort = this.sortTest;
 
-      const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
-      if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
-        let withoutSelect = true;
-        for (var i = 0; i < arrTmp.length; i++) {
-          if (arrTmp[i].select) {
-            withoutSelect = false;
-            break;
+      if (this.isSelectable) {
+        const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
+        if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
+          let withoutSelect = true;
+          for (var i = 0; i < arrTmp.length; i++) {
+            if (arrTmp[i].select) {
+              withoutSelect = false;
+              break;
+            }
           }
-        }
-        if (withoutSelect) {
+          if (withoutSelect) {
+            this.selectAll = false;
+          } else {
+            this.selectAll = true;
+          }
+        } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
           this.selectAll = false;
-        } else {
-          this.selectAll = true;
         }
-      } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
-        this.selectAll = false;
       }
     })();
   }
