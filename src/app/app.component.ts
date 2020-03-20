@@ -45,25 +45,23 @@ export class AppComponent implements OnInit {
     this.extraCols = [
       {
         type: 'btnEdit',
-        icon: 'search',
+        icon: 'edit',
+        filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
         type: 'del',
         icon: 'delete',
         style: {
           color: '#FF6859'
-        }
+        },
       },
-      {
-        type: 'btnDownload',
-        icon: 'pets',
-      },
-      {
-        type: 'btnPrint',
-        icon: '4k',
-      }
     ];
-    this.isSelectable = 2;
+
+    this.isSelectable = {
+      type: 'select',
+      multi: true,
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
+    };
   }
 
   /**

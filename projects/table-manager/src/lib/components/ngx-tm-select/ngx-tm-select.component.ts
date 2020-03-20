@@ -24,7 +24,10 @@ export class NgxTmSelectComponent implements OnChanges {
     // arrSelect: <>, column: null -> 0
     // arrSelect: null, column: <> -> ts.arrCopy.unique
     // arrSelect: <>, column: <> -> arrSelect = arrSelect
-    setTimeout(() => {
+    (async () => {
+      while (!this.input.ds) { // define the condition as you like
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
       if (this.input.arrCopy) {
         if (!this.column) {
           //console.log('Error!');
@@ -37,9 +40,9 @@ export class NgxTmSelectComponent implements OnChanges {
           }
         }
       }
-    }, 1500);
+    })();
   }
-  
+
   /**
    * Select option from mat select and trigger output.
    * @param event selectionChange event.

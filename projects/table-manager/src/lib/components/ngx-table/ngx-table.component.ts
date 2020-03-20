@@ -40,8 +40,8 @@ export class NgxTableComponent implements OnChanges {
       }
       this.input = changes.input.currentValue;
 
-      if ([1, 2].includes(this.isSelectable) && !this.input.arrDispCols.includes('chboxSelect')) {
-        this.input.arrDispCols.unshift('chboxSelect');
+      if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
+        this.input.arrDispCols.unshift(this.isSelectable.type);
       }
 
       this.extraCols.forEach(element => {
@@ -66,17 +66,78 @@ export class NgxTableComponent implements OnChanges {
       if (this.input.arr === null) {
         this.input.arr = [];
         this.selectAll = false;
-      } else {
-        if (this.input.arr.filter(a => a.select === true).length === this.input.arr.length) {
-          this.selectAll = true;
-        } else {
-          this.selectAll = false;
-        }
       }
 
       this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       this.input.ds.sort = this.sortTest;
+
+      const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
+      if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
+        let withoutSelect = true;
+        for (var i = 0; i < arrTmp.length; i++) {
+          if (arrTmp[i].select) {
+            withoutSelect = false;
+            break;
+          }
+        }
+        if (withoutSelect) {
+          this.selectAll = false;
+        } else {
+          this.selectAll = true;
+        }
+      } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
+        this.selectAll = false;
+      }
     })();
+  }
+
+  checkFilter(element, item) {
+    let ret = false;
+    if (item.filter) {
+      const arrRet = [];
+      item.filter.forEach(filterElement => {
+        switch (filterElement.relation) {
+          case '===':
+            filterElement.value.forEach(valueElement => {
+              if ((element[filterElement.col] === valueElement)) {
+                arrRet.push(false);
+              }
+            });
+            break;
+          case '!==':
+            filterElement.value.forEach(valueElement => {
+              if (!(element[filterElement.col] !== valueElement)) {
+                arrRet.push(false);
+              }
+            });
+            break;
+          case '<':
+            if (!(element[filterElement.col] <= filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '<=':
+            if (!(element[filterElement.col] < filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '>':
+            if (!(element[filterElement.col] >= filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+          case '>=':
+            if (!(element[filterElement.col] > filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
+        }
+      });
+      ret = true ? (arrRet.includes(false) && item.filter.length === arrRet.length) : ret = false;
+      return ret;
+    } else {
+      return true;
+    }
   }
 
   /**
@@ -88,6 +149,16 @@ export class NgxTableComponent implements OnChanges {
     // Create arrays of property names
     const aProps = Object.getOwnPropertyNames(a);
     const bProps = Object.getOwnPropertyNames(b);
+
+    const index = aProps.indexOf('select', 0);
+    const index2 = bProps.indexOf('select', 0);
+    if (index > -1) {
+      aProps.splice(index, 1);
+    }
+    if (index2 > -1) {
+      bProps.splice(index2, 1);
+    }
+
     // If number of properties is different,
     // objects are not equivalent
     if (aProps.length !== bProps.length) {
@@ -158,25 +229,26 @@ export class NgxTableComponent implements OnChanges {
    */
   async chboxAll_select() {
     // ha a ds.length === arrCopy.length -el (Nincs leszűrve a táblázat adatai)
+    const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
     if (this.input.arr.length === this.input.arrCopy.length) {
-      if (!this.input.arr.every(item => item.select)) {
+      if (!arrTmp.every(item => item.select)) {
         this.arrSelected = [];
         this.selectAll = true;
-        this.input.arr.forEach(element => {
+        arrTmp.forEach(element => {
           element.select = true;
           this.arrSelected.push(element);
         });
       } else {
         this.selectAll = false;
-        this.input.arr.forEach(element => {
+        arrTmp.forEach(element => {
           element.select = false;
           this.arrSelected = [];
         });
       }
     } else {
       if (this.arrSelected.length !== 0) {
-        if (!this.input.arr.every(item => item.select)) {
-          this.input.arr.forEach(element => {
+        if (!arrTmp.every(item => item.select)) {
+          arrTmp.forEach(element => {
             if (!element.select) {
               element.select = true;
               this.arrSelected.push(element);
@@ -184,7 +256,7 @@ export class NgxTableComponent implements OnChanges {
           });
           this.selectAll = true;
         } else {
-          this.input.arr.forEach(element => {
+          arrTmp.forEach(element => {
             const foundIndex = this.arrSelected.findIndex(item => this.objectsAreEquivalent(element, item));
             element.select = false;
             if (foundIndex !== -1) {
@@ -194,16 +266,31 @@ export class NgxTableComponent implements OnChanges {
           this.selectAll = false;
         }
       } else {
-        if (!this.input.arr.every(item => item.select)) {
+        if (!arrTmp.every(item => item.select)) {
           this.arrSelected = [];
           this.selectAll = true;
-          this.input.arr.forEach(element => {
+          arrTmp.forEach(element => {
             element.select = true;
             this.arrSelected.push(element);
           });
         }
       }
     }
+
+    const indexes = [];
+    arrTmp.map(element => {
+      const foundIndex = this.input.arr.findIndex(item => this.objectsAreEquivalent(element, item));
+      if (foundIndex !== -1) {
+        if (element.select) {
+          indexes.push(foundIndex);
+        }
+      }
+    });
+
+    indexes.map(item => {
+      this.input.arr[item].select = true;
+    });
+    this.input.arr.filter(element => !element.select).map(item => item.select = false);
 
     this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
     this.input.ds.sort = this.sortTest;
@@ -220,7 +307,7 @@ export class NgxTableComponent implements OnChanges {
    */
   chboxItem_Selected(item) {
     // single select !
-    if (this.isSelectable === 1) {
+    if (!this.isSelectable.multi) {
       this.arrSelected = [];
       this.input.arr.forEach(elementSelect => {
         if (elementSelect !== item) {
@@ -231,13 +318,13 @@ export class NgxTableComponent implements OnChanges {
         this.arrSelected.push(item);
       }
       // multi select !
-    } else if (this.isSelectable === 2) {
+    } else if (this.isSelectable.multi) {
+      const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
       if (item.select) {
-        if (this.input.arr.every(item => item.select)) {
+        if (arrTmp.every(item => item.select)) {
           this.selectAll = true;
         }
 
-        item.select = true;
         if (!this.arrSelected.includes(item)) {
           this.arrSelected.push(item);
         }
@@ -246,11 +333,13 @@ export class NgxTableComponent implements OnChanges {
         if (foundIndex2 !== -1) {
           this.input.arr[foundIndex2].select = true;
         }
+
+        item.select = true;
       } else {
-        if (!this.input.arr.every(item => item.select)) {
+        if (!arrTmp.every(item => item.select)) {
           this.selectAll = false;
         }
-        item.select = false;
+
         const foundIndex = this.arrSelected.findIndex(element => this.objectsAreEquivalent(item, element));
         if (foundIndex !== -1) {
           this.arrSelected.splice(foundIndex, 1);
@@ -260,6 +349,8 @@ export class NgxTableComponent implements OnChanges {
         if (foundIndex2 !== -1) {
           this.input.arr[foundIndex2].select = false;
         }
+
+        item.select = false;
       }
     }
 
