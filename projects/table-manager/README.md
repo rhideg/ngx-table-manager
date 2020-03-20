@@ -1,7 +1,7 @@
 
 # Angular Table Manager
 
-⚡ Try it on Stackblitz: https://stackblitz.com/edit/angular-6zrdhd?file=src%2Fapp%2Fapp.component.ts
+⚡ Try it on Stackblitz: https://stackblitz.com/edit/ngx-table-manager
 
 👨‍🔧 Generate your models now: https://rhideg.github.io/model-generator/
 
@@ -140,14 +140,15 @@ export class AppComponent implements OnInit {
     this.extraCols = [
       {
         type: 'btnEdit',
-        icon: 'search',
+        icon: 'edit',
+        filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
         type: 'del',
         icon: 'delete',
         style: {
           color: '#FF6859'
-        }
+        },
       },
       {
         type: 'btnDownload',
@@ -158,8 +159,12 @@ export class AppComponent implements OnInit {
         icon: '4k',
       }
     ];
-    // checkbox option. 1 Single select, 2 multiple select, else hidden.
-    this.isSelectable = 2;
+
+    this.isSelectable = {
+      type: 'select',
+      multi: true,
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
+    };
   }
 
   /**
