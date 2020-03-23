@@ -35,7 +35,7 @@
                     {{element[item.name] | percent}}
                 </span>
                 <span *ngIf="item.format === 'number'">
-                    {{element[item.name] | number:'':''}}
+                    {{element[item.name] | number: numberFormat ? numberFormat : ''}}
                 </span>
                 <span *ngIf="item.format === 'string'">
                     {{element[item.name]}}
@@ -62,7 +62,7 @@
         </ng-container>
         ​
         <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;"></tr>
+        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" (click)="isRowSelect ? rowSelected(row) : ''"></tr>
 
     </table>
 </div>
