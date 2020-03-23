@@ -3,4 +3,5 @@ export interface Test {
     name: string;
     type: string;
     text: string;
+    number: number;
 }

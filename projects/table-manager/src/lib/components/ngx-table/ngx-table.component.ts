@@ -21,7 +21,9 @@ export class NgxTableComponent implements OnChanges {
   @ContentChild(TemplateRef) template: TemplateRef<any>;
   @Input() input: TableSort; // Contains the metadata
   @Input() extraCols; // Contains extra columns(buttons)
-  @Input() isSelectable; // Single select when value is 1, multi select if value 2, else no checkbox.
+  @Input() isRowSelect; // If true then row selected.
+  @Input() numberFormat; // Number format.
+  @Input() isSelectable; // Single select when multi value is false, multi select if value true.
   @Output() output = new EventEmitter<any>(); // returns element
 
   @ViewChild('sortTest', { static: false }) sortTest: MatSort; // Material table sort
@@ -39,6 +41,10 @@ export class NgxTableComponent implements OnChanges {
         await new Promise(resolve => setTimeout(resolve, 500));
       }
       this.input = changes.input.currentValue;
+
+      if (!this.isRowSelect) {
+        this.isRowSelect = false;
+      }
 
       if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
         this.input.arrDispCols.unshift(this.isSelectable.type);
@@ -195,6 +201,13 @@ export class NgxTableComponent implements OnChanges {
       this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       this.input.ds.sort = this.sortTest;
     }
+  }
+
+  rowSelected(element) {
+    this.output.emit({
+      type: 'rowSelected',
+      data: element
+    });
   }
 
   btnCustom(element, item) {

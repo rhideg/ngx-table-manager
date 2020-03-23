@@ -35,6 +35,15 @@
             "search_value": "",
             "style": "",
             "format": "string"
+        },
+        {
+            "title": "Number",
+            "name": "number",
+            "show": true,
+            "sticky": false,
+            "search_value": "",
+            "style": "",
+            "format": "number"
         }
     ]
 }

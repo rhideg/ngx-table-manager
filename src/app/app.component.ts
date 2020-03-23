@@ -22,6 +22,8 @@ export class AppComponent implements OnInit {
   // ngx-table
   extraCols = [];
   isSelectable;
+  isRowSelect;
+  numberFormat;
 
   constructor(
   ) {
@@ -56,6 +58,10 @@ export class AppComponent implements OnInit {
         },
       },
     ];
+
+    this.numberFormat = '1.0-2';
+
+    this.isRowSelect = true;
 
     this.isSelectable = {
       type: 'select',
