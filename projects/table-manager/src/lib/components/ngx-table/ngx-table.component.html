@@ -62,7 +62,12 @@
         </ng-container>
         ​
         <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" (click)="isRowSelect ? rowSelected(row) : ''"></tr>
+        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" (click)="isRowSelect ? rowSelected(row) : ''">
+        </tr>
 
     </table>
+
+    <div *ngIf='input.empty' class="no-data-label">
+        No data.
+    </div>
 </div>
