@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
       arrDispCols: a,
       ds: null,
       count: 30,
-      empty: true,
+      empty: false,
       search: { title: 'Name', name: 'name', show: true, sticky: false }
     };
 
