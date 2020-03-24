@@ -17,6 +17,7 @@ export class NgxTableComponent implements OnChanges {
 
   arrSelected = [];
   selectAll;
+  btnDoEvent = true;
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
   @Input() input: TableSort; // Contains the metadata
@@ -204,48 +205,61 @@ export class NgxTableComponent implements OnChanges {
   }
 
   rowSelected(element) {
-    this.output.emit({
-      type: 'rowSelected',
-      data: element
-    });
+    setTimeout(() => {
+      if (this.btnDoEvent) {
+        this.output.emit({
+          type: 'rowSelected',
+          data: element
+        });
+      }
+    }, 10);
   }
 
   btnCustom(element, item) {
-    if (item.type === 'del') {
-      const title = 'Warning';
-      const message = 'Are you sure to delete this row?';
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        height: '30vh',
-        width: '30vw',
-        minHeight: '200px',
-        minWidth: '300px',
-        data: {
-          title,
-          message
-        }
-      });
+    this.btnDoEvent = false;
+    setTimeout(() => {
+      if (item.type === 'del') {
+        const title = 'Warning';
+        const message = 'Are you sure to delete this row?';
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          height: '30vh',
+          width: '30vw',
+          minHeight: '200px',
+          minWidth: '300px',
+          data: {
+            title,
+            message
+          }
+        });
 
-      dialogRef.afterClosed().subscribe(async result => {
-        if (result) {
-          this.output.emit({
-            type: item.type,
-            data: element
-          });
-        }
-      });
-    } else {
-      this.output.emit({
-        type: item.type,
-        data: element
-      });
-    }
+        dialogRef.afterClosed().subscribe(async result => {
+          if (result) {
+            this.output.emit({
+              type: item.type,
+              data: element
+            });
+
+            this.btnDoEvent = true;
+          } else {
+            this.btnDoEvent = true;
+          }
+        });
+      } else {
+        this.output.emit({
+          type: item.type,
+          data: element
+        });
+
+        this.btnDoEvent = true;
+      }
+    }, 20);
   }
 
   /**
    * Select all.
    */
   async chboxAll_select() {
-    // ha a ds.length === arrCopy.length -el (Nincs leszűrve a táblázat adatai)
+    this.btnDoEvent = false;
     const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
     if (this.input.arr.length === this.input.arrCopy.length) {
       if (!arrTmp.every(item => item.select)) {
@@ -316,6 +330,8 @@ export class NgxTableComponent implements OnChanges {
       type: 'selectAll',
       data: this.arrSelected
     });
+
+    this.btnDoEvent = true;
   }
 
   /**
@@ -323,61 +339,65 @@ export class NgxTableComponent implements OnChanges {
    * @param item Selected item.
    */
   chboxItem_Selected(item) {
-    // single select !
-    if (!this.isSelectable.multi) {
-      this.arrSelected = [];
-      this.input.arr.forEach(elementSelect => {
-        if (elementSelect !== item) {
-          elementSelect.select = false;
-        }
-      });
-      if (item.select) {
-        this.arrSelected.push(item);
-      }
-      // multi select !
-    } else if (this.isSelectable.multi) {
-      const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
-      if (item.select) {
-        if (arrTmp.every(item => item.select)) {
-          this.selectAll = true;
-        }
-
-        if (!this.arrSelected.includes(item)) {
+    this.btnDoEvent = false;
+    setTimeout(() => {
+      // single select !
+      if (!this.isSelectable.multi) {
+        this.arrSelected = [];
+        this.input.arr.forEach(elementSelect => {
+          if (elementSelect !== item) {
+            elementSelect.select = false;
+          }
+        });
+        if (item.select) {
           this.arrSelected.push(item);
         }
+        // multi select !
+      } else if (this.isSelectable.multi) {
+        const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
+        if (item.select) {
+          if (arrTmp.every(item => item.select)) {
+            this.selectAll = true;
+          }
 
-        const foundIndex2 = this.input.arr.findIndex(element => this.objectsAreEquivalent(item, element));
-        if (foundIndex2 !== -1) {
-          this.input.arr[foundIndex2].select = true;
+          if (!this.arrSelected.includes(item)) {
+            this.arrSelected.push(item);
+          }
+
+          const foundIndex2 = this.input.arr.findIndex(element => this.objectsAreEquivalent(item, element));
+          if (foundIndex2 !== -1) {
+            this.input.arr[foundIndex2].select = true;
+          }
+
+          item.select = true;
+        } else {
+          if (!arrTmp.every(item => item.select)) {
+            this.selectAll = false;
+          }
+
+          const foundIndex = this.arrSelected.findIndex(element => this.objectsAreEquivalent(item, element));
+          if (foundIndex !== -1) {
+            this.arrSelected.splice(foundIndex, 1);
+          }
+
+          const foundIndex2 = this.input.arr.findIndex(element => this.objectsAreEquivalent(item, element));
+          if (foundIndex2 !== -1) {
+            this.input.arr[foundIndex2].select = false;
+          }
+
+          item.select = false;
         }
-
-        item.select = true;
-      } else {
-        if (!arrTmp.every(item => item.select)) {
-          this.selectAll = false;
-        }
-
-        const foundIndex = this.arrSelected.findIndex(element => this.objectsAreEquivalent(item, element));
-        if (foundIndex !== -1) {
-          this.arrSelected.splice(foundIndex, 1);
-        }
-
-        const foundIndex2 = this.input.arr.findIndex(element => this.objectsAreEquivalent(item, element));
-        if (foundIndex2 !== -1) {
-          this.input.arr[foundIndex2].select = false;
-        }
-
-        item.select = false;
       }
-    }
 
-    this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-    this.input.ds.sort = this.sortTest;
+      this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+      this.input.ds.sort = this.sortTest;
 
-    this.output.emit({
-      type: 'select',
-      data: this.arrSelected
-    });
+      this.output.emit({
+        type: 'select',
+        data: this.arrSelected
+      });
 
+      this.btnDoEvent = true;
+    }, 5);
   }
 }
