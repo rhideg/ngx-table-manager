@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
-import { DATA as asd } from './models/asd';
 
 @Component({
   selector: 'app-root',
@@ -69,7 +68,7 @@ export class AppComponent implements OnInit {
     this.isSelectable = {
       type: 'select',
       multi: true,
-      /* filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }], */
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
     };
   }
 
@@ -117,7 +116,11 @@ export class AppComponent implements OnInit {
   }
 
   btnClick() {
-    
+    this.isSelectable = {
+      type: 'select',
+      multi: true,
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
+    };
   }
 
   /**

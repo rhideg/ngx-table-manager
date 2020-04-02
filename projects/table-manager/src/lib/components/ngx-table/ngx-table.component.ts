@@ -38,81 +38,95 @@ export class NgxTableComponent implements OnChanges {
    * @param changes Change.
    */
   ngOnChanges(changes): void {
-    (async () => {
-      while (!this.input.ds) { // define the condition as you like
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-
-      if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
-        this.arrSelected = [];
-      }
-
-      /* if (this.isSelectable) {
-        setTimeout(() => {
-          this.isSelectable = undefined;
-        }, 3000);
-      } */
-
-      this.input = changes.input.currentValue;
-      this.arrCopy = this.input.arrCopy;
-
-      if (!this.isRowSelect) {
-        this.isRowSelect = false;
-      }
-
-      if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
+    if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
+      if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
         this.input.arrDispCols.unshift(this.isSelectable.type);
-      }
-
-      if (this.extraCols) {
-        this.extraCols.forEach(element => {
-          if (!this.input.arrDispCols.includes(element.type)) {
-            this.input.arrDispCols.push(element.type);
+      } else {
+        this.input.arrDispCols.shift();
+        this.arrSelected.forEach(selectedItem => {
+          const tmpSelectedItem = JSON.parse(JSON.stringify(selectedItem));
+          delete tmpSelectedItem.select;
+          const itemIndex = this.input.arr.findIndex(a => (this.objectsAreEquivalent(a, tmpSelectedItem)));
+          if (itemIndex !== -1) {
+            this.input.arr[itemIndex].select = false;
           }
         });
-      }
 
-      if (this.input.count >= 30) {
-        this.input.count = 30;
-      }
-
-      this.arrSelected.forEach(selectedItem => {
-        const tmpSelectedItem = JSON.parse(JSON.stringify(selectedItem));
-        delete tmpSelectedItem.select;
-        const itemIndex = this.input.arr.findIndex(a => (this.objectsAreEquivalent(a, tmpSelectedItem)));
-        if (itemIndex !== -1) {
-          this.input.arr[itemIndex].select = true;
-        }
-      });
-
-      if (this.input.arr === null) {
-        this.input.arr = [];
         this.selectAll = false;
+        this.arrSelected = [];
+        this.input.ds.data = this.input.arr;
       }
+    } else {
+      (async () => {
+        while (!this.input.ds) { // define the condition as you like
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
 
-      this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-      this.input.ds.sort = this.sortTest;
+        if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
+          this.arrSelected = [];
+        }
 
-      if (this.isSelectable) {
-        const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
-        if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
-          let withoutSelect = true;
-          for (var i = 0; i < arrTmp.length; i++) {
-            if (arrTmp[i].select) {
-              withoutSelect = false;
-              break;
+        this.input = changes.input.currentValue;
+        this.arrCopy = this.input.arrCopy;
+
+        if (!this.isRowSelect) {
+          this.isRowSelect = false;
+        }
+
+        if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
+          this.input.arrDispCols.unshift(this.isSelectable.type);
+        }
+
+        if (this.extraCols) {
+          this.extraCols.forEach(element => {
+            if (!this.input.arrDispCols.includes(element.type)) {
+              this.input.arrDispCols.push(element.type);
             }
+          });
+        }
+
+        if (this.input.count >= 30) {
+          this.input.count = 30;
+        }
+
+        this.arrSelected.forEach(selectedItem => {
+          const tmpSelectedItem = JSON.parse(JSON.stringify(selectedItem));
+          delete tmpSelectedItem.select;
+          const itemIndex = this.input.arr.findIndex(a => (this.objectsAreEquivalent(a, tmpSelectedItem)));
+          if (itemIndex !== -1) {
+            this.input.arr[itemIndex].select = true;
           }
-          if (withoutSelect) {
-            this.selectAll = false;
-          } else {
-            this.selectAll = true;
-          }
-        } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
+        });
+
+        if (this.input.arr === null) {
+          this.input.arr = [];
           this.selectAll = false;
         }
-      }
-    })();
+
+        this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+        this.input.ds.sort = this.sortTest;
+
+        if (this.isSelectable) {
+          const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
+          if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
+            let withoutSelect = true;
+            for (var i = 0; i < arrTmp.length; i++) {
+              if (arrTmp[i].select) {
+                withoutSelect = false;
+                break;
+              }
+            }
+            if (withoutSelect) {
+              this.selectAll = false;
+            } else {
+              this.selectAll = true;
+            }
+          } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
+            this.selectAll = false;
+          }
+        }
+      })();
+    }
   }
 
   checkFilter(element, item) {
