@@ -56,7 +56,7 @@
             <td mat-cell *matCellDef="let element">
                 <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="checkFilter(element, item)"
                     [ngStyle]="item.style">
-                    <mat-icon>{{item.icon}}</mat-icon>
+                    <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
                 </button>
             </td>
         </ng-container>

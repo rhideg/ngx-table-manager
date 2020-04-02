@@ -47,6 +47,12 @@ export class NgxTableComponent implements OnChanges {
         this.arrSelected = [];
       }
 
+      /* if (this.isSelectable) {
+        setTimeout(() => {
+          this.isSelectable = undefined;
+        }, 3000);
+      } */
+
       this.input = changes.input.currentValue;
       this.arrCopy = this.input.arrCopy;
 
