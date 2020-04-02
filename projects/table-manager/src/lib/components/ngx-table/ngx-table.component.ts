@@ -16,6 +16,7 @@ import { TableSort } from '../../models/table-sort';
 export class NgxTableComponent implements OnChanges {
 
   arrSelected = [];
+  arrCopy = [];
   selectAll;
   btnDoEvent = true;
 
@@ -41,7 +42,13 @@ export class NgxTableComponent implements OnChanges {
       while (!this.input.ds) { // define the condition as you like
         await new Promise(resolve => setTimeout(resolve, 500));
       }
+
+      if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
+        this.arrSelected = [];
+      }
+
       this.input = changes.input.currentValue;
+      this.arrCopy = this.input.arrCopy;
 
       if (!this.isRowSelect) {
         this.isRowSelect = false;
@@ -149,6 +156,29 @@ export class NgxTableComponent implements OnChanges {
     } else {
       return true;
     }
+  }
+
+  /**
+   * Compare two object arrays. Returned true if so, else false.
+   * @param a First array.
+   * @param b Second array.
+   */
+  objectArraysAreEquivalent(a, b) {
+    if (!a || !b) {
+      return false;
+    }
+
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    for (let i = 0; i < Math.min(a.length, b.length); i++) {
+      if (!this.objectsAreEquivalent(a[i], b[i])) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -398,6 +428,6 @@ export class NgxTableComponent implements OnChanges {
       });
 
       this.btnDoEvent = true;
-    }, 5);
+    }, 100);
   }
 }
