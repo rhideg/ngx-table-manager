@@ -25,6 +25,7 @@ import { NgxTmSelectComponent } from './components/ngx-tm-select/ngx-tm-select.c
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxTableComponent } from './components/ngx-table/ngx-table.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog/
     MatTableModule,
     ReactiveFormsModule,
     MatSortModule,
-    DragDropModule
+    DragDropModule,
+    MatTooltipModule
   ],
   exports: [
     TableManagerComponent,

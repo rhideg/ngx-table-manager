@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
         type: 'btnEdit',
         icon: 'edit',
         filter: [{ col: 'name', value: ['test1', 'test3'], relation: '===' }],
+        tooltip: 'Edit'
       },
       {
         type: 'del',
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
         style: {
           color: '#FF6859'
         },
+        tooltip: 'Delete'
       },
     ];
 
@@ -115,10 +117,7 @@ export class AppComponent implements OnInit {
   }
 
   btnClick() {
-    this.tsTest.arr = JSON.parse(JSON.stringify(asd));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(asd));
-    this.tsTest.ds = JSON.parse(JSON.stringify(asd));
-    this.tsTest = new TableSort(this.tsTest);
+    
   }
 
   /**
