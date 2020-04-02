@@ -101,9 +101,13 @@ Add  ```ngx-table-manager```
   </ngx-table-manager>
 
   <ngx-table 
-    [input]="tsTest" 
+    [input]="tsTest"
+
+    // Optional (default: undefined)
     [extraCols]="extraCols"
     [isSelectable]="isSelectable"
+    [isRowSelect]="isRowSelect"
+    [numberFormat]="numberFormat"
     (output)="onEvent($event)"
     >
   </ngx-table>
@@ -132,8 +136,10 @@ export class AppComponent implements OnInit {
   tsTest: TableSort;
 
   // ngx-table
-  extraCols = [];
-  isSelectable;
+  extraCols = []; //Optional extra buttons (default is undefined)
+  isSelectable; //Optional checkbox (default is undefined)
+  isRowSelect; // Optional row select (default is undefined)
+  numberFormat; // Optional format of number type columns (default is undefined)
 
   // ngx-tm-select
   arrSelectTest = [
@@ -163,6 +169,7 @@ export class AppComponent implements OnInit {
       {
         type: 'btnEdit',
         icon: 'edit',
+        // filter btn where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
         filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
@@ -185,6 +192,7 @@ export class AppComponent implements OnInit {
     this.isSelectable = {
       type: 'select',
       multi: true,
+      // filter checkbox where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
       filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
     };
   }
