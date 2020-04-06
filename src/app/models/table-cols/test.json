@@ -1,49 +1,49 @@
 {
-    "TestCols": [
-        {
-            "title": "Id",
-            "name": "id",
-            "show": true,
-            "sticky": false,
-            "search_value": "",
-            "style": "",
-            "format": "number"
-        },
-        {
-            "title": "Name",
-            "name": "name",
-            "show": true,
-            "sticky": false,
-            "search_value": "",
-            "style": "",
-            "format": "string"
-        },
-        {
-            "title": "Type",
-            "name": "type",
-            "show": true,
-            "sticky": false,
-            "search_value": "",
-            "style": "",
-            "format": "string"
-        },
-        {
-            "title": "Text",
-            "name": "text",
-            "show": true,
-            "sticky": false,
-            "search_value": "",
-            "style": "",
-            "format": "string"
-        },
-        {
-            "title": "Number",
-            "name": "number",
-            "show": true,
-            "sticky": false,
-            "search_value": "",
-            "style": "",
-            "format": "number"
-        }
-    ]
+  "TestCols": [
+    {
+      "title": "Id",
+      "name": "id",
+      "show": true,
+      "sticky": false,
+      "search_value": "",
+      "style": {},
+      "format": "number"
+    },
+    {
+      "title": "Name",
+      "name": "name",
+      "show": true,
+      "sticky": false,
+      "search_value": "",
+      "style": {},
+      "format": "string"
+    },
+    {
+      "title": "Type",
+      "name": "type",
+      "show": true,
+      "sticky": false,
+      "search_value": "",
+      "style": {},
+      "format": "string"
+    },
+    {
+      "title": "Text",
+      "name": "text",
+      "show": true,
+      "sticky": false,
+      "search_value": "",
+      "style": {},
+      "format": "string"
+    },
+    {
+      "title": "Number",
+      "name": "number",
+      "show": true,
+      "sticky": false,
+      "search_value": "",
+      "style": {},
+      "format": "number"
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 <div fxFlex style="overflow: auto;" (scroll)="scrollTable($event)">
 
-    <table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
+    <table #table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
 
         <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
             <th mat-header-cell *matHeaderCellDef>
@@ -13,6 +13,8 @@
                 </mat-checkbox>
             </td>
         </ng-container>
+
+        <!-- <span style="background-color: #FF6859;"></span> -->
 
 
         <ng-container [matColumnDef]="item.name" [sticky]="item.sticky" *ngFor="let item of input.arrCols">
@@ -63,7 +65,7 @@
         </ng-container>
         ​
         <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" (click)="isRowSelect ? rowSelected(row) : ''">
+        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" [ngClass]="{'row-color': rowColor}" (click)="isRowSelect ? rowSelected(row) : ''">
         </tr>
 
     </table>

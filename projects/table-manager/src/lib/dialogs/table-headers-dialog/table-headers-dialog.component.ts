@@ -11,6 +11,8 @@ export class TableHeadersDialogComponent implements OnInit {
 
   arrHeaders = [];
   selectedColor;
+  colorText;
+  colorBackground;
 
   // Drag and drop, first and second column.
   first = [];
@@ -35,7 +37,7 @@ export class TableHeadersDialogComponent implements OnInit {
     const sf = size % 2 === 0 ? size / 2 : Math.floor(size / 2) + 1;
     const ss = size - sf;
     this.first = this.arrHeaders.slice(0, sf);
-    this.second = this.arrHeaders.slice(sf, size)
+    this.second = this.arrHeaders.slice(sf, size);
   }
 
   ngOnInit() {
@@ -51,6 +53,22 @@ export class TableHeadersDialogComponent implements OnInit {
 
     if (index !== -1) {
       this.arrHeaders[index].show = !this.arrHeaders[index].show;
+    }
+  }
+
+  colorPickerBackground(color, item) {
+    const index = this.arrHeaders.indexOf(item);
+
+    if (index !== -1) {
+      this.arrHeaders[index].style['background-color'] = color;
+    }
+  }
+
+  colorPickerText(color, item) {
+    const index = this.arrHeaders.indexOf(item);
+
+    if (index !== -1) {
+      this.arrHeaders[index].style['color'] = color;
     }
   }
 
@@ -90,6 +108,6 @@ export class TableHeadersDialogComponent implements OnInit {
       this.second.unshift(this.first[this.first.length - 1]);
       this.first.pop();
     }
-    
+
   }
 }

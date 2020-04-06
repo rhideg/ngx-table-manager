@@ -26,7 +26,7 @@
     </ngx-table-manager>
 </div>
 
-<button mat-button (click)="btnClick()">text</button>
+<button mat-button (click)="btnClick()">Toogle Select</button>
 
 <ngx-table 
     [input]="tsTest" 
@@ -34,6 +34,7 @@
     [isSelectable]="isSelectable"
     [isRowSelect]="true"
     [numberFormat]="numberFormat"
+    [rowColor]="true"
     (output)="onEvent($event)"
     >
 </ngx-table>
