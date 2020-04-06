@@ -177,6 +177,8 @@ export class AppComponent implements OnInit {
       // filter checkbox where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
       filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
     };
+
+    this.numberFormat = '1.0-2';
   }
 
   /**
