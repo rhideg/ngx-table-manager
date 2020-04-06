@@ -26,12 +26,14 @@ export class NgxTableComponent implements OnChanges {
   @Input() isRowSelect; // If true then row selected.
   @Input() numberFormat; // Number format.
   @Input() isSelectable; // Single select when multi value is false, multi select if value true.
+  @Input() rowColor; // Single select when multi value is false, multi select if value true.
   @Output() output = new EventEmitter<any>(); // returns element
 
   @ViewChild('sortTest', { static: false }) sortTest: MatSort; // Material table sort
   constructor(
     public dialog: MatDialog,
-  ) { }
+  ) {
+  }
 
   /**
    * Listen for changes and set input.
@@ -68,6 +70,7 @@ export class NgxTableComponent implements OnChanges {
 
         this.input = changes.input.currentValue;
         this.arrCopy = this.input.arrCopy;
+        console.log(this.input);
 
         if (!this.isRowSelect) {
           this.isRowSelect = false;

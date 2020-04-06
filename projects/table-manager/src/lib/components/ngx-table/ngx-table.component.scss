@@ -3,3 +3,11 @@
     font-size: medium;
     text-align: center;
 }
+
+.row-color:nth-child(odd){
+    background-color: #f6f6f6;
+}
+
+.mat-row:hover {
+    background-color: #EEEEEE;
+}
