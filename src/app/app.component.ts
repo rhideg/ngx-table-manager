@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
     this.tsTest = new TableSort(selectObj);
   }
 
-  btnClick() {
+  btnToggle() {
     this.isSelectable = {
       type: 'select',
       multi: true,
