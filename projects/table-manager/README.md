@@ -77,6 +77,8 @@ Add  ```ngx-table-manager```
 
       >
   </ngx-table-manager>
+  
+  <button mat-button (click)="btnToggle()">Toogle Select</button>
 
   <ngx-table 
     [input]="tsTest"
