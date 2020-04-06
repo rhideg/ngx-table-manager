@@ -19,8 +19,11 @@ Install via npm package manager
 ``` bash
 npm i -s @angular/flex-layout
   ```
- ``` bash
+``` bash
 ng add @angular/material
+  ```
+``` bash
+npm i ngx-color-picker
   ```
   
 

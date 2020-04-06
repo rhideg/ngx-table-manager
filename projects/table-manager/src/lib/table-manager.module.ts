@@ -26,7 +26,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxTableComponent } from './components/ngx-table/ngx-table.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-/* import { ColorPickerModule } from 'ngx-color-picker'; */
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 @NgModule({
@@ -61,7 +61,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSortModule,
     DragDropModule,
     MatTooltipModule,
-    /* ColorPickerModule */
+    ColorPickerModule
   ],
   exports: [
     TableManagerComponent,

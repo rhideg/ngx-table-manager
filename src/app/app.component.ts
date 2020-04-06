@@ -131,6 +131,8 @@ export class AppComponent implements OnInit {
       return data.name;
     });
     this.tsTest.arrDispCols = a;
-    this.tsTest = new TableSort(this.tsTest);
+    setTimeout(() => {
+      this.tsTest = new TableSort(this.tsTest);
+    }, 100);
   }
 }

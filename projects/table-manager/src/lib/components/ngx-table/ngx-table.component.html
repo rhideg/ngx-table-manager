@@ -14,9 +14,6 @@
             </td>
         </ng-container>
 
-        <!-- <span style="background-color: #FF6859;"></span> -->
-
-
         <ng-container [matColumnDef]="item.name" [sticky]="item.sticky" *ngFor="let item of input.arrCols">
             <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!item.show" [ngStyle]="item.style">
                 {{item.title}} </th>

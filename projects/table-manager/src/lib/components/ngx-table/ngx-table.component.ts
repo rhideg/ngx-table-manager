@@ -70,7 +70,6 @@ export class NgxTableComponent implements OnChanges {
 
         this.input = changes.input.currentValue;
         this.arrCopy = this.input.arrCopy;
-        console.log(this.input);
 
         if (!this.isRowSelect) {
           this.isRowSelect = false;

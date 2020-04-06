@@ -20,5 +20,8 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "ngx-color-picker": "^9.0.0"
   }
 }
