@@ -25,7 +25,7 @@ With the [simple model generator](https://rhideg.github.io/model-generator/) it 
 
 ### Components:
 * **ngx-table:** The basic data table
-* **ngx-table-manager:** Table manager, it provides the search and sor fuctions
+* **ngx-table-manager:** Table manager, it provides the search and sort fuctions
 * **ngx-tm-select:** Basic dropdown select and sort
 
 
@@ -41,8 +41,11 @@ Install via npm package manager
 ``` bash
 npm i -s @angular/flex-layout
   ```
- ``` bash
+``` bash
 ng add @angular/material
+  ```
+``` bash
+npm i ngx-color-picker
   ```
   
 
@@ -99,11 +102,18 @@ Add  ```ngx-table-manager```
 
       >
   </ngx-table-manager>
+  
+  <button mat-button (click)="btnToggle()">Toogle Select</button>
 
   <ngx-table 
-    [input]="tsTest" 
+    [input]="tsTest"
+
+    // Optional (default: undefined)
     [extraCols]="extraCols"
     [isSelectable]="isSelectable"
+    [isRowSelect]="isRowSelect"
+    [numberFormat]="numberFormat"
+    [rowColor]="rowColor"
     (output)="onEvent($event)"
     >
   </ngx-table>
@@ -117,7 +127,7 @@ Add  ```ngx-table-manager```
 
 import { Component, OnInit } from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
-import { colsTest, displayedColumnsTest } from './models/test-cols';
+import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
 
 @Component({
@@ -132,8 +142,11 @@ export class AppComponent implements OnInit {
   tsTest: TableSort;
 
   // ngx-table
-  extraCols = [];
-  isSelectable;
+  extraCols = []; //Optional extra buttons (default is undefined)
+  isSelectable; //Optional checkbox (default is undefined)
+  isRowSelect; // Optional row select (default is undefined)
+  numberFormat; // Optional format of number type columns (default is undefined)
+  rowColor = true; // Row color boolean (default is undefined)
 
   // ngx-tm-select
   arrSelectTest = [
@@ -163,6 +176,7 @@ export class AppComponent implements OnInit {
       {
         type: 'btnEdit',
         icon: 'edit',
+        // filter btn where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
         filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
@@ -185,8 +199,11 @@ export class AppComponent implements OnInit {
     this.isSelectable = {
       type: 'select',
       multi: true,
+      // filter checkbox where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
       filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
     };
+
+    this.numberFormat = '1.0-2';
   }
 
   /**
@@ -224,6 +241,14 @@ export class AppComponent implements OnInit {
    */
   selectTest(selectObj: TableSort) {
     this.tsTest = new TableSort(selectObj);
+  }
+  
+  btnToggle() {
+    this.isSelectable = {
+      type: 'select',
+      multi: true,
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
+    };
   }
 
   /**
@@ -288,7 +313,7 @@ export class TableSort {
             "show": true,
             "sticky": false,
             "search_value": "",
-            "style": "",
+            "style": {},
             "format": "number"
         },
         {
@@ -297,7 +322,7 @@ export class TableSort {
             "show": true,
             "sticky": false,
             "search_value": "",
-            "style": "",
+            "style": {},
             "format": "string"
         },
         {
@@ -306,7 +331,7 @@ export class TableSort {
             "show": true,
             "sticky": false,
             "search_value": "",
-            "style": "",
+            "style": {},
             "format": "string"
         },
         {
@@ -315,7 +340,7 @@ export class TableSort {
             "show": true,
             "sticky": false,
             "search_value": "",
-            "style": "",
+            "style": {},
             "format": "string"
         }
     ]
