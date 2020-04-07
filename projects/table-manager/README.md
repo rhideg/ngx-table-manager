@@ -25,7 +25,7 @@ With the [simple model generator](https://rhideg.github.io/model-generator/) it 
 
 ### Components:
 * **ngx-table:** The basic data table
-* **ngx-table-manager:** Table manager, it provides the search and sor fuctions
+* **ngx-table-manager:** Table manager, it provides the search and sort fuctions
 * **ngx-tm-select:** Basic dropdown select and sort
 
 
@@ -41,8 +41,11 @@ Install via npm package manager
 ``` bash
 npm i -s @angular/flex-layout
   ```
- ``` bash
+``` bash
 ng add @angular/material
+  ```
+``` bash
+npm i ngx-color-picker
   ```
   
 

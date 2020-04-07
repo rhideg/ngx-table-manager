@@ -17,5 +17,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rhideg/ngx-table-manager"
+  },
+  "dependencies": {
+    "ngx-color-picker": "^9.0.0"
   }
 }
