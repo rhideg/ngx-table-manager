@@ -1,6 +1,6 @@
 {
   "name": "ngx-table-manager",
-  "version": "1.0.18",
+  "version": "1.1.10",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0"
@@ -17,9 +17,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rhideg/ngx-table-manager"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
     "ngx-color-picker": "^9.0.0"

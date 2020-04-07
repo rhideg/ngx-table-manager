@@ -1,11 +1,33 @@
-
 # Angular Table Manager
+⚡ Try it on [Stackblitz](https://stackblitz.com/edit/ngx-table-manager)!
+👨‍🔧 Generate your models [NOW](https://rhideg.github.io/model-generator/)!
 
-⚡ Try it on Stackblitz: https://stackblitz.com/edit/ngx-table-manager
+![Image of Stackblitz](https://imgur.com/8aYyLNm.png)
 
-👨‍🔧 Generate your models now: https://rhideg.github.io/model-generator/
+## Have you ever found yourself
+* creating complicated data tables with lots and lots of columns,
+* implementing the same features like search, sort, filter, select etc. over and over again,
+* looking at a 100+ lines long HTML template of a component and wondering *"Why do I have to write all this, when my component only contains a single table?"*,
+* copy-pasting the same solution for a feature to a lot of similar components?
 
-![Image of Stackblitz](https://imgur.com/vI7D2vR.png)
+If your answer is **'Yes!'** then you are at the right place. We created a reusable Angular Table Manager (based on Angular's [mat-table]([https://material.angular.io/components/table/overview)) to solve all of these issues.
+
+With the [simple model generator](https://rhideg.github.io/model-generator/) it takes only a minute to create a complex data table (with search, filter, sort and all the other provided features) from a single **JSON**.
+
+## Features:
+* Quick search
+* Advanced search
+* Column managing (Order of the columns, visibility, sticky on horizontal scroll)
+* Sorting
+* Customizable button columns (With their own events)
+* Selection (multiple and single)
+* Easy editing and customization
+
+### Components:
+* **ngx-table:** The basic data table
+* **ngx-table-manager:** Table manager, it provides the search and sor fuctions
+* **ngx-tm-select:** Basic dropdown select and sort
+
 
 # Getting started
 
@@ -141,7 +163,7 @@ export class AppComponent implements OnInit {
       {
         type: 'btnEdit',
         icon: 'edit',
-        filter: [{ col: 'name', value: ['test1', 'test3'], relation: '===' }],
+        filter: [{ col: 'name', value: ['test1'], relation: '===' }],
       },
       {
         type: 'del',
@@ -150,12 +172,20 @@ export class AppComponent implements OnInit {
           color: '#FF6859'
         },
       },
+      {
+        type: 'btnDownload',
+        icon: 'pets',
+      },
+      {
+        type: 'btnPrint',
+        icon: '4k',
+      }
     ];
 
     this.isSelectable = {
       type: 'select',
       multi: true,
-      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
+      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
     };
   }
 
