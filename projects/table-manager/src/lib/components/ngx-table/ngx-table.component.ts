@@ -68,9 +68,9 @@ export class NgxTableComponent implements OnChanges {
         while (!this.input.ds) { // define the condition as you like
           await new Promise(resolve => setTimeout(resolve, 500));
         }
-        this.input = changes.input.currentValue;
 
         setTimeout(() => {
+          this.input = changes.input.currentValue;
           this.arrCopy = this.input.arrCopy;
 
           if (!this.isRowSelect) {
