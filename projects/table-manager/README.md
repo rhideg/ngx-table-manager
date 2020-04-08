@@ -100,6 +100,11 @@ Add  ```ngx-table-manager```
       [inputSearch]="true"
       [startSearch]="true"
 
+      // Optional (default: false)
+      [columnSticky]="true"
+      [colorPickerText]="true"
+      [colorPickerBackground]="true"
+
       >
   </ngx-table-manager>
   
@@ -113,6 +118,7 @@ Add  ```ngx-table-manager```
     [isSelectable]="isSelectable"
     [isRowSelect]="isRowSelect"
     [numberFormat]="numberFormat"
+    [loading]="loading"
     [rowColor]="rowColor"
     (output)="onEvent($event)"
     >
@@ -147,6 +153,7 @@ export class AppComponent implements OnInit {
   isRowSelect; // Optional row select (default is undefined)
   numberFormat; // Optional format of number type columns (default is undefined)
   rowColor = true; // Row color boolean (default is undefined)
+  loading = true; // loading on the table
 
   // ngx-tm-select
   arrSelectTest = [
@@ -217,6 +224,7 @@ export class AppComponent implements OnInit {
     this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
     this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
     this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.loading = false;
   }
 
   /**
