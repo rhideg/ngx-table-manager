@@ -27,7 +27,14 @@ import { NgxTableComponent } from './components/ngx-table/ngx-table.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ColorPickerModule } from 'ngx-color-picker';
+/* import { FontPickerModule } from 'ngx-font-picker';
+import { FONT_PICKER_CONFIG } from 'ngx-font-picker';
+import { FontPickerConfigInterface } from 'ngx-font-picker';
 
+const DEFAULT_FONT_PICKER_CONFIG: FontPickerConfigInterface = {
+  // Change this to your Google API key
+  apiKey: 'AIzaSyA9S7DY0khhn9JYcfyRWb1F6Rd2rwtF_mA'
+}; */
 
 @NgModule({
   declarations: [
@@ -61,7 +68,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     MatSortModule,
     DragDropModule,
     MatTooltipModule,
-    ColorPickerModule
+    ColorPickerModule,
+    /* FontPickerModule */
   ],
   exports: [
     TableManagerComponent,
@@ -72,6 +80,12 @@ import { ColorPickerModule } from 'ngx-color-picker';
     TableHeadersDialogComponent,
     AdvancedSearchDialogComponent,
     ConfirmDialogComponent
-  ]
+  ],
+  /* providers: [
+    {
+      provide: FONT_PICKER_CONFIG,
+      useValue: DEFAULT_FONT_PICKER_CONFIG
+    }
+  ] */
 })
 export class TableManagerModule { }

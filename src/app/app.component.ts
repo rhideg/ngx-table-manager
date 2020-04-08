@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   isSelectable;
   isRowSelect;
   numberFormat;
+  loading = true;
 
   constructor(
   ) {
@@ -88,6 +89,7 @@ export class AppComponent implements OnInit {
     this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
     this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
     this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.loading = false;
   }
 
   /**

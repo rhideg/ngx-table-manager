@@ -19,6 +19,9 @@
         [displayColumns]="true"
         [inputSearch]="true"
         [startSearch]="true"
+        [columnSticky]="true"
+        [colorPickerText]="true"
+        [colorPickerBackground]="true"
 
         (output)="onSearchTest($event)"  
         (dispColsSelect)="onDispColsSelect($event)"
@@ -28,12 +31,13 @@
 
 <button mat-button (click)="btnToggle()">Toogle Select</button>
 
-<ngx-table 
+<ngx-table
     [input]="tsTest" 
     [extraCols]="extraCols"
     [isSelectable]="isSelectable"
     [isRowSelect]="true"
     [numberFormat]="numberFormat"
+    [loading]="loading"
     [rowColor]="true"
     (output)="onEvent($event)"
     >

@@ -13,10 +13,14 @@ export class TableHeadersDialogComponent implements OnInit {
   selectedColor;
   colorText;
   colorBackground;
+  /* font; */
 
   // Drag and drop, first and second column.
   first = [];
   second = [];
+  colorPickerBackgroundBool;
+  colorPickerTextBool;
+  columnStickyBool;
 
   constructor(
     public dialogRef: MatDialogRef<TableHeadersDialogComponent>,
@@ -24,6 +28,9 @@ export class TableHeadersDialogComponent implements OnInit {
   ) {
     this.selectedColor = data.color ? data.color : 'black';
     this.arrHeaders = data.cols;
+    this.colorPickerBackgroundBool = data.colorPickerBackgroundBool;
+    this.colorPickerTextBool = data.colorPickerTextBool;
+    this.columnStickyBool = data.columnStickyBool;
     dialogRef.backdropClick().subscribe(result => {
       this.arrHeaders = this.first.concat(this.second);
       dialogRef.close(this.arrHeaders);
@@ -46,7 +53,7 @@ export class TableHeadersDialogComponent implements OnInit {
 
   /**
    * Visible: visible in the table view.
-   * @param item 
+   * @param item
    */
   setVisibility(item) {
     const index = this.arrHeaders.indexOf(item);
@@ -55,6 +62,17 @@ export class TableHeadersDialogComponent implements OnInit {
       this.arrHeaders[index].show = !this.arrHeaders[index].show;
     }
   }
+
+  /* fontPicker(type, item) {
+    console.log(type);
+    const index = this.arrHeaders.indexOf(item);
+
+    if (index !== -1) {
+      this.arrHeaders[index].style['font-family'] = type.family;
+      this.arrHeaders[index].style['font-size'] = type.size;
+      this.arrHeaders[index].style['font-style'] = type.style;
+    }
+  } */
 
   colorPickerBackground(color, item) {
     const index = this.arrHeaders.indexOf(item);
@@ -74,7 +92,7 @@ export class TableHeadersDialogComponent implements OnInit {
 
   /**
    * Sticky: stays on the side if scrolled horizontally.
-   * @param item 
+   * @param item
    */
   setSticky(item) {
     const index = this.arrHeaders.indexOf(item);
@@ -86,7 +104,7 @@ export class TableHeadersDialogComponent implements OnInit {
 
   /**
    * Execute drag and drop.
-   * @param event 
+   * @param event
    */
   dropGroup(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {

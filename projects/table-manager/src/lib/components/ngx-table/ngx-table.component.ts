@@ -19,6 +19,9 @@ export class NgxTableComponent implements OnChanges {
   arrCopy = [];
   selectAll;
   btnDoEvent = true;
+  /* loading = true; */
+
+  Arr = new Array(40);
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
   @Input() input: TableSort; // Contains the metadata
@@ -27,6 +30,7 @@ export class NgxTableComponent implements OnChanges {
   @Input() numberFormat; // Number format.
   @Input() isSelectable; // Single select when multi value is false, multi select if value true.
   @Input() rowColor; // Single select when multi value is false, multi select if value true.
+  @Input() loading; // Single select when multi value is false, multi select if value true.
   @Output() output = new EventEmitter<any>(); // returns element
 
   @ViewChild('sortTest', { static: false }) sortTest: MatSort; // Material table sort
@@ -40,7 +44,6 @@ export class NgxTableComponent implements OnChanges {
    * @param changes Change.
    */
   ngOnChanges(changes): void {
-    console.log(changes);
     if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
       if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
         this.input.arrDispCols.unshift(this.isSelectable.type);
@@ -59,6 +62,8 @@ export class NgxTableComponent implements OnChanges {
         this.arrSelected = [];
         this.input.ds.data = this.input.arr;
       }
+    } else if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
+        document.getElementById('mainDiv').style.overflow = 'auto';
     } else {
       if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
         this.arrSelected = [];
@@ -129,7 +134,7 @@ export class NgxTableComponent implements OnChanges {
               this.selectAll = false;
             }
           }
-        }, 200);
+        }, 0);
       })();
     }
   }

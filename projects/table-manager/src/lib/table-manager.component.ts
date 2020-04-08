@@ -29,6 +29,9 @@ export class TableManagerComponent implements OnChanges, OnInit {
   @Input() displayColumns = true;
   @Input() inputSearch = true;
   @Input() startSearch = true;
+  @Input() columnSticky = false;
+  @Input() colorPickerText = false;
+  @Input() colorPickerBackground = false;
   constructor(
     public dialog: MatDialog,
     private advSearchService: AdvancedSearchService
@@ -156,7 +159,10 @@ export class TableManagerComponent implements OnChanges, OnInit {
       maxHeight: '80vh',
       data: {
         cols: this.input.arrCols,
-        color: this.selectedColor
+        color: this.selectedColor,
+        colorPickerBackgroundBool: this.colorPickerBackground,
+        colorPickerTextBool: this.colorPickerText,
+        columnStickyBool: this.columnSticky,
       }
     });
     dialogRef.afterClosed().subscribe(async result => {
