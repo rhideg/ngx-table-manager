@@ -1,6 +1,13 @@
-<div fxFlex style="overflow: auto;" (scroll)="scrollTable($event)">
+<div id="mainDiv" [ngStyle]="{'overflow': loading ? 'hidden' : 'auto'}" fxFlex style="overflow: hidden;" (scroll)="scrollTable($event)">
 
-    <table #table mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort [dataSource]="input.ds">
+    <div *ngFor="let i of Arr">
+        <div *ngIf="loading" class="post">
+            <div class="line"></div>
+        </div>
+    </div>
+
+    <table *ngIf="!loading" mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort
+        [dataSource]="input.ds">
 
         <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
             <th mat-header-cell *matHeaderCellDef>
@@ -68,10 +75,6 @@
         </tr>
 
     </table>
-
-    <div *ngIf="loading" class="post">
-        <div class="line"></div>
-    </div>
 
     <div *ngIf='input.empty' class="no-data-label">
         No data.
