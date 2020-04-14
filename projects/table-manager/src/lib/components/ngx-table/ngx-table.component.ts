@@ -63,7 +63,7 @@ export class NgxTableComponent implements OnChanges {
         this.input.ds.data = this.input.arr;
       }
     } else if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
-        document.getElementById('mainDiv').style.overflow = 'auto';
+      document.getElementById('mainDiv').style.overflow = 'auto';
     } else {
       if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
         this.arrSelected = [];
@@ -71,16 +71,11 @@ export class NgxTableComponent implements OnChanges {
 
       (async () => {
         while (!this.input.ds) { // define the condition as you like
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise(resolve => setTimeout(resolve, 0));
         }
 
         setTimeout(() => {
           this.input = changes.input.currentValue;
-          this.arrCopy = this.input.arrCopy;
-
-          if (!this.isRowSelect) {
-            this.isRowSelect = false;
-          }
 
           if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
             this.input.arrDispCols.unshift(this.isSelectable.type);
@@ -93,6 +88,12 @@ export class NgxTableComponent implements OnChanges {
               }
             });
           }
+          this.arrCopy = this.input.arrCopy;
+
+          if (!this.isRowSelect) {
+            this.isRowSelect = false;
+          }
+
 
           if (this.input.count >= 30) {
             this.input.count = 30;
