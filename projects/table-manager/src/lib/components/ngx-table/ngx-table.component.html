@@ -1,4 +1,5 @@
-<div id="mainDiv" [ngStyle]="{'overflow': loading ? 'hidden' : 'auto'}" fxFlex style="overflow: hidden;" (scroll)="scrollTable($event)">
+<div id="mainDiv" [ngStyle]="{'overflow': loading ? 'hidden' : 'auto'}" fxFlex style="overflow: hidden;"
+    (scroll)="scrollTable($event)">
 
     <div *ngFor="let i of Arr">
         <div *ngIf="loading" class="post">
@@ -48,6 +49,16 @@
                 <span *ngIf="item.format === 'string'">
                     {{element[item.name]}}
                 </span>
+                <a href={{element[item.name]}} *ngIf="item.format === 'url'">
+                    {{element[item.name]}}
+                </a>
+                <div *ngIf="item.format === 'arrUrl'">
+                    <div *ngFor="let urlItem of element[item.name]">
+                        <a href={{urlItem}}>
+                            {{urlItem}}
+                        </a>
+                    </div>
+                </div>
                 <span *ngIf="item.format === 'boolean'">
                     <span *ngIf="element[item.name]" style="color: #81c784;">
                         <mat-icon>done</mat-icon>
