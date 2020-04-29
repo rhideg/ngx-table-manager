@@ -146,6 +146,11 @@ export class NgxTableComponent implements OnChanges {
       const arrRet = [];
       item.filter.forEach(filterElement => {
         switch (filterElement.relation) {
+          case 'length':
+            if ((element[filterElement.col].length === filterElement.value[0])) {
+              arrRet.push(false);
+            }
+            break;
           case '===':
             filterElement.value.forEach(valueElement => {
               if ((element[filterElement.col] === valueElement)) {
