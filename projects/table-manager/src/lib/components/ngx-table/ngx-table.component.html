@@ -49,6 +49,16 @@
                 <span *ngIf="item.format === 'string'">
                     {{element[item.name]}}
                 </span>
+                <a [href]="'//' + element[item.name]" *ngIf="item.format === 'abstUrl'">
+                    {{element[item.name]}}
+                </a>
+                <div *ngIf="item.format === 'arrAbstUrl'">
+                    <div *ngFor="let urlItem of element[item.name]">
+                        <a [href]="'//' + urlItem">
+                            {{urlItem}}
+                        </a>
+                    </div>
+                </div>
                 <a href={{element[item.name]}} *ngIf="item.format === 'url'">
                     {{element[item.name]}}
                 </a>
