@@ -26,7 +26,8 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!item.show" [ngStyle]="item.style">
                 {{item.title}}
             </th>
-            <td mat-cell *matCellDef="let element" [hidden]="!item.show" [ngStyle]="item.style">
+            <td mat-cell *matCellDef="let element" (click)="isRowSelect ? rowSelected(element) : ''"
+                [hidden]="!item.show" [ngStyle]="item.style">
                 <span *ngIf="item.format === 'date'">
                     {{element[item.name] | date: 'yyyy-MM-dd'}}
                 </span>
@@ -82,7 +83,7 @@
 
         <ng-container *ngFor="let item of extraCols" matColumnDef={{item.type}}>
             <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element">
+            <td style="padding-left: 24px;" mat-cell *matCellDef="let element">
                 <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="checkFilter(element, item)"
                     [ngStyle]="item.style">
                     <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
@@ -91,9 +92,7 @@
         </ng-container>
         ​
         <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" [ngClass]="{'row-color': rowColor}"
-            (click)="isRowSelect ? rowSelected(row) : ''">
-        </tr>
+        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" [ngClass]="{'row-color': rowColor}"></tr>
 
     </table>
 
