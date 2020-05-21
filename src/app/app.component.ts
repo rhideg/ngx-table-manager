@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
@@ -12,6 +12,8 @@ export class AppComponent implements OnInit {
 
   // ngx-table, ngx-table-manager
   tsTest: TableSort;
+
+
 
   // ngx-tm-select
   arrSelectTest = [
@@ -116,12 +118,34 @@ export class AppComponent implements OnInit {
     this.tsTest = new TableSort(selectObj);
   }
 
+  // Toggle selectable
   btnToggle() {
     this.isSelectable = {
       type: 'select',
       multi: true,
       filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
     };
+  }
+
+  // Refresh data
+  btnRefresh_Click() {
+    DATA.push({
+      id: 200,
+      name: 'test101',
+      number: 33333,
+      text: 'ewwqrwq',
+      type: 'i'
+    });
+
+    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
+    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
+    // this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));
+
+    this.tsTest = new TableSort(
+      this.tsTest
+    );
+    
   }
 
   /**

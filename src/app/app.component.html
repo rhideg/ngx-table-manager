@@ -7,7 +7,7 @@
         style="height: 60px;" 
         fxLayout="row" 
         fxLayoutAlign="space-between stretch">
-        
+
         <div fxLayout="row" fxLayoutAlign="start center">
             <!-- TABLE MANAGER SELECT -->
             <ngx-tm-select
@@ -21,6 +21,8 @@
 
             <!-- TOGGLE SELECT -->
             <button mat-button (click)="btnToggle()">Toogle Select</button>
+
+            <button mat-icon-button (click)="btnRefresh_Click()"><mat-icon>refresh</mat-icon></button>
         </div>
 
         <!-- TABLE MANAGER -->

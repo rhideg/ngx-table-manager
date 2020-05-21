@@ -33,7 +33,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
   @Input() colorPickerText = false;
   @Input() colorPickerBackground = false;
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private advSearchService: AdvancedSearchService
   ) {
   }
@@ -43,12 +43,16 @@ export class TableManagerComponent implements OnChanges, OnInit {
    * @param changes Input change
    */
   ngOnChanges(changes: SimpleChanges) {
+    console.log('%c CHANGE', 'background: white; color:red');
     if (changes.input.currentValue) {
       this.loaded = true;
+      console.log('ngOnChanges');
+      // this.search();
     }
   }
 
   ngOnInit() {
+    
   }
 
   /**
@@ -115,10 +119,17 @@ export class TableManagerComponent implements OnChanges, OnInit {
   }
 
   /**
+   * Call search method on search button click
+   */
+  async btnSearch_Click() {
+    await this.search();
+    this.output.emit(this.input);
+  }
+
+  /**
    * Execute quick search.
    */
-  btnSearch_Click() {
-
+  async search() {
     if (this.searchValue === undefined || this.searchValue === '') {
       this.input.count = 30;
       this.input.arr = this.input.arrCopy;
@@ -146,7 +157,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
         this.input.empty = false;
       }
     }
-    this.output.emit(this.input);
   }
 
   /**
