@@ -1,44 +1,63 @@
 
 
-<div fxLayout="row" fxLayoutAlign="space-between stretch">
-    <ngx-tm-select
-    style="margin: 10px;"
-        [input]="tsTest"
-        [column]="'type'"
-        [name]="'Type'"
-        (output)="selectTest($event)"
-        >
-    </ngx-tm-select> 
+<div fxLayout="column" fxLayoutAlign="space-between stretch"
+    style="height: 100%; width: 100%;">
 
-    <ngx-table-manager
-    style="margin: 10px;"
-        [input]="tsTest" 
-        [selectedColor]="'red'"
-        [advencedSearch]="true"
-        [fastSearch]="true"
-        [displayColumns]="true"
-        [inputSearch]="true"
-        [startSearch]="true"
-        [columnSticky]="true"
-        [colorPickerText]="true"
-        [colorPickerBackground]="true"
+    <div 
+        style="height: 60px;" 
+        fxLayout="row" 
+        fxLayoutAlign="space-between stretch">
+        
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- TABLE MANAGER SELECT -->
+            <ngx-tm-select
+                style="margin: 10px;"
+                [input]="tsTest"
+                [column]="'type'"
+                [name]="'Type'"
+                (output)="selectTest($event)"
+                >
+            </ngx-tm-select> 
 
-        (output)="onSearchTest($event)"  
-        (dispColsSelect)="onDispColsSelect($event)"
+            <!-- TOGGLE SELECT -->
+            <button mat-button (click)="btnToggle()">Toogle Select</button>
+        </div>
+
+        <!-- TABLE MANAGER -->
+        <ngx-table-manager
+            style="margin: 10px;"
+            [input]="tsTest" 
+            [selectedColor]="'red'"
+            [advencedSearch]="true"
+            [fastSearch]="true"
+            [displayColumns]="true"
+            [inputSearch]="true"
+            [startSearch]="true"
+            [columnSticky]="true"
+            [colorPickerText]="true"
+            [colorPickerBackground]="true"
+
+            (output)="onSearchTest($event)"  
+            (dispColsSelect)="onDispColsSelect($event)"
+            >
+        </ngx-table-manager>
+    </div>
+
+
+    <div fxFlex style="height:100%; overflow: auto;">
+        <!-- TM TABLE -->
+        <ngx-table
+            fxFlex style="height: 100%;"
+            [input]="tsTest" 
+            [extraCols]="extraCols"
+            [isSelectable]="isSelectable"
+            [isRowSelect]="true"
+            [numberFormat]="numberFormat"
+            [loading]="loading"
+            [rowColor]="true"
+            (output)="onEvent($event)"
         >
-    </ngx-table-manager>
+        </ngx-table>
+    </div>
+
 </div>
-
-<button mat-button (click)="btnToggle()">Toogle Select</button>
-
-<ngx-table
-    [input]="tsTest" 
-    [extraCols]="extraCols"
-    [isSelectable]="isSelectable"
-    [isRowSelect]="true"
-    [numberFormat]="numberFormat"
-    [loading]="loading"
-    [rowColor]="true"
-    (output)="onEvent($event)"
-    >
-</ngx-table>
