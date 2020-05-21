@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
+import { TableManagerService } from 'projects/table-manager/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
   loading = true;
 
   constructor(
+    private tmService: TableManagerService
   ) {
     // Get displayed columns from our json.
     const a = TestCols.map(data => {
@@ -138,13 +140,15 @@ export class AppComponent implements OnInit {
     });
 
     this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    // this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));
+    //this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
+    //this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    //this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));
 
-    this.tsTest = new TableSort(
+    //this.tmService.setTs(this.tsTest);
+
+    /*this.tsTest = new TableSort(
       this.tsTest
-    );
+    );*/
     
   }
 

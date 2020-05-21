@@ -46,8 +46,12 @@ export class TableManagerComponent implements OnChanges, OnInit {
     console.log('%c CHANGE', 'background: white; color:red');
     if (changes.input.currentValue) {
       this.loaded = true;
-      console.log('ngOnChanges');
-      // this.search();
+
+      /*if (this.searchValue) {
+        console.log(this.searchValue);
+        this.search();
+      }*/
+      
     }
   }
 
