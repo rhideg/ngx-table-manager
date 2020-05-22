@@ -115,6 +115,7 @@ export class AppComponent implements OnInit {
    * @param selectObj Search result.
    */
   selectTest(selectObj: TableSort) {
+    console.log(selectObj);
     this.tsTest = new TableSort(selectObj);
   }
 
@@ -137,7 +138,7 @@ export class AppComponent implements OnInit {
       type: 'i'
     });
 
-    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
+    // this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
     this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
     // this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
     this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));

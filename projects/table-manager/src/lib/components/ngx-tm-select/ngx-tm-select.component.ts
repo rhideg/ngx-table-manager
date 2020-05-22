@@ -20,6 +20,7 @@ export class NgxTmSelectComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
+    console.log('CHNG');
     // arrSelect: null, column: null -> 0
     // arrSelect: <>, column: null -> 0
     // arrSelect: null, column: <> -> ts.arrCopy.unique
