@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
    * @param searchObj Search result.
    */
   onSearchTest(searchObj: TableSort) {
+    console.log(searchObj);
     this.tsTest = new TableSort(searchObj);
   }
 

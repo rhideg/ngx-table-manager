@@ -47,6 +47,7 @@ export class TableSort {
       console.log(searchV);
       this._qsValue = searchV;
       console.log(this.search);
+      console.log(this);
       this.completeSearch();
     }
 
