@@ -38,16 +38,20 @@ export class AppComponent implements OnInit {
     });
 
     // Set members.
-    this.tsTest = {
-      arr: null,
-      arrCopy: null,
-      arrCols: TestCols,
-      arrDispCols: a,
-      ds: null,
-      count: 30,
-      empty: false,
-      search: { title: 'Name', name: 'name', show: true, sticky: false }
-    };
+    const search = {title: 'Name', name: 'name', show: true, sticky: false };
+    this.tsTest = new TableSort(
+      null,
+      null,
+      TestCols,
+      a,
+      null,
+      30,
+      false,
+      search
+    );
+
+    console.log(this.tsTest);
+    
 
     this.extraCols = [
       {

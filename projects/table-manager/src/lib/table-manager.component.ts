@@ -56,7 +56,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    
+    console.log(this.input);
   }
 
   /**
@@ -87,6 +87,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
+      console.log(result);
       let arrResult = [];
 
       arrResult = JSON.parse(
@@ -134,7 +135,8 @@ export class TableManagerComponent implements OnChanges, OnInit {
    * Execute quick search.
    */
   async search() {
-    if (this.searchValue === undefined || this.searchValue === '') {
+    this.input.quickSearch(this.searchValue);
+    /*if (this.searchValue === undefined || this.searchValue === '') {
       this.input.count = 30;
       this.input.arr = this.input.arrCopy;
       this.input.empty = false;
@@ -160,7 +162,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
         this.input.count = 30;
         this.input.empty = false;
       }
-    }
+    }*/
   }
 
   /**

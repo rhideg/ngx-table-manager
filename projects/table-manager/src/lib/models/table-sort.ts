@@ -18,14 +18,53 @@ export class TableSort {
     ds?: any;
     arrDispCols?: string[];
 
-    constructor(tableSort?: TableSort) {
-      this.search = tableSort ? tableSort.search : null;
-      this.count = tableSort ? tableSort.count : null;
-      this.empty = tableSort ? tableSort.empty : null;
-      this.arr = tableSort ? tableSort.arr : null;
-      this.arrCopy = tableSort ? tableSort.arrCopy : null;
-      this.arrCols = tableSort ? tableSort.arrCols : null;
-      this.ds = tableSort ? tableSort.ds : null;
-      this.arrDispCols = tableSort ? tableSort.arrDispCols : null;
+    private _tmSelected?: Array<string>;
+    private _qsValue?: string;
+    private _asArr?: Array<any>;
+
+
+    constructor(arr?,arrCopy?,arrCols?,arrDispCols?,ds?,count?,empty?,search?)
+    {        
+      // console.log(search);
+      this.search = search ? search : null;
+      this.count = count ? count : null;
+      this.empty = empty ? empty : null;
+      this.arr = arr ? arr : null;
+      this.arrCopy = arrCopy ? arrCopy : null;
+      this.arrCols = arrCols ? arrCols : null;
+      this.ds = ds ? ds : null;
+      this.arrDispCols = arrDispCols ? arrDispCols : null;
     }
+
+
+    tmSelect(arrSelected: Array<string>) {
+      console.log(arrSelected);
+      this._tmSelected = arrSelected;
+      this.completeSearch();
+    }
+
+    quickSearch(searchV: string) {
+      console.log(searchV);
+      this._qsValue = searchV;
+      console.log(this.search);
+      this.completeSearch();
+    }
+
+    advancedSearch(searchArr: Array<any>) {
+      console.log(searchArr);
+      this._asArr = searchArr;
+      this.completeSearch();
+    }
+
+
+
+    completeSearch() {
+
+    }
+
+
+
+
+
+
   }

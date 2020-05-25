@@ -49,6 +49,7 @@ export class NgxTmSelectComponent implements OnChanges {
    */
   selectOption(event) {
     this.arrSelected = event.value;
+    console.log(this.arrSelected);
 
     if (this.arrSelected.length === 0) {
       this.input.arr = this.input.arrCopy;
