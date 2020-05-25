@@ -28,4 +28,6 @@ export class TableSort {
       this.ds = tableSort ? tableSort.ds : null;
       this.arrDispCols = tableSort ? tableSort.arrDispCols : null;
     }
+
+    
   }

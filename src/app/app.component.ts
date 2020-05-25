@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     const a = TestCols.map(data => {
       return data.name;
     });
-
+    
     // Set members.
     this.tsTest = {
       arr: null,
