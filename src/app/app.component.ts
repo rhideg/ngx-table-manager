@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     const a = TestCols.map(data => {
       return data.name;
     });
-
+    
     // Set members.
     const search = {title: 'Name', name: 'name', show: true, sticky: false };
     this.tsTest = new TableSort(

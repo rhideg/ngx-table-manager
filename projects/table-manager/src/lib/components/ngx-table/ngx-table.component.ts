@@ -21,6 +21,8 @@ export class NgxTableComponent implements OnChanges {
   btnDoEvent = true;
   /* loading = true; */
 
+  arrColumnSearch = [];
+
   Arr = new Array(40);
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
@@ -31,6 +33,7 @@ export class NgxTableComponent implements OnChanges {
   @Input() isSelectable; // Single select when multi value is false, multi select if value true.
   @Input() rowColor; // Single select when multi value is false, multi select if value true.
   @Input() loading; // Single select when multi value is false, multi select if value true.
+  @Input() columnSearch?: boolean; // Click on column to perform a column search.
   @Output() output = new EventEmitter<any>(); // returns element
 
   @ViewChild('sortTest', { static: false }) sortTest: MatSort; // Material table sort
@@ -465,5 +468,35 @@ export class NgxTableComponent implements OnChanges {
 
       this.btnDoEvent = true;
     }, 100);
+  }
+
+
+  showColumnSearch(id) {
+    if (this.columnSearch) {
+      var inp = document.getElementById(`inp-${id}`);
+      if (inp.style.display === "none") {
+        inp.style.display = "block";
+      } else {
+        inp.style.display = "none";
+      }
+  
+      var col = document.getElementById(`col-${id}`);
+      if (col.style.display === "none") {
+        col.style.display = "block";
+      } else {
+        col.style.display = "none";
+      }  
+    }
+    
+  }
+
+  columnSearchInput(e, itemName) {
+    const value = e.srcElement.value;
+    const itemN = itemName;
+    
+  }
+
+  searchColumnInput() {
+    
   }
 }

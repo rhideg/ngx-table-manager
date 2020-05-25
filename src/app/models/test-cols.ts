@@ -36,6 +36,15 @@ export const colsTest = [
       search_value: '',
       style: '',
       format: 'string'
+    },
+    {
+      title: 'test',
+      name: 'test',
+      show: true,
+      sticky: false,
+      search_value: '',
+      style: '',
+      format: 'string'
     }
   ];
 
