@@ -43,11 +43,10 @@ export class TableManagerComponent implements OnChanges, OnInit {
    * @param changes Input change
    */
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
     console.log('%c CHANGE', 'background: white; color:red');
-    console.log(this.input);
     if (changes.input.currentValue) {
       this.loaded = true;
-      console.log(changes);
 
       /*if (this.searchValue) {
         console.log(this.searchValue);
@@ -139,6 +138,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
    */
   async search() {
     this.input.quickSearch(this.searchValue);
+    console.log(this.input);
     /*if (this.searchValue === undefined || this.searchValue === '') {
       this.input.count = 30;
       this.input.arr = this.input.arrCopy;
