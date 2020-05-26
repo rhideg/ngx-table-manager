@@ -21,7 +21,7 @@
           </section>
         </mat-menu>
       </span>
-      <input matInput (keyup.enter)="btnSearch_Click()" [(ngModel)]="searchValue" placeholder="TEST" >
+      <input matInput (keyup.enter)="btnSearch_Click()" [(ngModel)]="searchValue" [placeholder]="input.search.title" >
     </mat-form-field>
   
     <button *ngIf="startSearch" matTooltip="Search" mat-icon-button (click)="btnSearch_Click()">
