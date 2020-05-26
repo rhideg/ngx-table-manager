@@ -88,10 +88,9 @@ export class TableManagerComponent implements OnChanges, OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
-      console.log(result);
       let arrResult = [];
 
-      arrResult = JSON.parse(
+      /*arrResult = JSON.parse(
         JSON.stringify(
           this.advSearchService.searchCols(result, this.input.arrCopy)
         )
@@ -107,7 +106,10 @@ export class TableManagerComponent implements OnChanges, OnInit {
         this.input.count = 30;
 
         this.output.emit(this.input);
-      }
+      }*/
+
+      this.input.advancedSearch(result);
+      this.output.emit(this.input);
     });
   }
 
@@ -130,7 +132,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
    */
   async btnSearch_Click() {
     await this.search();
-    this.output.emit(this.input);
   }
 
   /**
@@ -138,34 +139,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
    */
   async search() {
     this.input.quickSearch(this.searchValue);
-    console.log(this.input);
-    /*if (this.searchValue === undefined || this.searchValue === '') {
-      this.input.count = 30;
-      this.input.arr = this.input.arrCopy;
-      this.input.empty = false;
-    } else {
-      let arrSearched = this.input.arrCopy;
-
-      arrSearched = this.input.arrCopy.filter(szall => {
-        if (
-          szall[`${this.input.search.name}`] &&
-          szall[`${this.input.search.name}`]
-            .toString()
-            .toLowerCase()
-            .includes(this.searchValue.toString().toLowerCase())
-        ) {
-          return szall;
-        }
-      });
-
-      this.input.arr = arrSearched;
-      if (this.input.arr.length === 0) {
-        this.input.empty = true;
-      } else {
-        this.input.count = 30;
-        this.input.empty = false;
-      }
-    }*/
+    this.output.emit(this.input);
   }
 
   /**

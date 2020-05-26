@@ -32,27 +32,11 @@ export class AppComponent implements OnInit {
   constructor(
     private tmService: TableManagerService
   ) {
-    // Get displayed columns from our json.
-    const a = TestCols.map(data => {
-      return data.name;
-    });
     
     // Set members.
     const search = {title: 'Name', name: 'name', show: true, sticky: false };
-    this.tsTest = new TableSort(
-      null,
-      null,
-      TestCols,
-      a,
-      null,
-      30,
-      false,
-      search
-    );
-
-    console.log(this.tsTest);
+    this.tsTest = new TableSort(null, null, TestCols, null, null, 30, false, search);
     
-
     this.extraCols = [
       {
         type: 'btnEdit',
@@ -94,9 +78,7 @@ export class AppComponent implements OnInit {
    * Get data from local DATA. (replace this with your request.)
    */
   loadData() {
-    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
     this.loading = false;
   }
 
@@ -105,8 +87,6 @@ export class AppComponent implements OnInit {
    * @param searchObj Search result.
    */
   onSearchTest(searchObj: TableSort) {
-    console.log(searchObj);
-    this.tsTest = new TableSort(searchObj);
   }
 
   /**
@@ -122,7 +102,6 @@ export class AppComponent implements OnInit {
    * @param selectObj Search result.
    */
   selectTest(selectObj: TableSort) {
-    this.tsTest = new TableSort(selectObj);
   }
 
   // Toggle selectable
@@ -144,17 +123,7 @@ export class AppComponent implements OnInit {
       type: 'i'
     });
 
-    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    //this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    //this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
-    //this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));
-
-    //this.tmService.setTs(this.tsTest);
-
-    /*this.tsTest = new TableSort(
-      this.tsTest
-    );*/
-    
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
   }
 
   /**
@@ -162,10 +131,6 @@ export class AppComponent implements OnInit {
    * @param event Returns the cols. data.
    */
   onDispColsSelect(event) {
-    const a = event.map(data => {
-      return data.name;
-    });
-    this.tsTest.arrDispCols = a;
-    this.tsTest = new TableSort(this.tsTest);
+    this.tsTest.arrCols = event;
   }
 }

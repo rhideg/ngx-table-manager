@@ -48,7 +48,9 @@ export class NgxTmSelectComponent implements OnChanges {
    * @param event selectionChange event.
    */
   selectOption(event) {
-    this.arrSelected = event.value;
+
+    this.input.tmSelect(event.value, this.column);
+    /*this.arrSelected = event.value;
     console.log(this.arrSelected);
 
     if (this.arrSelected.length === 0) {
@@ -57,7 +59,7 @@ export class NgxTmSelectComponent implements OnChanges {
       this.input.arr = this.input.arrCopy.filter(data =>
         this.arrSelected.includes(data[`${this.column}`])
       );
-    }
+    }*/
 
     this.output.emit(this.input);
   }

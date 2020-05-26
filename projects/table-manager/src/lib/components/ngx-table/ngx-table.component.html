@@ -37,8 +37,9 @@
 
                     <!-- Column search input -->
                     <mat-form-field [id]="'inp-' + item.name" style="display: none; width: 100px;">
-                        <input matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
-                            (keydown.enter)="searchColumnInput()" (keydown.escape)="showColumnSearch(item.name)">
+                        <input  matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
+                            (keydown.enter)="searchColumnInput()" (keydown.escape)="showColumnSearch(item.name)"
+                            [(ngModel)]="objColumnSearch[item.name]">
                         <mat-icon matSuffix style="cursor: pointer; font-size: small;"
                             (click)="showColumnSearch(item.name)">clear</mat-icon>
                     </mat-form-field>

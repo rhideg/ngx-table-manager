@@ -21,7 +21,7 @@ export class NgxTableComponent implements OnChanges {
   btnDoEvent = true;
   /* loading = true; */
 
-  arrColumnSearch = [];
+  objColumnSearch: any = {};
 
   Arr = new Array(40);
 
@@ -478,6 +478,8 @@ export class NgxTableComponent implements OnChanges {
         inp.style.display = "block";
       } else {
         inp.style.display = "none";
+        delete this.objColumnSearch[id];
+        this.searchColumnInput();
       }
   
       var col = document.getElementById(`col-${id}`);
@@ -487,16 +489,15 @@ export class NgxTableComponent implements OnChanges {
         col.style.display = "none";
       }  
     }
-    
   }
 
   columnSearchInput(e, itemName) {
     const value = e.srcElement.value;
     const itemN = itemName;
-    
   }
 
   searchColumnInput() {
-    
+    console.log(this.objColumnSearch);
+    this.input.columnSearch(this.objColumnSearch);
   }
 }
