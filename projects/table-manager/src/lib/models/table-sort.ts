@@ -42,7 +42,7 @@ export class TableSort {
 
     this.search = search ? search : null;
     this.count = count ? count : 30;
-    this.empty = empty ? empty : null;
+    this.empty = empty ? empty : (this.arr ? (this.arr.length > 0 ? false : true) : null);
     this.arr = arr ? arr : null;
     this.arrCopy = arrCopy ? arrCopy : null;
     this.arrCols = arrCols ? arrCols : null;
@@ -351,6 +351,7 @@ export class TableSort {
           break;
         case 'qs':
           this.arr = this._qs(this._as(this._cs(this._ts(this.arrCopy))));
+
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
           this.ds.sort = this.sort;
           break;
@@ -366,6 +367,8 @@ export class TableSort {
           this.ds.sort = this.sort;
           break;
       }
+
+      this.empty = this.arr.length > 0 ? false : true;
 
     }
 
