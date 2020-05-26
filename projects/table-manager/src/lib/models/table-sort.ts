@@ -157,12 +157,12 @@ export class TableSort {
 
       afQs = arrSearched;
 
-      if (this.arr.length === 0) {
+      /*if (this.arr.length === 0) {
         this.empty = true;
       } else {
         this.count = 30;
         this.empty = false;
-      }
+      }*/
 
       return afQs;
     }
