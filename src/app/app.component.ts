@@ -14,8 +14,6 @@ export class AppComponent implements OnInit {
   // ngx-table, ngx-table-manager
   tsTest: TableSort;
 
-
-
   // ngx-tm-select
   arrSelectTest = [
     { key: 1, value: 'test1' },

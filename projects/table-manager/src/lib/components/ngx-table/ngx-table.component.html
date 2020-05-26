@@ -9,7 +9,7 @@
 
 
 
-    <table *ngIf="!loading" mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort
+    <table *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort" matSort
         [dataSource]="input.ds">
 
         <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
@@ -37,7 +37,7 @@
 
                     <!-- Column search input -->
                     <mat-form-field [id]="'inp-' + item.name" style="display: none; width: 100px;">
-                        <input  matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
+                        <input autofocus  matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
                             (keydown.enter)="searchColumnInput()" (keydown.escape)="showColumnSearch(item.name)"
                             [(ngModel)]="objColumnSearch[item.name]">
                         <mat-icon matSuffix style="cursor: pointer; font-size: small;"

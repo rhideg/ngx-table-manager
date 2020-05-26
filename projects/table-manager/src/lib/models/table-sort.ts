@@ -1,6 +1,7 @@
 import { AdvancedSearchService } from '../services/advanced-search.service';
 import { DataSource } from '@angular/cdk/table';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 export class TableSort {
   search: any;
@@ -17,17 +18,18 @@ export class TableSort {
   private _asArr?: Array<any>;
   private _objColSearch?: any;
 
+  private sort: MatSort;
+
 
   /**
-   * 
-   * @param arr 
-   * @param arrCopy
-   * @param arrCols 
-   * @param arrDispCols 
-   * @param ds 
-   * @param count 
-   * @param empty 
-   * @param search 
+   * @param arr Filtered data.
+   * @param arrCopy Original data.
+   * @param arrCols Column data.
+   * @param arrDispCols Column list.
+   * @param ds DataSource.
+   * @param count Rows to show.
+   * @param empty Has data.
+   * @param search Quick search.
    */
   constructor(arr?: any[],
     arrCopy?: any[],
@@ -51,7 +53,6 @@ export class TableSort {
 
   }
 
-
   /**
    * Filters based on the selected values for one column from a dropdown list.
    * @param arrSelected Selected conditions.
@@ -72,7 +73,6 @@ export class TableSort {
 
   }
 
-
   /**
    * Column header input search.
    * @param colSearch Search object. 
@@ -90,7 +90,6 @@ export class TableSort {
     this._asArr = searchArr ?? this._asArr;
     this._completeSearch('as');
   }
-
 
   /**
    * Refresh data and/or filters.
@@ -117,17 +116,27 @@ export class TableSort {
     this._qsValue = null;
   }
 
-
   /**
    * Set data source manually
    * @param c Count.
    */
-  setDataSource(c?: number) {
-    this.ds = new MatTableDataSource(this.arr.slice(0, c));
+  setDataSource(s?: MatSort, c?: number) {
+    this.count = c ? c : this.count;
+    this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+    this.sort = s ? s : this.sort;
+    this.ds.sort = this.sort;
   }
 
-
-
+  /**
+   * Set sort for the MatTableDataSource.
+   * @param s Material Sort.
+   */
+  setSort(s?: MatSort) {
+    this.sort = s ? s : this.sort;
+    if (this.ds) {
+      this.ds.sort = this.sort;
+    }
+  }
 
 
   // PRIVATE METHODS ********************************************************************
@@ -240,7 +249,6 @@ export class TableSort {
 
     // Array filtered tm select
     let afTs = [];
-    console.log(this._tmSelected);
 
     if (!this._tmSelected.arrSelected || this._tmSelected.arrSelected?.length === 0) {
       return atf;
@@ -327,29 +335,35 @@ export class TableSort {
     ) {
       this.arr = this.arrCopy;
       this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+      this.ds.sort = this.sort;
     } else {
 
       switch (fn) {
         case 'as':
           this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+          this.ds.sort = this.sort;
           break;
         case 'cs':
           this.arr = this._cs(this._as(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+          this.ds.sort = this.sort;
           break;
         case 'qs':
           this.arr = this._qs(this._as(this._cs(this._ts(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+          this.ds.sort = this.sort;
           break;
         case 'ts':
           this.arr = this._ts(this._as(this._cs(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+          this.ds.sort = this.sort;
           break;
 
         default:
           this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
+          this.ds.sort = this.sort;
           break;
       }
 

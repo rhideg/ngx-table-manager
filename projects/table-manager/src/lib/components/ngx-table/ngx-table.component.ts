@@ -36,10 +36,11 @@ export class NgxTableComponent implements OnChanges {
   @Input() columnSearch?: boolean; // Click on column to perform a column search.
   @Output() output = new EventEmitter<any>(); // returns element
 
-  @ViewChild('sortTest', { static: false }) sortTest: MatSort; // Material table sort
+  @ViewChild('sort', { static: false }) sort: MatSort; // Material table sort
   constructor(
     public dialog: MatDialog,
   ) {
+    
   }
 
   /**
@@ -47,6 +48,9 @@ export class NgxTableComponent implements OnChanges {
    * @param changes Change.
    */
   ngOnChanges(changes): void {
+    this.input.setSort(this.sort);
+    console.log(`%c NGX TABLE CHANGE`, 'background: blue; color:red');
+
     if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
       if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
         this.input.arrDispCols.unshift(this.isSelectable.type);
@@ -63,7 +67,8 @@ export class NgxTableComponent implements OnChanges {
 
         this.selectAll = false;
         this.arrSelected = [];
-        this.input.ds.data = this.input.arr;
+        this.input.setDataSource(this.sort);
+        // this.input.ds = this.input.arr;
       }
     } else if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
       document.getElementById('mainDiv').style.overflow = 'auto';
@@ -116,8 +121,10 @@ export class NgxTableComponent implements OnChanges {
             this.selectAll = false;
           }
 
-          this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-          this.input.ds.sort = this.sortTest;
+          
+          this.input.setDataSource(this.sort);
+          //this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+          //this.input.ds.sort = this.sort;
 
           if (this.isSelectable) {
             const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
@@ -268,8 +275,10 @@ export class NgxTableComponent implements OnChanges {
 
     if (scrollLocation > limit) {
       this.input.count += 20;
-      this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-      this.input.ds.sort = this.sortTest;
+      // this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+      // this.input.ds.sort = this.sort;
+      
+      this.input.setDataSource(this.sort);
     }
   }
 
@@ -392,8 +401,11 @@ export class NgxTableComponent implements OnChanges {
     });
     this.input.arr.filter(element => !element.select).map(item => item.select = false);
 
-    this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-    this.input.ds.sort = this.sortTest;
+    // this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+    // this.input.ds.sort = this.sort;
+    
+    this.input.setDataSource(this.sort);
+
 
     this.output.emit({
       type: 'selectAll',
@@ -458,8 +470,10 @@ export class NgxTableComponent implements OnChanges {
         }
       }
 
-      this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-      this.input.ds.sort = this.sortTest;
+      // this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
+      // this.input.ds.sort = this.sort;
+      
+      this.input.setDataSource();
 
       this.output.emit({
         type: 'select',
