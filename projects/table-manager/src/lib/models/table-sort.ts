@@ -347,7 +347,6 @@ export class TableSort {
 
   private _completeSearch(fn?: string) {
 
-    console.log('CS');
     // IF ALL SEARCH CONDITIONS ARE NULL OR UNDEFINED
     if (
       !this._tmSelected &&

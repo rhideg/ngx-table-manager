@@ -43,8 +43,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
    * @param changes Input change
    */
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    console.log('%c CHANGE', 'background: white; color:red');
     if (changes.input.currentValue) {
       this.loaded = true;
 
@@ -57,7 +55,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    console.log(this.input);
   }
 
   /**
@@ -123,7 +120,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
       event.option._setSelected(true);
 
       this.input.search = event.option.value;
-      console.log(this.input);
     }
   }
 

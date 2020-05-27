@@ -49,7 +49,6 @@ export class NgxTableComponent implements OnChanges {
    */
   ngOnChanges(changes): void {
     this.input.setSort(this.sort);
-    console.log(`%c NGX TABLE CHANGE`, 'background: blue; color:red');
 
     if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
       if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
@@ -511,7 +510,6 @@ export class NgxTableComponent implements OnChanges {
   }
 
   searchColumnInput() {
-    console.log(this.objColumnSearch);
     this.input.columnSearch(this.objColumnSearch);
   }
 }

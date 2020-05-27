@@ -15,9 +15,6 @@ export class AdvancedSearchService {
    */
   searchCols(arrFilters, arrToFilter) {
 
-    console.log(arrFilters);
-    console.log(arrToFilter);
-
     const arrColsNotNull = arrFilters.filter(col => {
       if (!(col.search_value === undefined || col.search_value === '' )) {
         return col;
