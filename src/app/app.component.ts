@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     
     // Set members.
     const search = {title: 'Name', name: 'name', show: true, sticky: false };
-    this.tsTest = new TableSort(null, null, TestCols, null, null, 30, false, search);
+    this.tsTest = new TableSort(null, null, TestCols, null, null, null, false, search);
     
     this.extraCols = [
       {

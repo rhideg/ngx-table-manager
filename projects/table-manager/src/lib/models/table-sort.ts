@@ -13,7 +13,8 @@ export class TableSort {
   ds?: any;
   arrDispCols?: string[];
 
-  private _tmSelected?: { arrSelected?: Array<string>, column?: string };
+  // private _tmSelected?: { arrSelected?: Array<string>, column?: string };
+  private _tmSelected?: any;
   private _qsValue?: string;
   private _asArr?: Array<any>;
   private _objColSearch?: any;
@@ -58,8 +59,9 @@ export class TableSort {
    * @param arrSelected Selected conditions.
    */
   tmSelect(arrSelected: Array<string>, column: string) {
-    this._tmSelected.arrSelected = arrSelected ?? this._tmSelected?.arrSelected;
-    this._tmSelected.column = column ?? this._tmSelected?.column;
+    // this._tmSelected.arrSelected = arrSelected ?? this._tmSelected?.arrSelected;
+    // this._tmSelected.column = column ?? this._tmSelected?.column;
+    this._tmSelected[column] = arrSelected;
     this._completeSearch('ts');
   }
 
@@ -248,8 +250,28 @@ export class TableSort {
   private _ts(atf: Array<any>) {
 
     // Array filtered tm select
-    let afTs = [];
+    let afTs = atf;
 
+
+    for (const key in this._tmSelected) {
+      if (this._tmSelected.hasOwnProperty(key)) {
+        const e = this._tmSelected[key];
+        
+        if (!this._tmSelected || this._tmSelected[key]?.length === 0) {
+          continue;
+        } else {
+          afTs = afTs.filter(data =>
+            this._tmSelected[key].includes(data[key])
+          );
+          
+        }
+
+      }
+    }
+
+    return afTs;
+
+    /*
     if (!this._tmSelected.arrSelected || this._tmSelected.arrSelected?.length === 0) {
       return atf;
     } else {
@@ -257,7 +279,7 @@ export class TableSort {
         this._tmSelected.arrSelected.includes(data[`${this._tmSelected.column}`])
       );
       return afTs;
-    }
+    }*/
   }
 
 
