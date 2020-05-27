@@ -19,6 +19,15 @@
                 >
             </ngx-tm-select> 
 
+            <ngx-tm-select
+                style="margin: 10px;"
+                [input]="tsTest"
+                [column]="'name'"
+                [name]="'Name'"
+                (output)="selectTest($event)"
+                >
+            </ngx-tm-select> 
+
             <!-- TOGGLE SELECT -->
             <button mat-button (click)="btnToggle()">Toogle Select</button>
 
@@ -47,7 +56,8 @@
 
 
     <div fxFlex style="height:100%; overflow: auto;">
-        <!-- TM TABLE -->
+         <!-- TM TABLE
+         -->
         <ngx-table
             fxFlex style="height: 100%;"
             [input]="tsTest" 
@@ -58,6 +68,7 @@
             [loading]="loading"
             [rowColor]="true"
             (output)="onEvent($event)"
+            [columnSearch]="true"
         >
         </ngx-table>
     </div>

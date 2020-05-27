@@ -43,16 +43,18 @@ export class TableManagerComponent implements OnChanges, OnInit {
    * @param changes Input change
    */
   ngOnChanges(changes: SimpleChanges) {
-    console.log('%c CHANGE', 'background: white; color:red');
     if (changes.input.currentValue) {
       this.loaded = true;
-      console.log('ngOnChanges');
-      // this.search();
+
+      /*if (this.searchValue) {
+        console.log(this.searchValue);
+        this.search();
+      }*/
+      
     }
   }
 
   ngOnInit() {
-    
   }
 
   /**
@@ -85,7 +87,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
     dialogRef.afterClosed().subscribe(async result => {
       let arrResult = [];
 
-      arrResult = JSON.parse(
+      /*arrResult = JSON.parse(
         JSON.stringify(
           this.advSearchService.searchCols(result, this.input.arrCopy)
         )
@@ -101,7 +103,10 @@ export class TableManagerComponent implements OnChanges, OnInit {
         this.input.count = 30;
 
         this.output.emit(this.input);
-      }
+      }*/
+
+      this.input.advancedSearch(result);
+      this.output.emit(this.input);
     });
   }
 
@@ -123,40 +128,14 @@ export class TableManagerComponent implements OnChanges, OnInit {
    */
   async btnSearch_Click() {
     await this.search();
-    this.output.emit(this.input);
   }
 
   /**
    * Execute quick search.
    */
   async search() {
-    if (this.searchValue === undefined || this.searchValue === '') {
-      this.input.count = 30;
-      this.input.arr = this.input.arrCopy;
-      this.input.empty = false;
-    } else {
-      let arrSearched = this.input.arrCopy;
-
-      arrSearched = this.input.arrCopy.filter(szall => {
-        if (
-          szall[`${this.input.search.name}`] &&
-          szall[`${this.input.search.name}`]
-            .toString()
-            .toLowerCase()
-            .includes(this.searchValue.toString().toLowerCase())
-        ) {
-          return szall;
-        }
-      });
-
-      this.input.arr = arrSearched;
-      if (this.input.arr.length === 0) {
-        this.input.empty = true;
-      } else {
-        this.input.count = 30;
-        this.input.empty = false;
-      }
-    }
+    this.input.quickSearch(this.searchValue);
+    this.output.emit(this.input);
   }
 
   /**

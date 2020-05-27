@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
+import { TableManagerService } from 'projects/table-manager/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,6 @@ export class AppComponent implements OnInit {
 
   // ngx-table, ngx-table-manager
   tsTest: TableSort;
-
-
 
   // ngx-tm-select
   arrSelectTest = [
@@ -29,24 +28,13 @@ export class AppComponent implements OnInit {
   loading = true;
 
   constructor(
+    private tmService: TableManagerService
   ) {
-    // Get displayed columns from our json.
-    const a = TestCols.map(data => {
-      return data.name;
-    });
-
+    
     // Set members.
-    this.tsTest = {
-      arr: null,
-      arrCopy: null,
-      arrCols: TestCols,
-      arrDispCols: a,
-      ds: null,
-      count: 30,
-      empty: false,
-      search: { title: 'Name', name: 'name', show: true, sticky: false }
-    };
-
+    const search = {title: 'Name', name: 'name', show: true, sticky: false };
+    this.tsTest = new TableSort(null, null, TestCols, null, null, null, false, search);
+    
     this.extraCols = [
       {
         type: 'btnEdit',
@@ -88,9 +76,7 @@ export class AppComponent implements OnInit {
    * Get data from local DATA. (replace this with your request.)
    */
   loadData() {
-    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
     this.loading = false;
   }
 
@@ -99,7 +85,6 @@ export class AppComponent implements OnInit {
    * @param searchObj Search result.
    */
   onSearchTest(searchObj: TableSort) {
-    this.tsTest = new TableSort(searchObj);
   }
 
   /**
@@ -115,8 +100,6 @@ export class AppComponent implements OnInit {
    * @param selectObj Search result.
    */
   selectTest(selectObj: TableSort) {
-    console.log(selectObj);
-    this.tsTest = new TableSort(selectObj);
   }
 
   // Toggle selectable
@@ -138,15 +121,7 @@ export class AppComponent implements OnInit {
       type: 'i'
     });
 
-    // this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    // this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.search = JSON.parse(JSON.stringify(this.tsTest.search));
-
-    this.tsTest = new TableSort(
-      this.tsTest
-    );
-    
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
   }
 
   /**
@@ -154,10 +129,6 @@ export class AppComponent implements OnInit {
    * @param event Returns the cols. data.
    */
   onDispColsSelect(event) {
-    const a = event.map(data => {
-      return data.name;
-    });
-    this.tsTest.arrDispCols = a;
-    this.tsTest = new TableSort(this.tsTest);
+    this.tsTest.arrCols = event;
   }
 }

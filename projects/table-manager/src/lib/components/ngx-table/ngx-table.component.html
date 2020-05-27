@@ -7,7 +7,9 @@
         </div>
     </div>
 
-    <table *ngIf="!loading" mat-table style="width: 100%;" #sortTest="matSort" matSort="sortTest" matSort
+
+
+    <table *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort" matSort
         [dataSource]="input.ds">
 
         <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
@@ -23,9 +25,32 @@
         </ng-container>
 
         <ng-container [matColumnDef]="item.name" [sticky]="item.sticky" *ngFor="let item of input.arrCols">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!item.show" [ngStyle]="item.style">
-                {{item.title}}
+            <!-- HEADERS -->
+            <th mat-header-cell *matHeaderCellDef [hidden]="!item.show" [ngStyle]="item.style">
+                <!-- Column search -->
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    
+                    <!-- Column header label -->
+                    <span [id]="'col-' + item.name" (click)="showColumnSearch(item.name)" style="display: block;">
+                        {{item.title}}
+                    </span>
+
+                    <!-- Column search input -->
+                    <mat-form-field [id]="'inp-' + item.name" style="display: none; width: 100px;">
+                        <input autofocus  matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
+                            (keydown.enter)="searchColumnInput()" (keydown.escape)="showColumnSearch(item.name)"
+                            [(ngModel)]="objColumnSearch[item.name]">
+                        <mat-icon matSuffix style="cursor: pointer; font-size: small;"
+                            (click)="showColumnSearch(item.name)">clear</mat-icon>
+                    </mat-form-field>
+
+                    <!-- Column header sort -->
+                    <div style="width: 30px;" mat-sort-header></div>
+                </div>
+
             </th>
+
+            <!-- COLUMNS -->
             <td mat-cell *matCellDef="let element" (click)="isRowSelect ? rowSelected(element) : ''"
                 [hidden]="!item.show" [ngStyle]="item.style">
                 <span *ngIf="item.format === 'date'">
@@ -53,6 +78,7 @@
                 <a [href]="'//' + element[item.name]" *ngIf="item.format === 'abstUrl'">
                     {{element[item.name]}}
                 </a>
+
                 <div *ngIf="item.format === 'arrAbstUrl'">
                     <div *ngFor="let urlItem of element[item.name]">
                         <a [href]="'//' + urlItem">
@@ -60,9 +86,11 @@
                         </a>
                     </div>
                 </div>
+
                 <a href={{element[item.name]}} *ngIf="item.format === 'url'">
                     {{element[item.name]}}
                 </a>
+
                 <div *ngIf="item.format === 'arrUrl'">
                     <div *ngFor="let urlItem of element[item.name]">
                         <a href={{urlItem}}>
@@ -70,6 +98,7 @@
                         </a>
                     </div>
                 </div>
+
                 <span *ngIf="item.format === 'boolean'">
                     <span *ngIf="element[item.name]" style="color: #81c784;">
                         <mat-icon>done</mat-icon>
@@ -78,6 +107,8 @@
                         <mat-icon>close</mat-icon>
                     </span>
                 </span>
+
+
             </td>
         </ng-container>
 
@@ -89,12 +120,17 @@
                     <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
                 </button>
             </td>
-        </ng-container>
-        ​
+        </ng-container>        
+        
+        
+    
+        ​<!-- ROWS -->
         <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" [ngClass]="{'row-color': rowColor}"></tr>
 
     </table>
+
+
 
     <div *ngIf='input.empty' class="no-data-label">
         No data.

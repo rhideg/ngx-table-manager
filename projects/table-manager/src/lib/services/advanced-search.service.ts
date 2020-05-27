@@ -26,7 +26,7 @@ export class AdvancedSearchService {
     if (!emptySearch) {
       const arrFiltered = arrToFilter.filter(szall => {
         let includes = true;
-        let eredmeny;
+        let result;
         arrColsNotNull.forEach(col => {
           const operator = col.search_value ? col.search_value.toString().toLocaleLowerCase().charAt(0) : null;
           switch (operator) {
@@ -95,10 +95,10 @@ export class AdvancedSearchService {
         if (includes) {
           arrColsNotNull.forEach(element => {
             if (!(szall[`${element.name}`] === undefined || szall[`${element.name}`] === '')) {
-              eredmeny = szall;
+              result = szall;
             }
           });
-          return eredmeny;
+          return result;
         }
 
       });
