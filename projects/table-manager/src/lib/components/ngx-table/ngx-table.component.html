@@ -14,12 +14,12 @@
 
         <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [(ngModel)]="selectAll">
+                <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [checked]="checkAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let element">
                 <mat-checkbox *ngIf="checkFilter(element, isSelectable)" (change)="chboxItem_Selected(element)"
-                    [(ngModel)]="element.select">
+                     [(ngModel)]="element.select">
                 </mat-checkbox>
             </td>
         </ng-container>

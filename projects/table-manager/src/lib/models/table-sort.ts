@@ -101,8 +101,11 @@ export class TableSort {
    * @param filter Apply filters.
    */
   refresh(newData?: Array<any>, filter = true) {
+    console.log(this.arrSelected);
+
     if (newData) {
       this.arrCopy = newData;
+      this.arrSelected = [];
     }
 
     if (filter) {
@@ -146,20 +149,36 @@ export class TableSort {
     this.arrSelected = [];
   }
 
-  addSelected(item: any) {
-    const i = this.arrSelected.indexOf(item);
-    console.log(i);
-    console.log(this.arrSelected);
-    console.log(item);
+  addSelected(item: any, multi: boolean) {
 
-    if (i < 0 && this.arrSelected.length === 0) {
-      this.arrSelected.push(item);
-    } else {
-      if ( this.arrSelected.length > 0 && i < 0) {
+
+    const i = this.arrSelected.indexOf(item);
+
+    if(multi) {
+      if (i < 0 && this.arrSelected.length === 0) {
         this.arrSelected.push(item);
       } else {
-        
-        this.arrSelected.splice(i,1);
+        if ( this.arrSelected.length > 0 && i < 0) {
+          this.arrSelected.push(item);
+        } else {
+          
+          this.arrSelected.splice(i,1);
+        }
+      }
+    } else {
+      if (this.arrSelected.length === 0) {
+        this.arrSelected.push(item);
+      } else {
+        if (i < 0) {
+          for (let j = 0; j < this.arr.length; j++) {
+            const e = this.arr[j];
+            if (e != this.arrSelected[i]) {
+              e.select = false;
+            }
+          }
+        } else {
+          this.arrSelected.pop();
+        }
       }
     }
 
