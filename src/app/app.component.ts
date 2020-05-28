@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.loadData();
-    }, 2000);
+    }, 3000);
   }
 
   /**
@@ -129,6 +129,7 @@ export class AppComponent implements OnInit {
    * @param event Returns the cols. data.
    */
   onDispColsSelect(event) {
+    console.log(event);
     this.tsTest.arrCols = event;
   }
 }

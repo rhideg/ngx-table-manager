@@ -1,10 +1,6 @@
-import {
-  Component, ContentChild, EventEmitter, Input,
-  OnChanges, Output, TemplateRef, ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
 import { TableSort } from '../../models/table-sort';
 
@@ -13,7 +9,7 @@ import { TableSort } from '../../models/table-sort';
   templateUrl: './ngx-table.component.html',
   styleUrls: ['./ngx-table.component.scss']
 })
-export class NgxTableComponent implements OnChanges {
+export class NgxTableComponent implements OnChanges, AfterViewInit {
 
   arrSelected = [];
   arrCopy = [];
@@ -25,6 +21,8 @@ export class NgxTableComponent implements OnChanges {
 
   Arr = new Array(40);
 
+  linkItem;
+
   @ContentChild(TemplateRef) template: TemplateRef<any>;
   @Input() input: TableSort; // Contains the metadata
   @Input() extraCols; // Contains extra columns(buttons)
@@ -34,13 +32,25 @@ export class NgxTableComponent implements OnChanges {
   @Input() rowColor; // Single select when multi value is false, multi select if value true.
   @Input() loading; // Single select when multi value is false, multi select if value true.
   @Input() columnSearch?: boolean; // Click on column to perform a column search.
+  @Input() resizable?: boolean; // Resizable columns.
   @Output() output = new EventEmitter<any>(); // returns element
 
   @ViewChild('sort', { static: false }) sort: MatSort; // Material table sort
   constructor(
     public dialog: MatDialog,
   ) {
+    console.log(this.input);
+  }
 
+  ngOnInit(): void {
+    console.log(this.input);
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+
+    
   }
 
   /**
@@ -50,6 +60,7 @@ export class NgxTableComponent implements OnChanges {
   ngOnChanges(changes): void {
     console.log('%cCHANGE', 'color: yellow');
     this.input.setSort(this.sort);
+
 
     if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
       if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
@@ -204,6 +215,11 @@ export class NgxTableComponent implements OnChanges {
     }
   }
 
+  getDispCols() {
+
+    return this.input.arrDispCols;
+  }
+
   /**
    * Compare two object arrays. Returned true if so, else false.
    * @param a First array.
@@ -283,12 +299,16 @@ export class NgxTableComponent implements OnChanges {
   }
 
   rowSelected(element) {
+    console.log(element);
     setTimeout(() => {
       if (this.btnDoEvent) {
         this.output.emit({
           type: 'rowSelected',
-          data: element
+          data: element,
+          link: this.linkItem
         });
+
+        this.linkItem = null;
       }
     }, 10);
   }
@@ -498,7 +518,7 @@ export class NgxTableComponent implements OnChanges {
       // this.input.ds.sort = this.sort;
 
 
-      // this.input.setDataSource();
+       this.input.setDataSource();
 
       this.output.emit({
         type: 'select',
@@ -509,6 +529,11 @@ export class NgxTableComponent implements OnChanges {
 
       this.btnDoEvent = true;
     }, 100);
+  }
+
+
+  link_Click(item) {
+    this.linkItem = item;
   }
 
 

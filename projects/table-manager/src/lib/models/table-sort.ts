@@ -19,7 +19,7 @@ export class TableSort {
   private _asArr?: Array<any>;
   private _objColSearch?: any;
 
-  private _sort: MatSort;
+  _sort: MatSort;
   arrSelected: Array<any>;
 
 
@@ -131,7 +131,7 @@ export class TableSort {
     this.count = c ? c : this.count;
     this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
     this._sort = s ? s : this._sort;
-    this.ds._sort = this._sort;
+    this.ds.sort = this._sort;
   }
 
   /**
@@ -141,8 +141,13 @@ export class TableSort {
   setSort(s?: MatSort) {
     this._sort = s ? s : this._sort;
     if (this.ds) {
-      this.ds._sort = this._sort;
+      this.ds.sort = this._sort;
     }
+  }
+
+  setCols(arrCols: Array<any>) {
+    this.arrCols = arrCols;
+    this.arrDispCols = arrCols.map(data => { return data.name });
   }
 
   clearSelected() {
@@ -405,36 +410,36 @@ export class TableSort {
     ) {
       this.arr = this.arrCopy;
       this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-      this.ds._sort = this._sort;
+      this.ds.sort = this._sort;
     } else {
 
       switch (fn) {
         case 'as':
           this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-          this.ds._sort = this._sort;
+          this.ds.sort = this._sort;
           break;
         case 'cs':
           this.arr = this._cs(this._as(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-          this.ds._sort = this._sort;
+          this.ds.sort = this._sort;
           break;
         case 'qs':
           this.arr = this._qs(this._as(this._cs(this._ts(this.arrCopy))));
 
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-          this.ds._sort = this._sort;
+          this.ds.sort = this._sort;
           break;
         case 'ts':
           this.arr = this._ts(this._as(this._cs(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-          this.ds._sort = this._sort;
+          this.ds.sort = this._sort;
           break;
 
         default:
           this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
-          this.ds._sort = this._sort;
+          this.ds.sort = this._sort;
           break;
       }
 

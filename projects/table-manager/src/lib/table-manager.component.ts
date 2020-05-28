@@ -154,8 +154,9 @@ export class TableManagerComponent implements OnChanges, OnInit {
         columnStickyBool: this.columnSticky,
       }
     });
+
     dialogRef.afterClosed().subscribe(async result => {
-      this.input.arrCols = result;
+      this.input.setCols(result);
       this.dispColsSelect.emit(result);
     });
 

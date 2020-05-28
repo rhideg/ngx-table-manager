@@ -15,7 +15,10 @@
       "show": true,
       "sticky": false,
       "search_value": "",
-      "style": {},
+      "style": {
+        "color": "red",
+        "cursor": "pointer"
+      },
       "format": "string"
     },
     {
