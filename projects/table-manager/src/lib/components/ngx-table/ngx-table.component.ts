@@ -22,10 +22,13 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
   Arr = new Array(40);
 
   linkItem;
+  isSingleClick: Boolean = true;
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
   @Input() input: TableSort; // Contains the metadata
+  
   @Input() extraCols; // Contains extra columns(buttons)
+
   @Input() isRowSelect; // If true then row selected.
   @Input() numberFormat; // Number format.
   @Input() isSelectable; // Single select when multi value is false, multi select if value true.
@@ -298,19 +301,40 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
+  /**
+   * Select row (single click).
+   * @param element Selected row element.
+   */
   rowSelected(element) {
-    console.log(element);
+    this.isSingleClick = true;
     setTimeout(() => {
-      if (this.btnDoEvent) {
-        this.output.emit({
-          type: 'rowSelected',
-          data: element,
-          link: this.linkItem
-        });
-
-        this.linkItem = null;
+      if (this.isSingleClick) {
+        if (this.btnDoEvent) {
+          this.output.emit({
+            type: 'rowSelected',
+            data: element,
+            link: this.linkItem
+          });
+  
+          this.linkItem = null;
+        }
       }
-    }, 10);
+    }, 250);
+  }
+
+  /**
+   * Double click on row.
+   * @param element Row element
+   */
+  rowDoubleClick(element){
+    this.isSingleClick = false;
+    this.output.emit({
+      type: 'rowDoubleClick',
+      data: element,
+      link: this.linkItem
+    });
+
+    this.linkItem = null;
   }
 
   btnCustom(element, item) {
