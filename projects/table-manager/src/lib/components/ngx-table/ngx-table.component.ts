@@ -48,6 +48,7 @@ export class NgxTableComponent implements OnChanges {
    * @param changes Change.
    */
   ngOnChanges(changes): void {
+    console.log('%cCHANGE','color: yellow');
     this.input.setSort(this.sort);
 
     if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
@@ -423,14 +424,18 @@ export class NgxTableComponent implements OnChanges {
     setTimeout(() => {
       // single select !
       if (!this.isSelectable.multi) {
-        this.arrSelected = [];
+        
+        // this.arrSelected = [];
+        this.input.clearSelected();
+
         this.input.arr.forEach(elementSelect => {
           if (elementSelect !== item) {
             elementSelect.select = false;
           }
         });
         if (item.select) {
-          this.arrSelected.push(item);
+          this.input.addSelected(item);
+          // this.arrSelected.push(item);
         }
         // multi select !
       } else if (this.isSelectable.multi) {
@@ -440,9 +445,10 @@ export class NgxTableComponent implements OnChanges {
             this.selectAll = true;
           }
 
-          if (!this.arrSelected.includes(item)) {
+          this.input.addSelected(item);
+          /*if (!this.arrSelected.includes(item)) {
             this.arrSelected.push(item);
-          }
+          }*/
 
           const foundIndex2 = this.input.arr.findIndex(element => this.objectsAreEquivalent(item, element));
           if (foundIndex2 !== -1) {
@@ -451,6 +457,8 @@ export class NgxTableComponent implements OnChanges {
 
           item.select = true;
         } else {
+          this.input.addSelected(item);
+
           if (!arrTmp.every(item => item.select)) {
             this.selectAll = false;
           }
@@ -472,16 +480,20 @@ export class NgxTableComponent implements OnChanges {
       // this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
       // this.input.ds.sort = this.sort;
       
+
       this.input.setDataSource();
 
       this.output.emit({
         type: 'select',
-        data: this.arrSelected
+        // data: this.arrSelected
+        data: this.input.arrSelected
+
       });
 
       this.btnDoEvent = true;
     }, 100);
   }
+
 
 
   showColumnSearch(id) {
