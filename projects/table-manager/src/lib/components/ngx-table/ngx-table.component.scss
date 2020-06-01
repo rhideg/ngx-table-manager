@@ -58,7 +58,7 @@ $avatar-offset: 52 + 16;
     }
     40%,
     100% {
-      background-position: 300px;
+      background-position: 100%;
     }
   }
   @keyframes shine-avatar {
@@ -67,7 +67,7 @@ $avatar-offset: 52 + 16;
     }
     40%,
     100% {
-      background-position: 300px + $avatar-offset;
+      background-position: 100%;
     }
   }
 }

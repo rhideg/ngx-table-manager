@@ -4,12 +4,13 @@ import { MatSort } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
 import { TableSort } from '../../models/table-sort';
 
+
 @Component({
   selector: 'ngx-table',
   templateUrl: './ngx-table.component.html',
   styleUrls: ['./ngx-table.component.scss']
 })
-export class NgxTableComponent implements OnChanges, AfterViewInit {
+export class NgxTableComponent implements OnChanges {
 
   arrSelected = [];
   arrCopy = [];
@@ -25,13 +26,12 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
   isSingleClick: Boolean = true;
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
+
+
   @Input() input: TableSort; // Contains the metadata
-  
-  @Input() extraCols; // Contains extra columns(buttons)
 
   @Input() isRowSelect; // If true then row selected.
   @Input() numberFormat; // Number format.
-  @Input() isSelectable; // Single select when multi value is false, multi select if value true.
   @Input() rowColor; // Single select when multi value is false, multi select if value true.
   @Input() loading; // Single select when multi value is false, multi select if value true.
   @Input() columnSearch?: boolean; // Click on column to perform a column search.
@@ -49,13 +49,6 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
     console.log(this.input);
   }
 
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-
-    
-  }
-
   /**
    * Listen for changes and set input.
    * @param changes Change.
@@ -64,103 +57,8 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
     console.log('%cCHANGE', 'color: yellow');
     this.input.setSort(this.sort);
 
-
-    if (changes.hasOwnProperty('isSelectable') && Object.getOwnPropertyNames(changes).length === 1) {
-      if (!this.input.arrDispCols.includes(this.isSelectable.type)) {
-        this.input.arrDispCols.unshift(this.isSelectable.type);
-      } else {
-        this.input.arrDispCols.shift();
-        this.input.arrSelected.forEach(selectedItem => {
-          const tmpSelectedItem = JSON.parse(JSON.stringify(selectedItem));
-          delete tmpSelectedItem.select;
-          const itemIndex = this.input.arr.findIndex(a => (this.objectsAreEquivalent(a, tmpSelectedItem)));
-          if (itemIndex !== -1) {
-            this.input.arr[itemIndex].select = false;
-          }
-        });
-
-        this.selectAll = false;
-        this.input.arrSelected = [];
-        this.input.setDataSource(this.sort);
-        // this.input.ds = this.input.arr;
-      }
-    } else if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
+    if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
       document.getElementById('mainDiv').style.overflow = 'auto';
-    } else {
-      if (!this.objectArraysAreEquivalent(this.arrCopy, changes.input.currentValue.arrCopy)) {
-        this.input.arrSelected = [];
-      }
-
-      (async () => {
-        while (!this.input.ds) { // define the condition as you like
-          await new Promise(resolve => setTimeout(resolve, 0));
-        }
-
-        setTimeout(() => {
-          this.input = changes.input.currentValue;
-
-          if (this.isSelectable && !this.input.arrDispCols.includes(this.isSelectable.type)) {
-            this.input.arrDispCols.unshift(this.isSelectable.type);
-          }
-
-          if (this.extraCols) {
-            this.extraCols.forEach(element => {
-              if (!this.input.arrDispCols.includes(element.type)) {
-                this.input.arrDispCols.push(element.type);
-              }
-            });
-          }
-          this.arrCopy = this.input.arrCopy;
-
-          if (!this.isRowSelect) {
-            this.isRowSelect = false;
-          }
-
-
-          if (this.input.count >= 30) {
-            this.input.count = 30;
-          }
-
-          this.input.arrSelected.forEach(selectedItem => {
-            const tmpSelectedItem = JSON.parse(JSON.stringify(selectedItem));
-            delete tmpSelectedItem.select;
-            const itemIndex = this.input.arr.findIndex(a => (this.objectsAreEquivalent(a, tmpSelectedItem)));
-            if (itemIndex !== -1) {
-              this.input.arr[itemIndex].select = true;
-            }
-          });
-
-          if (this.input.arr === null) {
-            this.input.arr = [];
-            this.selectAll = false;
-          }
-
-
-          this.input.setDataSource(this.sort);
-          //this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-          //this.input.ds.sort = this.sort;
-
-          if (this.isSelectable) {
-            const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
-            if (arrTmp.every(item => item.select) && arrTmp.length !== 0) {
-              let withoutSelect = true;
-              for (var i = 0; i < arrTmp.length; i++) {
-                if (arrTmp[i].select) {
-                  withoutSelect = false;
-                  break;
-                }
-              }
-              if (withoutSelect) {
-                this.selectAll = false;
-              } else {
-                this.selectAll = true;
-              }
-            } else if (!arrTmp.every(item => item.select) || arrTmp.length === 0) {
-              this.selectAll = false;
-            }
-          }
-        }, 0);
-      })();
     }
   }
 
@@ -218,10 +116,6 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  getDispCols() {
-
-    return this.input.arrDispCols;
-  }
 
   /**
    * Compare two object arrays. Returned true if so, else false.
@@ -378,7 +272,7 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
   }
 
   checkAllSelected() {
-    const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
+    const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.input.getSelect));
     const a = arrTmp.every(i => i.select);
     return a;
   }
@@ -388,7 +282,7 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
    */
   async chboxAll_select() {
     this.btnDoEvent = false;
-    const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.isSelectable));
+    const arrTmp = this.input.arr.filter(item => this.checkFilter(item, this.input.getSelect));
     if (this.input.arr.length === this.input.arrCopy.length) {
       if (!arrTmp.every(item => item.select)) {
         this.input.arrSelected = [];
@@ -472,7 +366,7 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
   chboxItem_Selected(item) {
     this.btnDoEvent = false;
 
-    /*this.input.addSelected(item, this.isSelectable.multi)
+    /*this.input.addSelected(item, this.select.multi)
     this.output.emit({
       type: 'select',
       data: this.input.arrSelected
@@ -483,7 +377,7 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
 
     setTimeout(() => {
       // single select !
-      if (!this.isSelectable.multi) {
+      if (!this.input.getSelect.multi) {
 
         //this.input.arrSelected = [];
         this.input.arrSelected = [];
@@ -499,8 +393,8 @@ export class NgxTableComponent implements OnChanges, AfterViewInit {
           this.input.arrSelected.push(item);
         }
         // multi select !
-      } else if (this.isSelectable.multi) {
-        const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.isSelectable));
+      } else if (this.input.getSelect.multi) {
+        const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.input.getSelect));
         if (item.select) {
           if (arrTmp.every(item => item.select)) {
             this.selectAll = true;

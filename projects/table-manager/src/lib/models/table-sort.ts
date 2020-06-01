@@ -1,10 +1,9 @@
-import { AdvancedSearchService } from '../services/advanced-search.service';
-import { DataSource } from '@angular/cdk/table';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { Select, ExtraCols, Search } from './interfaces';
 
 export class TableSort {
-  search: any;
+  search: Search;
   count: number;
   empty: boolean;
   arr: any[];
@@ -19,9 +18,51 @@ export class TableSort {
   private _asArr?: Array<any>;
   private _objColSearch?: any;
 
-  _sort: MatSort;
+  private _sort: MatSort;
+
   arrSelected: Array<any>;
 
+  // FROM NGX TABLE:
+  private _select: Select;
+  private _extraCols: Array<ExtraCols>;
+  private _arrDispColsAll: Array<any>;
+  private _arrColsAll: Array<any>;
+
+  
+  // Select get, set
+  public get getSelect() : Select {
+    return this._select;
+  }
+  
+  public set setSelect(v : Select) {
+    this._select = v;
+
+  }
+
+  // ExtraCols get, set
+  public get getExtraCols() :  Array<ExtraCols> {
+    return this._extraCols;
+  }
+
+  public set setExtraCols(v :  Array<ExtraCols>) {
+    this._extraCols = v;
+  }
+
+  
+  public get getArrDispColsAll() : Array<any> {
+    return this._createAllDispCols();
+  }
+
+  
+  public get getArrColsAll() : Array<any> {
+    return this._createAllCols();
+  }
+  
+  
+  
+  
+  
+  
 
   /**
    * @param arr Filtered data.
@@ -193,6 +234,54 @@ export class TableSort {
   setArrSelected(arrSelected: Array<any>) {
     this.arrSelected = arrSelected;
   }
+
+
+  private _createAllDispCols(): Array<any> {
+    const adc = this.arrDispCols;
+    const s = this._select;
+    const ec = this._extraCols;
+
+    this._arrDispColsAll = [];
+
+    if (s) {
+      this._arrDispColsAll.push(s.type);
+    }
+
+    this._arrDispColsAll = this._arrDispColsAll.concat(adc);
+
+    if (ec) {
+      const ect = this._extraCols.map(data => {return data.type});
+      this._arrDispColsAll = this._arrDispColsAll.concat(ect);
+    }
+
+    return this._arrDispColsAll;
+  }
+
+  private _createAllCols(): Array<any> {
+
+    const ac = this.arrCols;
+    const s = this._select;
+    const ec = this._extraCols;
+
+    this._arrColsAll = [];
+
+    if (s) {
+      this._arrColsAll.push(s);
+    }
+
+    this._arrColsAll = this._arrColsAll.concat(ac);
+
+    if (ec) {
+      this._arrColsAll = this._arrColsAll.concat(ec);
+    }
+
+    this._arrColsAll = this._arrColsAll.concat()
+
+    return this._arrColsAll;
+  }
+
+
+
 
 
   // PRIVATE METHODS ********************************************************************

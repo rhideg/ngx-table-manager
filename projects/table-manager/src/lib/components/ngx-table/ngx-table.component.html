@@ -14,13 +14,13 @@
     <table  *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort"
         [dataSource]="input.ds">
 
-        <ng-container *ngIf="isSelectable" [matColumnDef]="isSelectable.type">
+        <ng-container *ngIf="input.getSelect" [matColumnDef]="input.getSelect.type">
             <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox *ngIf="isSelectable.multi" (change)="chboxAll_select()" [checked]="checkAllSelected()">
+                <mat-checkbox *ngIf="input.getSelect.multi" (change)="chboxAll_select()" [checked]="checkAllSelected()">
                 </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let element">
-                <mat-checkbox *ngIf="checkFilter(element, isSelectable)" (change)="chboxItem_Selected(element)"
+                <mat-checkbox *ngIf="checkFilter(element, input.getSelect)" (change)="chboxItem_Selected(element)"
                      [(ngModel)]="element.select">
                 </mat-checkbox>
             </td>
@@ -141,11 +141,12 @@
             </td>
         </ng-container>
 
-        <ng-container *ngFor="let item of extraCols" matColumnDef={{item.type}}>
+        <ng-container *ngFor="let item of input.getExtraCols" matColumnDef={{item.type}}>
             <th mat-header-cell *matHeaderCellDef> </th>
             <td style="padding-left: 24px;" mat-cell *matCellDef="let element">
                 <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="checkFilter(element, item)"
                     [ngStyle]="item.style">
+                    
                     <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
                 </button>
             </td>
@@ -154,8 +155,8 @@
         
     
         ​<!-- ROWS -->
-        <tr mat-header-row *matHeaderRowDef="input.arrDispCols; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: input.arrDispCols;" [ngClass]="{'row-color': rowColor}"
+        <tr mat-header-row *matHeaderRowDef="input.getArrDispColsAll; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: input.getArrDispColsAll;" [ngClass]="{'row-color': rowColor}"
         (dblclick)="rowDoubleClick(row)"></tr>
 
     </table>

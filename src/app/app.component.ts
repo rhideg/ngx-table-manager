@@ -1,8 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
 import { TableManagerService } from 'projects/table-manager/src/public-api';
+import { ExtraCols, Relations, Select } from 'projects/table-manager/src/lib/models/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -22,24 +23,56 @@ export class AppComponent implements OnInit {
 
   // ngx-table
   extraCols = [];
-  isSelectable;
+  select;
   isRowSelect;
   numberFormat;
   loading = true;
 
+  arrEc: Array<ExtraCols>;
+  s: Select;
+
   constructor(
     private tmService: TableManagerService
   ) {
-    
-    // Set members.
-    const search = {title: 'Name', name: 'name', show: true, sticky: false };
+
+    // SET MEMBERS:
+    const search = { title: 'Name', name: 'name', show: true, sticky: false };
     this.tsTest = new TableSort(null, null, TestCols, null, null, null, false, search);
-    
+
+    this.tsTest.setSelect = {
+      type: 'select',
+      multi: true,
+      filter: [
+        { col: 'type', value: ['a', 'b'], relation: Relations.eq }
+      ]
+    };
+
+    this.tsTest.setExtraCols = [
+      {
+        type: 'edit',
+        icon: 'edit',
+        filter: [
+          { col: 'name', value: ['test1', 'test2'], relation: Relations.eq }
+        ]
+      },
+      {
+        type: 'del',
+        icon: 'delete',
+        style: {
+          color: '#FF6859'
+        },
+        tooltip: 'Delete'
+      }
+    ];
+
+    // EXTRA COLS:
     this.extraCols = [
       {
         type: 'btnEdit',
         icon: 'edit',
-        filter: [{ col: 'name', value: ['test1', 'test3'], relation: '===' }],
+        filter: [
+          { col: 'name', value: ['test1', 'test3'], relation: '===' }
+        ],
         tooltip: 'Edit'
       },
       {
@@ -52,19 +85,18 @@ export class AppComponent implements OnInit {
       },
     ];
 
+
+    // IS SELECTABLE:
+    // THE FILTERS ARE TIED WITH AN 'AND' RELATION, SO ALL
+    // OF THE FILTERS HAVE TO APPLY TO THE TABLE'S DATA 
+    // --- TODO: ADD RELATION 'AND', 'OR' -> DEFAULT: 'AND' --- 
+
     this.numberFormat = '1.0-2';
-
     this.isRowSelect = true;
-
-    this.isSelectable = {
-      type: 'select',
-      multi: true,
-      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
-    };
   }
 
   /**
-   * Call load data on init.
+   * Call load data on init. Simulate API request.
    */
   ngOnInit() {
     setTimeout(() => {
@@ -104,11 +136,16 @@ export class AppComponent implements OnInit {
 
   // Toggle selectable
   btnToggle() {
-    this.isSelectable = {
-      type: 'select',
-      multi: true,
-      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
-    };
+
+    if (this.tsTest.getSelect) {
+      this.tsTest.setSelect = null;
+    } else {
+      this.tsTest.setSelect = {
+        type: 'select',
+        multi: true,
+        filter: [{ col: 'type', value: ['a', 'b'], relation: Relations.eq }, { col: 'id', value: [5], relation: Relations.gt }],
+      };
+    }
   }
 
   // Refresh data

@@ -31,7 +31,7 @@
             <!-- TOGGLE SELECT -->
             <button mat-button (click)="btnToggle()">Toogle Select</button>
 
-            <button mat-icon-button (click)="btnRefresh_Click()"><mat-icon>refresh</mat-icon></button>
+            <button mat-icon-button (click)="btnRefresh_Click()"><mat-icon>add</mat-icon></button>
         </div>
 
         <!-- TABLE MANAGER -->
@@ -61,8 +61,6 @@
         <ngx-table
             fxFlex style="height: 100%;"
             [input]="tsTest" 
-            [extraCols]="extraCols"
-            [isSelectable]="isSelectable"
             [isRowSelect]="true"
             [numberFormat]="numberFormat"
             [loading]="loading"
