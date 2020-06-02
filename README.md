@@ -1,8 +1,12 @@
 # Angular Table Manager
-⚡ Try it on [Stackblitz](https://stackblitz.com/edit/ngx-table-manager)!
-👨‍🔧 Generate your models [NOW](https://rhideg.github.io/model-generator/)!
+👨‍🏫 Try the [demo](https://ngx-table-manager-trylx5.stackblitz.io)!
+⚡ Edit on [Stackblitz](https://stackblitz.com/edit/ngx-table-manager-trylx5)!
+👨‍🔧 Generate your models [here](https://rhideg.github.io/model-generator/)!
 
-![Image of Stackblitz](https://imgur.com/8aYyLNm.png)
+![Imgur](https://imgur.com/5mS0wBh.png)
+![Imgur](https://imgur.com/SDVk7V3.png)
+![Imgur](https://imgur.com/Ar6M9kN.png)
+
 
 ## Have you ever found yourself
 * creating complicated data tables with lots and lots of columns,
@@ -100,6 +104,11 @@ Add  ```ngx-table-manager```
       [inputSearch]="true"
       [startSearch]="true"
 
+      // Optional (default: false)
+      [columnSticky]="true"
+      [colorPickerText]="true"
+      [colorPickerBackground]="true"
+
       >
   </ngx-table-manager>
   
@@ -113,6 +122,7 @@ Add  ```ngx-table-manager```
     [isSelectable]="isSelectable"
     [isRowSelect]="isRowSelect"
     [numberFormat]="numberFormat"
+    [loading]="loading"
     [rowColor]="rowColor"
     (output)="onEvent($event)"
     >
@@ -147,6 +157,7 @@ export class AppComponent implements OnInit {
   isRowSelect; // Optional row select (default is undefined)
   numberFormat; // Optional format of number type columns (default is undefined)
   rowColor = true; // Row color boolean (default is undefined)
+  loading = true; // loading on the table
 
   // ngx-tm-select
   arrSelectTest = [
@@ -217,6 +228,7 @@ export class AppComponent implements OnInit {
     this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
     this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
     this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.loading = false;
   }
 
   /**
