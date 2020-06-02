@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
-import { TableManagerService } from 'projects/table-manager/src/public-api';
-import { ExtraCols, Relations, Select } from 'projects/table-manager/src/lib/models/interfaces';
+import { TableManagerService, ExtraCols, Select, Relations } from 'projects/table-manager/src/public-api';
 
 @Component({
   selector: 'app-root',

@@ -1,6 +1,8 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { Select, ExtraCols, Search } from './interfaces';
+import { Search } from './search';
+import { Select } from './select';
+import { ExtraCols } from './extra-cols';
 
 export class TableSort {
   search: Search;

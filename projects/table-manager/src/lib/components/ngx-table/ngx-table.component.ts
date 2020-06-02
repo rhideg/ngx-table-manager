@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
@@ -272,9 +272,13 @@ export class NgxTableComponent implements OnChanges {
   }
 
   checkAllSelected() {
-    const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.input.getSelect));
-    const a = arrTmp.every(i => i.select);
-    return a;
+    if (this.input.arr.length === 0) {
+      return false;
+    } else {
+      const arrTmp = this.input.arr.filter(element => this.checkFilter(element, this.input.getSelect));
+      const a = arrTmp.every(i => i.select);
+      return a;
+    }
   }
 
   /**
