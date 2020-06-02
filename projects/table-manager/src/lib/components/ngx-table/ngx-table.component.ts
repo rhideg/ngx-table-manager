@@ -87,22 +87,22 @@ export class NgxTableComponent implements OnChanges {
               }
             });
             break;
-          case '<':
+          case '>':
             if (!(element[filterElement.col] <= filterElement.value[0])) {
               arrRet.push(false);
             }
             break;
-          case '<=':
+          case '>=':
             if (!(element[filterElement.col] < filterElement.value[0])) {
               arrRet.push(false);
             }
             break;
-          case '>':
+          case '<':
             if (!(element[filterElement.col] >= filterElement.value[0])) {
               arrRet.push(false);
             }
             break;
-          case '>=':
+          case '<=':
             if (!(element[filterElement.col] > filterElement.value[0])) {
               arrRet.push(false);
             }
