@@ -144,7 +144,7 @@
         <ng-container *ngFor="let item of input.getExtraCols" matColumnDef={{item.type}}>
             <th mat-header-cell *matHeaderCellDef> </th>
             <td style="padding-left: 24px;" mat-cell *matCellDef="let element"
-            style="min-width: 24px;">
+            style="min-width: 40px;">
                 <div>
                     <button mat-icon-button (click)="btnCustom(element, item)" 
                     *ngIf="checkFilter(element, item)"
