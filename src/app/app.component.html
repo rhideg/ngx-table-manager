@@ -12,16 +12,18 @@
             <!-- TABLE MANAGER SELECT -->
             <ngx-tm-select
                 style="margin: 10px;"
+
                 [input]="tsTest"
                 [column]="'type'"
                 [name]="'Type'"
-                
+
                 (output)="selectTest($event)"
                 >
             </ngx-tm-select> 
 
             <ngx-tm-select
                 style="margin: 10px;"
+
                 [input]="tsTest"
                 [column]="'name'"
                 [name]="'Name'"
@@ -39,6 +41,7 @@
         <!-- TABLE MANAGER -->
         <ngx-table-manager
             style="margin: 10px;"
+
             [input]="tsTest" 
             [selectedColor]="'red'"
             [advencedSearch]="true"
@@ -61,7 +64,9 @@
          <!-- TM TABLE
          -->
         <ngx-table
-            fxFlex style="height: 100%;"
+            fxFlex 
+            style="height: 100%;"
+            
             [input]="tsTest" 
             [isRowSelect]="true"
             [numberFormat]="numberFormat"

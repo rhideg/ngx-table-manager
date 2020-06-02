@@ -143,12 +143,19 @@
 
         <ng-container *ngFor="let item of input.getExtraCols" matColumnDef={{item.type}}>
             <th mat-header-cell *matHeaderCellDef> </th>
-            <td style="padding-left: 24px;" mat-cell *matCellDef="let element">
-                <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="checkFilter(element, item)"
-                    [ngStyle]="item.style">
+            <td style="padding-left: 24px;" mat-cell *matCellDef="let element"
+            style="min-width: 24px;">
+                <div>
+                    <button mat-icon-button (click)="btnCustom(element, item)" 
+                    *ngIf="checkFilter(element, item)"
+                    
+                    [ngStyle]="item.style"
+                   >
                     
                     <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
                 </button>
+                </div>
+
             </td>
         </ng-container>        
         
