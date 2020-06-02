@@ -42,7 +42,6 @@ export class NgxTableComponent implements OnChanges {
   constructor(
     public dialog: MatDialog,
   ) {
-    console.log(this.input);
   }
 
   ngOnInit(): void {

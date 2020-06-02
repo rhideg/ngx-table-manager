@@ -65,27 +65,6 @@ export class AppComponent implements OnInit {
       }
     ];
 
-    // EXTRA COLS:
-    this.extraCols = [
-      {
-        type: 'btnEdit',
-        icon: 'edit',
-        filter: [
-          { col: 'name', value: ['test1', 'test3'], relation: '===' }
-        ],
-        tooltip: 'Edit'
-      },
-      {
-        type: 'del',
-        icon: 'delete',
-        style: {
-          color: '#FF6859'
-        },
-        tooltip: 'Delete'
-      },
-    ];
-
-
     // IS SELECTABLE:
     // THE FILTERS ARE TIED WITH AN 'AND' RELATION, SO ALL
     // OF THE FILTERS HAVE TO APPLY TO THE TABLE'S DATA 
