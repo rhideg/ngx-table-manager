@@ -44,20 +44,21 @@ export class NgxTableComponent implements OnChanges {
   ) {
   }
 
-  ngOnInit(): void {
-    console.log(this.input);
-  }
-
   /**
    * Listen for changes and set input.
    * @param changes Change.
    */
   ngOnChanges(changes): void {
-    console.log('%cCHANGE', 'color: yellow');
     this.input.setSort(this.sort);
 
     if (changes.hasOwnProperty('loading') && Object.getOwnPropertyNames(changes).length === 1) {
       document.getElementById('mainDiv').style.overflow = 'auto';
+    }
+
+    if(!this.loading) {
+      setTimeout(() => {
+        this.input.setSort(this.sort);
+      }, 1000);
     }
   }
 
@@ -370,8 +371,7 @@ export class NgxTableComponent implements OnChanges {
       type: 'select',
       data: this.input.arrSelected
     });
-    this.btnDoEvent = true;
-    console.log(this.input.arrSelected);*/
+    this.btnDoEvent = true;*/
 
 
     setTimeout(() => {

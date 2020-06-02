@@ -142,7 +142,6 @@ export class TableSort {
    * @param filter Apply filters.
    */
   refresh(newData?: Array<any>, filter = true) {
-    console.log(this.arrSelected);
 
     if (newData) {
       this.arrCopy = newData;
@@ -180,6 +179,7 @@ export class TableSort {
    * @param s Material Sort.
    */
   setSort(s?: MatSort) {
+    console.log(s);
     this._sort = s ? s : this._sort;
     if (this.ds) {
       this.ds.sort = this._sort;

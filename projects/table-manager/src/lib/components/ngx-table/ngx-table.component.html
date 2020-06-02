@@ -12,7 +12,8 @@
 
 
     <table  *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort"
-        [dataSource]="input.ds">
+        [dataSource]="input.ds"
+        >
 
         <ng-container *ngIf="input.getSelect" [matColumnDef]="input.getSelect.type">
             <th mat-header-cell *matHeaderCellDef>

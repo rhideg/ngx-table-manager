@@ -47,7 +47,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
       this.loaded = true;
 
       /*if (this.searchValue) {
-        console.log(this.searchValue);
         this.search();
       }*/
       
@@ -156,8 +155,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async result => {
-      console.log(this.input.arrDispCols);
-      console.log(result);
       this.input.setCols(result);
       this.dispColsSelect.emit(result);
     });
