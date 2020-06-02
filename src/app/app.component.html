@@ -15,6 +15,7 @@
                 [input]="tsTest"
                 [column]="'type'"
                 [name]="'Type'"
+                
                 (output)="selectTest($event)"
                 >
             </ngx-tm-select> 
@@ -24,6 +25,7 @@
                 [input]="tsTest"
                 [column]="'name'"
                 [name]="'Name'"
+
                 (output)="selectTest($event)"
                 >
             </ngx-tm-select> 
@@ -65,9 +67,10 @@
             [numberFormat]="numberFormat"
             [loading]="loading"
             [rowColor]="true"
-            (output)="onEvent($event)"
             [columnSearch]="true"
             [resizable]="true"
+
+            (output)="onEvent($event)"
         >
         </ngx-table>
     </div>

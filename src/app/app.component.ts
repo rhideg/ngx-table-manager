@@ -65,11 +65,6 @@ export class AppComponent implements OnInit {
       }
     ];
 
-    // IS SELECTABLE:
-    // THE FILTERS ARE TIED WITH AN 'AND' RELATION, SO ALL
-    // OF THE FILTERS HAVE TO APPLY TO THE TABLE'S DATA 
-    // --- TODO: ADD RELATION 'AND', 'OR' -> DEFAULT: 'AND' --- 
-
     this.numberFormat = '1.0-2';
     this.isRowSelect = true;
   }
