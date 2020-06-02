@@ -60,10 +60,10 @@ export enum Relations {
     length = 'length',
     eq = '===',
     ne = '!==',
-    ge = '>=',
-    gt = '>',
-    le = '<=',
-    lt = '<'
+    ge = '<=',
+    gt = '<',
+    le = '>=',
+    lt = '>'
 }
 
 
