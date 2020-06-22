@@ -231,6 +231,7 @@ export class NgxTableComponent implements OnChanges {
     this.linkItem = null;
   }
 
+
   btnCustom(element, item) {
     this.btnDoEvent = false;
     setTimeout(() => {
@@ -270,6 +271,8 @@ export class NgxTableComponent implements OnChanges {
       }
     }, 20);
   }
+
+  
 
   checkAllSelected() {
     if (this.input.arr.length === 0) {
