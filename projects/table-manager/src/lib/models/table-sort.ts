@@ -181,7 +181,6 @@ export class TableSort {
    * @param s Material Sort.
    */
   setSort(s?: MatSort) {
-    console.log(s);
     this._sort = s ? s : this._sort;
     if (this.ds) {
       this.ds.sort = this._sort;

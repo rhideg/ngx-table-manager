@@ -26,7 +26,7 @@ $avatar-offset: 52 + 16;
   );
   background-size: 600px;
 }
-.post {
+/* .post {
   .avatar {
     float: left;
     width: 52px;
@@ -70,6 +70,34 @@ $avatar-offset: 52 + 16;
       background-position: 100%;
     }
   }
+} */
+
+
+.loading {
+  margin: 3px 2px 3px 2px;
+  height: 45px
+}
+
+
+.skeleton {
+	background-color: #e2e5e7;
+	background-image:			
+			linear-gradient(
+				90deg, 
+				rgba(#fff, 0), 
+				rgba(#fff, 0.5),
+				rgba(#fff, 0)
+			);
+	background-size: 40px 100%;
+	background-repeat: no-repeat; 
+	background-position: left -40px top 0;
+	animation: shine 1s ease infinite;
+}
+
+@keyframes shine {
+	to {
+		background-position: right -40px top 0;
+	}
 }
 
 
@@ -78,7 +106,9 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 0px;
+  padding: 0px 50px 0px 50px;
+  width: auto;
+  max-width: 250px;
 }
 
 .resizable {

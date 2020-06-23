@@ -1,4 +1,4 @@
-import { Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog/confirm-dialog.component';
@@ -55,8 +55,19 @@ export class NgxTableComponent implements OnChanges {
       document.getElementById('mainDiv').style.overflow = 'auto';
     }
 
-    if(!this.loading) {
+    if (!this.loading) {
       setTimeout(() => {
+        this.input.arrCols.forEach(data => {
+          data.resizable = false;
+          for (let i = 0; i < this.input.arr.length; i++) {
+            if (typeof(this.input.arr[i][`${data.name}`]) === 'string') {
+              if (this.input.arr[i][`${data.name}`].length > 30) {
+                data.resizable = true;
+                break;
+              }
+            }
+          }
+        });
         this.input.setSort(this.sort);
       }, 1000);
     }

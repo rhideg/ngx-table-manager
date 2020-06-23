@@ -1,19 +1,14 @@
 <div id="mainDiv" [ngStyle]="{'overflow': loading ? 'hidden' : 'auto'}" fxFlex style="overflow: hidden;"
     (scroll)="scrollTable($event)">
 
-
-
-    <div *ngFor="let i of Arr">
-        <div *ngIf="loading" class="post">
-            <div class="line"></div>
+        <div *ngFor="let i of Arr">
+            <div *ngIf="loading" class="loading skeleton">
+            </div>
         </div>
-    </div>
 
 
 
-    <table  *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort"
-        [dataSource]="input.ds"
-        >
+    <table *ngIf="!loading" mat-table style="width: 100%;" #sort="matSort" matSort="sort" [dataSource]="input.ds">
 
         <ng-container *ngIf="input.getSelect" [matColumnDef]="input.getSelect.type">
             <th mat-header-cell *matHeaderCellDef>
@@ -22,7 +17,7 @@
             </th>
             <td mat-cell *matCellDef="let element">
                 <mat-checkbox *ngIf="checkFilter(element, input.getSelect)" (change)="chboxItem_Selected(element)"
-                     [(ngModel)]="element.select">
+                    [(ngModel)]="element.select">
                 </mat-checkbox>
             </td>
         </ng-container>
@@ -36,10 +31,10 @@
 
             [ngStyle]="item.style"
             -->
-            <th mat-header-cell *matHeaderCellDef [hidden]="!item.show"  [ngClass]="{'resizable': resizable}">
+            <th mat-header-cell *matHeaderCellDef [hidden]="!item.show" [ngClass]="{'resizable': item.resizable ? true : false}">
                 <!-- Column search -->
-                <div  fxLayout="row" fxLayoutAlign="start center" style=" margin-left: 5px;">
-                    
+                <div fxLayout="row" fxLayoutAlign="start center" style=" margin-left: 5px;">
+
                     <!-- Column header label -->
                     <span [id]="'col-' + item.name" (click)="showColumnSearch(item.name)" style="display: block;">
                         {{item.title}}
@@ -47,9 +42,9 @@
 
                     <!-- Column search input -->
                     <mat-form-field [id]="'inp-' + item.name" style="display: none; width: 100px;">
-                        <input autofocus  matInput (input)="columnSearchInput($event, item.name)" [placeholder]="item.title"
-                            (keydown.enter)="searchColumnInput()" (keydown.escape)="showColumnSearch(item.name)"
-                            [(ngModel)]="objColumnSearch[item.name]">
+                        <input autofocus matInput (input)="columnSearchInput($event, item.name)"
+                            [placeholder]="item.title" (keydown.enter)="searchColumnInput()"
+                            (keydown.escape)="showColumnSearch(item.name)" [(ngModel)]="objColumnSearch[item.name]">
                         <mat-icon matSuffix style="cursor: pointer; font-size: small;"
                             (click)="showColumnSearch(item.name)">clear</mat-icon>
                     </mat-form-field>
@@ -62,23 +57,19 @@
 
             <!-- COLUMNS -->
             <td mat-cell *matCellDef="let element" (click)="isRowSelect ? rowSelected(element) : ''"
+                [hidden]="!item.show" style="padding: 0px 10px 0px 10px" [ngStyle]="item.style">
 
-
-                [hidden]="!item.show" [ngStyle]="item.style" 
-                
-                >
-
-                <!-- DATE --> 
+                <!-- DATE -->
                 <span *ngIf="item.format === 'date'" (click)="link_Click(item)">
                     {{element[item.name] | date: 'yyyy-MM-dd'}}
                 </span>
 
-                <!-- PERCENT --> 
+                <!-- PERCENT -->
                 <span *ngIf="item.format === 'percent'" (click)="link_Click(item)">
                     {{element[item.name] | percent}}
                 </span>
 
-                <!-- PERCENT WITH ICONS --> 
+                <!-- PERCENT WITH ICONS -->
                 <span *ngIf="item.format === 'percent-icons'" (click)="link_Click(item)">
                     <mat-icon style="color: #1EB980;fill: #1EB980" *ngIf="element[item.name] > 0">
                         keyboard_arrow_up
@@ -96,7 +87,7 @@
                 </span>
 
                 <!-- STRING -->
-                <span *ngIf="item.format === 'string'" (click)="link_Click(item)">
+                <span [matTooltip]="element[item.name].length > 30 ? element[item.name] : null" *ngIf="item.format === 'string'" (click)="link_Click(item)">
                     {{element[item.name]}}
                 </span>
 
@@ -144,28 +135,25 @@
 
         <ng-container *ngFor="let item of input.getExtraCols" matColumnDef={{item.type}}>
             <th mat-header-cell *matHeaderCellDef> </th>
-            <td style="padding-left: 24px;" mat-cell *matCellDef="let element"
-            style="min-width: 40px;">
+            <td style="padding-left: 24px;" mat-cell *matCellDef="let element" style="min-width: 40px;">
                 <div>
-                    <button mat-icon-button (click)="btnCustom(element, item)" 
-                    *ngIf="checkFilter(element, item)"
-                    
-                    [ngStyle]="item.style"
-                   >
-                    
-                    <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
-                </button>
+                    <button mat-icon-button (click)="btnCustom(element, item)" *ngIf="checkFilter(element, item)"
+                        [ngStyle]="item.style">
+
+                        <mat-icon matTooltip={{item.tooltip}}>{{item.icon}}</mat-icon>
+                    </button>
                 </div>
 
             </td>
-        </ng-container>        
-        
-        
-    
-        ​<!-- ROWS -->
+        </ng-container>
+
+
+
+        ​
+        <!-- ROWS -->
         <tr mat-header-row *matHeaderRowDef="input.getArrDispColsAll; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: input.getArrDispColsAll;" [ngClass]="{'row-color': rowColor}"
-        (dblclick)="rowDoubleClick(row)"></tr>
+            (dblclick)="rowDoubleClick(row)"></tr>
 
     </table>
 
