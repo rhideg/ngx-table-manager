@@ -106,7 +106,9 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 0px;
+  padding: 0px 50px 0px 50px;
+  width: auto;
+  max-width: 250px;
 }
 
 .resizable {
