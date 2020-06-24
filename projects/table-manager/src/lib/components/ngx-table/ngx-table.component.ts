@@ -62,7 +62,7 @@ export class NgxTableComponent implements OnChanges {
           for (let i = 0; i < this.input.arr.length; i++) {
             if (this.input.arr[i][`${data.name}`]) {
               if (typeof (this.input.arr[i][`${data.name}`]) === 'string') {
-                if (this.input.arr[i][`${data.name}`].length > 50) {
+                if (this.input.arr[i][`${data.name}`].length >= 35) {
                   data.resizable = true;
                   break;
                 }
