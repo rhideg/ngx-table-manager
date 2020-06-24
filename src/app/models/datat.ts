@@ -5,7 +5,7 @@ export const DATA: Test[] = [
   { id: 2, name: 'test2', type: 'b', text: 'asddsadssdaasd', number: 5315132 },
   { id: 3, name: 'test3', type: 'c', text: 'asdasd', number: 412424132 },
   { id: 4, name: 'test4', type: 'd', text: 'adssadsadsda', number: 532 },
-  { id: 5, name: 'test5', type: 'e', text: 'asddsadssdaasdasddsadssdaasdasddsadssdaasdasddsadssdaasdasddsadssdaasdasddsadssdaasd', number: 30000 },
+  { id: 5, name: 'test5', type: 'e', text: 'asddsadssdaasdasddsadssdaasdasddsadáááádaasdasddsadssdaásdasddsadssdaasdasddsadssdaasd', number: 30000 },
   { id: 6, name: 'test6', type: 'f', text: 'fsaasf', number: 5322 },
   { id: 7, name: 'test7', type: 'g', text: 'fasfasf asf asfasfasfasf as fasfasfasf asfasfsafffsafasads', number: 30000 },
   { id: 8, name: 'test8', type: 'h', text: 'zewzw3', number: 1223 },

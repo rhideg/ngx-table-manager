@@ -40,15 +40,6 @@
       "format": "string"
     },
     {
-      "title": "Text2",
-      "name": "text2",
-      "show": true,
-      "sticky": false,
-      "search_value": "",
-      "style": {},
-      "format": "string"
-    },
-    {
       "title": "Number",
       "name": "number",
       "show": true,
