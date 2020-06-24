@@ -60,10 +60,12 @@ export class NgxTableComponent implements OnChanges {
         this.input.arrCols.forEach(data => {
           data.resizable = false;
           for (let i = 0; i < this.input.arr.length; i++) {
-            if (typeof(this.input.arr[i][`${data.name}`]) === 'string') {
-              if (this.input.arr[i][`${data.name}`].length > 30) {
-                data.resizable = true;
-                break;
+            if (this.input.arr[i][`${data.name}`]) {
+              if (typeof (this.input.arr[i][`${data.name}`]) === 'string') {
+                if (this.input.arr[i][`${data.name}`].length > 30) {
+                  data.resizable = true;
+                  break;
+                }
               }
             }
           }
@@ -220,7 +222,7 @@ export class NgxTableComponent implements OnChanges {
             data: element,
             link: this.linkItem
           });
-  
+
           this.linkItem = null;
         }
       }
@@ -231,7 +233,7 @@ export class NgxTableComponent implements OnChanges {
    * Double click on row.
    * @param element Row element
    */
-  rowDoubleClick(element){
+  rowDoubleClick(element) {
     this.isSingleClick = false;
     this.output.emit({
       type: 'rowDoubleClick',
@@ -283,7 +285,7 @@ export class NgxTableComponent implements OnChanges {
     }, 20);
   }
 
-  
+
 
   checkAllSelected() {
     if (this.input.arr.length === 0) {
@@ -453,7 +455,7 @@ export class NgxTableComponent implements OnChanges {
       // this.input.ds.sort = this.sort;
 
 
-       this.input.setDataSource();
+      this.input.setDataSource();
 
       this.output.emit({
         type: 'select',
