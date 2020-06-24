@@ -106,9 +106,20 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0px 50px 0px 50px;
-  width: auto;
-  max-width: 250px;
+  padding: 0px 10px 0px 10px;
+  width: max-content;
+  max-width: 250px !important;
+}
+
+th {
+  width: max-content;
+  max-width: 250px !important;
+}
+
+td:hover {
+  text-overflow: clip;
+  white-space: normal;
+  word-break: break-all;
 }
 
 .resizable {
@@ -120,6 +131,7 @@ td {
 .resizer:hover, .resizing {
   border-right: 2px solid blue;
 }
+
 
 
 
