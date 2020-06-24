@@ -87,7 +87,7 @@
                 </span>
 
                 <!-- STRING -->
-                <span [matTooltip]="(element[item.name] && element[item.name].length > 30) ? element[item.name] : null" *ngIf="item.format === 'string'" (click)="link_Click(item)">
+                <span [matTooltip]="(element[item.name] && element[item.name].length > 50) ? element[item.name] : null" *ngIf="item.format === 'string'" (click)="link_Click(item)">
                     {{element[item.name]}}
                 </span>
 
