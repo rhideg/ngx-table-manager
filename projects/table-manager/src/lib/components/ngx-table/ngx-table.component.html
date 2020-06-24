@@ -57,6 +57,7 @@
 
             <!-- COLUMNS -->
             <td mat-cell *matCellDef="let element" (click)="isRowSelect ? rowSelected(element) : ''"
+               
                 [hidden]="!item.show" style="padding: 0px 10px 0px 10px" [ngStyle]="item.style">
 
                 <!-- DATE -->
@@ -86,8 +87,15 @@
                     {{element[item.name] | number: numberFormat ? numberFormat : ''}}
                 </span>
 
-                <!-- STRING -->
-                <span [matTooltip]="(element[item.name] && element[item.name].length >= 36) ? element[item.name] : null" *ngIf="item.format === 'string'" (click)="link_Click(item)">
+                <!-- STRING 
+                [matTooltip]="(element[item.name] && element[item.name].length >= 37) ? element[item.name] : null"
+            -->
+                <span 
+                    style="width: 100%;max-width: 250px !important; "
+
+                    *ngIf="item.format === 'string'" 
+                    (click)="link_Click(item)">
+
                     {{element[item.name]}}
                 </span>
 

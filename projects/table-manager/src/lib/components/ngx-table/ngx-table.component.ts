@@ -62,7 +62,7 @@ export class NgxTableComponent implements OnChanges {
           for (let i = 0; i < this.input.arr.length; i++) {
             if (this.input.arr[i][`${data.name}`]) {
               if (typeof (this.input.arr[i][`${data.name}`]) === 'string') {
-                if (this.input.arr[i][`${data.name}`].length >= 36) {
+                if (this.input.arr[i][`${data.name}`].length > 37) {
                   data.resizable = true;
                   break;
                 }
@@ -74,6 +74,15 @@ export class NgxTableComponent implements OnChanges {
       }, 1000);
     }
   }
+
+  /* getTooltip(test, tooltip) {
+    const w = test.offsetWidth;
+    if (w > 230) {
+      return 'test';
+    } else {
+      return null;
+    }
+  } */
 
   checkFilter(element, item) {
     let ret = false;
