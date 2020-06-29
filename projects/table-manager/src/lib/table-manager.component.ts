@@ -14,17 +14,20 @@ export class TableManagerComponent implements OnChanges, OnInit {
 
   loaded = false; // Is the data loaded
   searchValue = ''; // Default search value
+
   // selection = new SelectionModel<any>(true, []);
   options: any[] = [];
 
   // Basic inputs and outputs
-  @Input() input: TableSort; // Contains the metadata
-  @Input() selectedColor?: string; // Color theme
-  @Output() output = new EventEmitter<TableSort>(); // Notify parent on input change
-  @Output() dispColsSelect = new EventEmitter<any>(); // Notify parent on displayed cols change
+  @Input() input: TableSort; // Contains the metadata.
+  @Input() selectedColor?: string; // Color theme.
+  @Input() localSearch?: boolean = true; // Search only on the current data set.
+
+  @Output() output = new EventEmitter<TableSort>(); // Notify parent on input change.
+  @Output() dispColsSelect = new EventEmitter<any>(); // Notify parent on displayed cols change.
 
   // Define what the user would like to see
-  @Input() advencedSearch = true;
+  @Input() advencedSearch = true; 
   @Input() fastSearch = true;
   @Input() displayColumns = true;
   @Input() inputSearch = true;
@@ -45,11 +48,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.input.currentValue) {
       this.loaded = true;
-
-      /*if (this.searchValue) {
-        this.search();
-      }*/
-      
     }
   }
 

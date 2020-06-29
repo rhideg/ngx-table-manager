@@ -36,8 +36,10 @@ export class NgxTableComponent implements OnChanges {
   @Input() loading; // Single select when multi value is false, multi select if value true.
   @Input() columnSearch?: boolean; // Click on column to perform a column search.
   @Input() resizable?: boolean; // Resizable columns.
-  @Output() output = new EventEmitter<any>(); // returns element
+  @Input() localSearch?: boolean = true; // Search only on the current data set.
 
+  @Output() output = new EventEmitter<any>(); // returns element
+  @Output() scroll = new EventEmitter<any>(); // On scroll overflow + 30
   @ViewChild('sort', { static: false }) sort: MatSort; // Material table sort
   constructor(
     public dialog: MatDialog,
@@ -57,7 +59,8 @@ export class NgxTableComponent implements OnChanges {
 
     if (!this.loading) {
       setTimeout(() => {
-        this.input.arrCols.forEach(data => {
+        console.log(this.input.arrCols);
+        this.input.getArrColsAll.forEach(data => {
           data.resizable = false;
           for (let i = 0; i < this.input.arr.length; i++) {
             if (this.input.arr[i][`${data.name}`]) {
@@ -74,15 +77,6 @@ export class NgxTableComponent implements OnChanges {
       }, 1000);
     }
   }
-
-  /* getTooltip(test, tooltip) {
-    const w = test.offsetWidth;
-    if (w > 230) {
-      return 'test';
-    } else {
-      return null;
-    }
-  } */
 
   checkFilter(element, item) {
     let ret = false;
@@ -210,10 +204,13 @@ export class NgxTableComponent implements OnChanges {
 
     if (scrollLocation > limit) {
       this.input.count += 20;
-      // this.input.ds = new MatTableDataSource(this.input.arr.slice(0, this.input.count));
-      // this.input.ds.sort = this.sort;
 
-      this.input.setDataSource(this.sort);
+      if (this.localSearch) {
+        this.input.setDataSource(this.sort); 
+        this.scroll.emit(this.input.count);
+      } else {
+        this.scroll.emit(this.input.count);
+      }
     }
   }
 

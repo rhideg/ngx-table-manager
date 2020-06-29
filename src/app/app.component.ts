@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
     // SET MEMBERS:
     const search = { title: 'Name', name: 'name', show: true, sticky: false };
-    this.tsTest = new TableSort(null, null, TestCols, null, null, null, false, search);
+    this.tsTest = new TableSort(null, null, null, null, null, null, false, search);
 
     this.tsTest.setSelect = {
       type: 'select',
@@ -72,8 +72,10 @@ export class AppComponent implements OnInit {
    * Call load data on init. Simulate API request.
    */
   ngOnInit() {
+
     setTimeout(() => {
       this.loadData();
+
     }, 3000);
   }
 
@@ -142,4 +144,10 @@ export class AppComponent implements OnInit {
     console.log(event);
     this.tsTest.arrCols = event;
   }
+
+  onTableScroll(event) {
+    console.log(event);
+  }
+
+
 }

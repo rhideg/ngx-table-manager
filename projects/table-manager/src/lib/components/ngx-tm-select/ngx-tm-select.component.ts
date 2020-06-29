@@ -14,6 +14,8 @@ export class NgxTmSelectComponent implements OnChanges {
   @Input() arrSelect: any[];  // optional
   @Input() column: string; // required
   @Input() name: string;
+  @Input() localSearch?: boolean = true; // Search only on the current data set.
+
 
   @Output() output = new EventEmitter<TableSort>(); // returns sorted ts
   constructor() {
@@ -50,16 +52,6 @@ export class NgxTmSelectComponent implements OnChanges {
   selectOption(event) {
 
     this.input.tmSelect(event.value, this.column);
-    /*this.arrSelected = event.value;
-    console.log(this.arrSelected);
-
-    if (this.arrSelected.length === 0) {
-      this.input.arr = this.input.arrCopy;
-    } else {
-      this.input.arr = this.input.arrCopy.filter(data =>
-        this.arrSelected.includes(data[`${this.column}`])
-      );
-    }*/
 
     this.output.emit(this.input);
   }

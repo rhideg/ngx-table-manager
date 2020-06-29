@@ -30,41 +30,41 @@ export class TableSort {
   private _arrDispColsAll: Array<any>;
   private _arrColsAll: Array<any>;
 
-  
+
   // Select get, set
-  public get getSelect() : Select {
+  public get getSelect(): Select {
     return this._select;
   }
-  
-  public set setSelect(v : Select) {
+
+  public set setSelect(v: Select) {
     this._select = v;
 
   }
 
   // ExtraCols get, set
-  public get getExtraCols() :  Array<ExtraCols> {
+  public get getExtraCols(): Array<ExtraCols> {
     return this._extraCols;
   }
 
-  public set setExtraCols(v :  Array<ExtraCols>) {
+  public set setExtraCols(v: Array<ExtraCols>) {
     this._extraCols = v;
   }
 
-  
-  public get getArrDispColsAll() : Array<any> {
+
+  public get getArrDispColsAll(): Array<any> {
     return this._createAllDispCols();
   }
 
-  
-  public get getArrColsAll() : Array<any> {
+
+  public get getArrColsAll(): Array<any> {
     return this._createAllCols();
   }
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
   /**
    * @param arr Filtered data.
@@ -90,7 +90,7 @@ export class TableSort {
     this.empty = empty ? empty : (this.arr ? (this.arr.length > 0 ? false : true) : null);
     this.arr = arr ? arr : null;
     this.arrCopy = arrCopy ? arrCopy : null;
-    this.arrCols = arrCols ? arrCols : null;
+    this.arrCols = arrCols ? arrCols : this._createCols();
     this.ds = ds ? ds : null;
     this.arrDispCols = arrDispCols ? arrDispCols :
       (arrCols ? arrCols.map(data => { return data.name }) : null);
@@ -145,6 +145,11 @@ export class TableSort {
    */
   refresh(newData?: Array<any>, filter = true) {
 
+    if(!this.arrCols) {
+      console.log(newData);
+      this._createCols(newData);
+    }
+
     if (newData) {
       this.arrCopy = newData;
       this.arrSelected = [];
@@ -187,29 +192,41 @@ export class TableSort {
     }
   }
 
+  /**
+   * Set columns.
+   * @param arrCols Array of columns. 
+   */
   setCols(arrCols: Array<any>) {
     this.arrCols = arrCols;
     this.arrDispCols = arrCols.map(data => { return data.name });
   }
 
+  /**
+   * Clear selection.
+   */
   clearSelected() {
     this.arrSelected = [];
   }
 
+  /**
+   * Add a new item to the selected list based on the type (multi)
+   * @param item New selected item.
+   * @param multi Multiple select - true/false.
+   */
   addSelected(item: any, multi: boolean) {
 
 
     const i = this.arrSelected.indexOf(item);
 
-    if(multi) {
+    if (multi) {
       if (i < 0 && this.arrSelected.length === 0) {
         this.arrSelected.push(item);
       } else {
-        if ( this.arrSelected.length > 0 && i < 0) {
+        if (this.arrSelected.length > 0 && i < 0) {
           this.arrSelected.push(item);
         } else {
-          
-          this.arrSelected.splice(i,1);
+
+          this.arrSelected.splice(i, 1);
         }
       }
     } else {
@@ -229,14 +246,62 @@ export class TableSort {
       }
     }
 
-   
+
   }
 
+  /**
+   * Set the selected items.
+   * @param arrSelected Selected items.
+   */
   setArrSelected(arrSelected: Array<any>) {
     this.arrSelected = arrSelected;
   }
 
 
+
+
+  // PRIVATE METHODS ********************************************************************
+
+
+  /**
+   * Create columns if it is not provided.
+   */
+  private _createCols(newData?: any) {
+    
+    if (this.arr || newData) {
+      const obj = this.arr ? this.arr[0] : newData[0];
+      console.log(obj);
+      let arrCols = [];
+
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const e = obj[key];
+          let col: any = {};
+
+          col.name = key;
+          col.title = key.charAt(0).toUpperCase() + key.slice(1);
+          col.show = true;
+          col.sticky = false;
+          col.search_value = "";
+          col.style = {};
+          col.format = typeof (e);
+
+          arrCols.push(col);
+          console.log(col);
+        }
+      }
+
+      this.arrCols = arrCols;
+      this.arrDispCols =
+      (arrCols ? arrCols.map(data => { return data.name }) : null);
+      return arrCols;
+    }
+
+  }
+
+  /**
+   * Returns an array with all the displayed columns (including the extra columns)
+   */
   private _createAllDispCols(): Array<any> {
     const adc = this.arrDispCols;
     const s = this._select;
@@ -251,16 +316,20 @@ export class TableSort {
     this._arrDispColsAll = this._arrDispColsAll.concat(adc);
 
     if (ec) {
-      const ect = this._extraCols.map(data => {return data.type});
+      const ect = this._extraCols.map(data => { return data.type });
       this._arrDispColsAll = this._arrDispColsAll.concat(ect);
     }
 
     return this._arrDispColsAll;
   }
 
+
+  /**
+   * Returns an array with all the columns shown in the table (including the extra columns)
+   */
   private _createAllCols(): Array<any> {
 
-    const ac = this.arrCols;
+    const ac = this.arrCols? this.arrCols : this._createCols();
     const s = this._select;
     const ec = this._extraCols;
 
@@ -282,11 +351,10 @@ export class TableSort {
   }
 
 
-
-
-
-  // PRIVATE METHODS ********************************************************************
-
+  /**
+   * Quick search function, filters the given array with the current quick search value (this._qsValue)
+   * @param atf Array to filter.
+   */
   private _qs(atf: Array<any>) {
 
     // Array filtered quick search
@@ -324,6 +392,10 @@ export class TableSort {
     // QUICK SEARCH
   }
 
+  /**
+   * Filters the given array based on the values written in each column.
+   * @param atf Array to filter.
+   */
   private _cs(atf: Array<any>) {
 
     let afCs = [];
@@ -391,6 +463,10 @@ export class TableSort {
 
   }
 
+  /**
+   * Tm select (table manager select) search. Searches for the values selected in the dropdown. 
+   * @param atf Array to filter.
+   */
   private _ts(atf: Array<any>) {
 
     // Array filtered tm select
@@ -400,14 +476,14 @@ export class TableSort {
     for (const key in this._tmSelected) {
       if (this._tmSelected.hasOwnProperty(key)) {
         const e = this._tmSelected[key];
-        
+
         if (!this._tmSelected || this._tmSelected[key]?.length === 0) {
           continue;
         } else {
           afTs = afTs.filter(data =>
             this._tmSelected[key].includes(data[key])
           );
-          
+
         }
 
       }
@@ -427,6 +503,10 @@ export class TableSort {
   }
 
 
+  /**
+   * Advanced search, multiple search params apply, search for one or more column.
+   * @param atf Array to filter.
+   */
   private _as(atf: Array<any>) {
 
     if (!this._asArr) {
@@ -489,6 +569,11 @@ export class TableSort {
   }
 
 
+  /**
+   * Searches the dataset with every search function, so multiple filters can be applied. Always the current search 
+   * is the dominant. (If we perform a quick search, it's going to be the final search function to filter the dataset.)
+   * @param fn Search type. as - Advanced Search, cs - Column Search, qs - Quick Search, ts - tm-select Search
+   */
   private _completeSearch(fn?: string) {
 
     // IF ALL SEARCH CONDITIONS ARE NULL OR UNDEFINED
