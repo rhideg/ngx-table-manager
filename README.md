@@ -1,6 +1,11 @@
 # Angular Table Manager
+
+[NPM](https://www.npmjs.com/package/ngx-table-manager)
+
 👨‍🏫 Try the [demo](https://ngx-table-manager-trylx5.stackblitz.io)!
+
 ⚡ Edit on [Stackblitz](https://stackblitz.com/edit/ngx-table-manager-trylx5)!
+
 👨‍🔧 Generate your models [here](https://rhideg.github.io/model-generator/)!
 
 ![Imgur](https://imgur.com/5mS0wBh.png)
@@ -8,29 +13,20 @@
 ![Imgur](https://imgur.com/Ar6M9kN.png)
 
 
-## Have you ever found yourself
-* creating complicated data tables with lots and lots of columns,
-* implementing the same features like search, sort, filter, select etc. over and over again,
-* looking at a 100+ lines long HTML template of a component and wondering *"Why do I have to write all this, when my component only contains a single table?"*,
-* copy-pasting the same solution for a feature to a lot of similar components?
-
-If your answer is **'Yes!'** then you are at the right place. We created a reusable Angular Table Manager (based on Angular's [mat-table]([https://material.angular.io/components/table/overview)) to solve all of these issues.
-
-With the [simple model generator](https://rhideg.github.io/model-generator/) it takes only a minute to create a complex data table (with search, filter, sort and all the other provided features) from a single **JSON**.
 
 ## Features:
 * Quick search
 * Advanced search
-* Column managing (Order of the columns, visibility, sticky on horizontal scroll)
+* Column managing (column order, visibility, sticky on horizontal scroll)
 * Sorting
 * Customizable button columns (With their own events)
 * Selection (multiple and single)
 * Easy editing and customization
 
 ### Components:
-* **ngx-table:** The basic data table
-* **ngx-table-manager:** Table manager, it provides the search and sort fuctions
-* **ngx-tm-select:** Basic dropdown select and sort
+* **ngx-table:** Basic data table.
+* **ngx-table-manager:** Table manager, it provides the search and sort fuctions.
+* **ngx-tm-select:** Dropdown select filter, for specific calumn with custom or unique data from the column.
 
 
 # Getting started
@@ -81,52 +77,55 @@ Add  ```ngx-table-manager```
 
 ``` html
 
-  <ngx-tm-select
+  <!-- DROPDOWN FILTER - FOR COLUMN 'TYPE' -->
+   <ngx-tm-select
+      style="margin: 10px;"
+
       [input]="tsTest"
-      [column]="'id'"
-      [name]="'TEST'"
-      [arrSelect]="arrSelectTest"
+      [column]="'type'"
+      [name]="'Type'"
+
       (output)="selectTest($event)"
       >
-  </ngx-tm-select>
+    </ngx-tm-select> 
 
-  <ngx-table-manager
+    <!-- TABLE MANAGER WITH SEARCH AND ADVANCED SEARCH -->
+    <ngx-table-manager
+      style="margin: 10px;"
+
       [input]="tsTest" 
-      (output)="onSearchTest($event)"  
       [selectedColor]="'red'"
-      (dispColsSelect)="onDispColsSelect($event)" // Returns names where show is true
-
-      
-      // Optional (default: true)
       [advencedSearch]="true"
       [fastSearch]="true"
       [displayColumns]="true"
       [inputSearch]="true"
       [startSearch]="true"
-
-      // Optional (default: false)
       [columnSticky]="true"
       [colorPickerText]="true"
       [colorPickerBackground]="true"
 
+      (output)="onSearchTest($event)"  
+      (dispColsSelect)="onDispColsSelect($event)"
       >
-  </ngx-table-manager>
+      </ngx-table-manager>
   
-  <button mat-button (click)="btnToggle()">Toogle Select</button>
+    <!-- MATERIAL TABLE -->
+    <ngx-table
+      fxFlex 
+      style="height: 100%;"
+      
+      [input]="tsTest" 
+      [isRowSelect]="true"
+      [numberFormat]="numberFormat"
+      [loading]="loading"
+      [rowColor]="true"
+      [columnSearch]="true"
+      [resizable]="true"
 
-  <ngx-table 
-    [input]="tsTest"
-
-    // Optional (default: undefined)
-    [extraCols]="extraCols"
-    [isSelectable]="isSelectable"
-    [isRowSelect]="isRowSelect"
-    [numberFormat]="numberFormat"
-    [loading]="loading"
-    [rowColor]="rowColor"
-    (output)="onEvent($event)"
+      (output)="onEvent($event)"
+      (scroll)="onTableScroll($event)"
     >
-  </ngx-table>
+    </ngx-table>
 ```
 
   
@@ -139,6 +138,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableSort } from 'projects/table-manager/src/lib/models/table-sort';
 import { TestCols } from '../app/models/table-cols/test.json';
 import { DATA } from './models/datat';
+import { TableManagerService, ExtraCols, Select, Relations } from 'projects/table-manager/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -146,18 +146,9 @@ import { DATA } from './models/datat';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'table-management';
 
   // ngx-table, ngx-table-manager
   tsTest: TableSort;
-
-  // ngx-table
-  extraCols = []; //Optional extra buttons (default is undefined)
-  isSelectable; //Optional checkbox (default is undefined)
-  isRowSelect; // Optional row select (default is undefined)
-  numberFormat; // Optional format of number type columns (default is undefined)
-  rowColor = true; // Row color boolean (default is undefined)
-  loading = true; // loading on the table
 
   // ngx-tm-select
   arrSelectTest = [
@@ -165,30 +156,39 @@ export class AppComponent implements OnInit {
     { key: 2, value: 'test2' }
   ];
 
-  constructor() {
-    // Get displayed columns from our json.
-    const a = TestCols.map(data => {
-      return data.name;
-    });
+  // ngx-table
+  extraCols = [];
+  select;
+  isRowSelect;
+  numberFormat;
+  loading = true;
 
-    this.tsTest = {
-      arr: null,
-      arrCopy: null,
-      arrCols: JSON.parse(JSON.stringify(colsTest)),
-      arrDispCols: JSON.parse(JSON.stringify(displayedColumnsTest)),
-      ds: null,
-      count: 30,
-      empty: false,
-      search: { title: 'NAME', name: 'name', show: true, sticky: false }
+  arrEc: Array<ExtraCols>;
+  s: Select;
+
+  constructor(
+    private tmService: TableManagerService
+  ) {
+
+    // SET MEMBERS:
+    const search = { title: 'Name', name: 'name', show: true, sticky: false };
+    this.tsTest = new TableSort(null, null, null, null, null, null, false, search);
+
+    this.tsTest.setSelect = {
+      type: 'select',
+      multi: true,
+      filter: [
+        { col: 'type', value: ['a', 'b'], relation: Relations.eq }
+      ]
     };
 
-    // extra buttons to show.
-    this.extraCols = [
+    this.tsTest.setExtraCols = [
       {
-        type: 'btnEdit',
+        type: 'edit',
         icon: 'edit',
-        // filter btn where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
-        filter: [{ col: 'name', value: ['test1'], relation: '===' }],
+        filter: [
+          { col: 'name', value: ['test1', 'test2'], relation: Relations.eq }
+        ]
       },
       {
         type: 'del',
@@ -196,38 +196,30 @@ export class AppComponent implements OnInit {
         style: {
           color: '#FF6859'
         },
-      },
-      {
-        type: 'btnDownload',
-        icon: 'pets',
-      },
-      {
-        type: 'btnPrint',
-        icon: '4k',
+        tooltip: 'Delete'
       }
     ];
 
-    this.isSelectable = {
-      type: 'select',
-      multi: true,
-      // filter checkbox where condition. Realtions can be from [ '===', '!==', '<', '<=', '>', '>=' ].
-      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [2], relation: '>' }],
-    };
-
     this.numberFormat = '1.0-2';
+    this.isRowSelect = true;
   }
 
   /**
-   * Call load data on init.
+   * Call load data on init. Simulate API request.
    */
   ngOnInit() {
-    this.loadData();
+
+    setTimeout(() => {
+      this.loadData();
+
+    }, 3000);
   }
 
+  /**
+   * Get data from local DATA. (replace this with your request.)
+   */
   loadData() {
-    this.tsTest.arr = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.arrCopy = JSON.parse(JSON.stringify(DATA));
-    this.tsTest.ds = JSON.parse(JSON.stringify(DATA));
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
     this.loading = false;
   }
 
@@ -236,7 +228,6 @@ export class AppComponent implements OnInit {
    * @param searchObj Search result.
    */
   onSearchTest(searchObj: TableSort) {
-    this.tsTest = new TableSort(searchObj);
   }
 
   /**
@@ -252,15 +243,33 @@ export class AppComponent implements OnInit {
    * @param selectObj Search result.
    */
   selectTest(selectObj: TableSort) {
-    this.tsTest = new TableSort(selectObj);
   }
-  
+
+  // Toggle selectable
   btnToggle() {
-    this.isSelectable = {
-      type: 'select',
-      multi: true,
-      filter: [{ col: 'type', value: ['a', 'b'], relation: '===' }, { col: 'id', value: [5], relation: '>' }],
-    };
+
+    if (this.tsTest.getSelect) {
+      this.tsTest.setSelect = null;
+    } else {
+      this.tsTest.setSelect = {
+        type: 'select',
+        multi: true,
+        filter: [{ col: 'type', value: ['a', 'b'], relation: Relations.eq }, { col: 'id', value: [5], relation: Relations.gt }],
+      };
+    }
+  }
+
+  // Refresh data
+  btnRefresh_Click() {
+    DATA.push({
+      id: 200,
+      name: 'test101',
+      number: 33333,
+      text: 'ewwqrwq',
+      type: 'i'
+    });
+
+    this.tsTest.refresh(JSON.parse(JSON.stringify(DATA)));
   }
 
   /**
@@ -268,50 +277,20 @@ export class AppComponent implements OnInit {
    * @param event Returns the cols. data.
    */
   onDispColsSelect(event) {
-    const a = event.map(data => {
-      return data.name;
-    });
-    this.tsTest.arrDispCols = a;
-    this.tsTest = new TableSort(this.tsTest);
+    console.log(event);
+    this.tsTest.arrCols = event;
   }
+
+  onTableScroll(event) {
+    console.log(event);
+  }
+
 
 }
 
 ```
 
-  
-
-## Models:
-
-### TableSort:
-
-``` javascript
-
-export class TableSort {
-    search: any;
-    count: number;
-    empty: boolean;
-    arr: any[];
-    arrCopy: any[];
-    arrCols: any[];
-    ds?: any;
-    arrDispCols?: string[];
-
-    constructor(tableSort?: TableSort) {
-      this.search = tableSort ? tableSort.search : null;
-      this.count = tableSort ? tableSort.count : null;
-      this.empty = tableSort ? tableSort.empty : null;
-      this.arr = tableSort ? tableSort.arr : null;
-      this.arrCopy = tableSort ? tableSort.arrCopy : null;
-      this.arrCols = tableSort ? tableSort.arrCols : null;
-      this.ds = tableSort ? tableSort.ds : null;
-      this.arrDispCols = tableSort ? tableSort.arrDispCols : null;
-    }
-  }
-
-```
-
-  
+* You can generate your column model with our model generator or you can leave it as null and the table manager class will generate it for you!  
 
 ### Columns:
 
