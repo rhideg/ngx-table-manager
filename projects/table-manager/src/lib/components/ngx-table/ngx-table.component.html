@@ -62,7 +62,7 @@
 
                 <!-- DATE -->
                 <span *ngIf="item.format === 'date'" (click)="link_Click(item)">
-                    {{element[item.name] | date: 'yyyy-MM-dd'}}
+                    {{ (element[item.name] !== "null" && element[item.name] !== "" && element[item.name] !== "Invalid date") ? (element[item.name] | date: 'yyyy-MM-dd') : "" }}
                 </span>
 
                 <!-- PERCENT -->
