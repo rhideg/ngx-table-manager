@@ -75,6 +75,7 @@
             [columnSearch]="true"
             [resizable]="true"
 
+            (colSearchEvent)="colSearchTest($event)"
             (output)="onEvent($event)"
             (scroll)="onTableScroll($event)"
         >

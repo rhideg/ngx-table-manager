@@ -6,4 +6,5 @@ export interface Search {
     name: string; 
     show?: boolean;
     sticky?: boolean;
+    search_value?: string;
 }

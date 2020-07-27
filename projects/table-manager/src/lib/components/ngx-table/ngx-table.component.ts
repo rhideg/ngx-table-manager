@@ -40,6 +40,8 @@ export class NgxTableComponent implements OnChanges {
 
   @Output() output = new EventEmitter<any>(); // returns element
   @Output() scroll = new EventEmitter<any>(); // On scroll overflow + 30
+  @Output() colSearchEvent = new EventEmitter<any>(); // On scroll overflow + 30
+
   @ViewChild('sort', { static: false }) sort: MatSort; // Material table sort
   constructor(
     public dialog: MatDialog,
@@ -203,13 +205,18 @@ export class NgxTableComponent implements OnChanges {
     const limit = tableScrollHeight - tableViewHeight - buffer;
 
     if (scrollLocation > limit) {
-      this.input.count += 20;
+      if (this.input.count < this.input.arrCopy.length) {
+        const dif = this.input.arrCopy.length - this.input.count;
+        
+        this.input.count += dif > 20 ? 20 : dif;
 
-      if (this.localSearch) {
-        this.input.setDataSource(this.sort); 
-        this.scroll.emit(this.input.count);
-      } else {
-        this.scroll.emit(this.input.count);
+
+        if (this.localSearch) {
+          this.input.setDataSource(this.sort); 
+          this.scroll.emit(this.input.count);
+        } else {
+          this.scroll.emit(this.input.count);
+        }
       }
     }
   }
@@ -508,5 +515,6 @@ export class NgxTableComponent implements OnChanges {
 
   searchColumnInput() {
     this.input.columnSearch(this.objColumnSearch);
+    this.colSearchEvent.emit(this.input);
   }
 }

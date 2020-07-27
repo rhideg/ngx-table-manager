@@ -92,6 +92,7 @@ export class AppComponent implements OnInit {
    * @param searchObj Search result.
    */
   onSearchTest(searchObj: TableSort) {
+    console.log(searchObj.getSearch);
   }
 
   /**
@@ -107,6 +108,7 @@ export class AppComponent implements OnInit {
    * @param selectObj Search result.
    */
   selectTest(selectObj: TableSort) {
+    console.log(selectObj.getSearch);
   }
 
   // Toggle selectable
@@ -147,6 +149,10 @@ export class AppComponent implements OnInit {
 
   onTableScroll(event) {
     console.log(event);
+  }
+
+  colSearchTest(event: TableSort) {
+    console.log(event.getSearch);
   }
 
 

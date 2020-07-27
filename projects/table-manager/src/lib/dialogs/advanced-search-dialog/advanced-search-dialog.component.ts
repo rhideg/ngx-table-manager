@@ -25,6 +25,7 @@ export class AdvancedSearchDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   btnSearch_Click() {

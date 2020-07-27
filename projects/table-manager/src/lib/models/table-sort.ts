@@ -30,40 +30,22 @@ export class TableSort {
   private _arrDispColsAll: Array<any>;
   private _arrColsAll: Array<any>;
 
+  private _search: Array<any>;
+
 
   // Select get, set
-  public get getSelect(): Select {
-    return this._select;
-  }
-
-  public set setSelect(v: Select) {
-    this._select = v;
-
-  }
+  public get getSelect(): Select {return this._select;}
+  public set setSelect(v: Select) {this._select = v;}
 
   // ExtraCols get, set
-  public get getExtraCols(): Array<ExtraCols> {
-    return this._extraCols;
-  }
+  public get getExtraCols(): Array<ExtraCols> {return this._extraCols;}
+  public set setExtraCols(v: Array<ExtraCols>) {this._extraCols = v;}
 
-  public set setExtraCols(v: Array<ExtraCols>) {
-    this._extraCols = v;
-  }
+  public get getArrDispColsAll(): Array<any> {return this._createAllDispCols();}
+  public get getArrColsAll(): Array<any> {return this._createAllCols();}
 
-
-  public get getArrDispColsAll(): Array<any> {
-    return this._createAllDispCols();
-  }
-
-
-  public get getArrColsAll(): Array<any> {
-    return this._createAllCols();
-  }
-
-
-
-
-
+  // Search object get set
+  public get getSearch() : Array<any> {return this._search;}
 
 
   /**
@@ -97,6 +79,7 @@ export class TableSort {
     this._tmSelected = {};
 
     this.arrSelected = [];
+    this._search = [];
   }
 
   /**
@@ -257,11 +240,7 @@ export class TableSort {
     this.arrSelected = arrSelected;
   }
 
-
-
-
   // PRIVATE METHODS ********************************************************************
-
 
   /**
    * Create columns if it is not provided.
@@ -568,6 +547,57 @@ export class TableSort {
 
   }
 
+  private setSearchArray() {
+    this._search = [];
+
+    // Add quick search to _search object. 
+    if (this.search.search_value || this._qsValue ) {
+      const s = {
+        column: this.search.name,
+        value: this.search.search_value ? `~${this.search.search_value}` : `~${this._qsValue}`
+      };
+      this._search.push(s);
+    };
+
+    // Add column search to search
+    if (this._objColSearch) {
+      Object.keys(this._objColSearch).forEach((key, index) => {
+        const s = {
+          column: key,
+          value: this._objColSearch[key]
+        }
+        this._search.push(s);
+      });
+    }
+
+    // Add advanced search to search
+    if (this._asArr) {
+      for (let i = 0; i < this._asArr.length; i++) {
+        const e = this._asArr[i];
+        if (e.search_value) {
+          const s = {
+            column: e.name,
+            value: e.search_value
+          };
+          this._search.push(s);
+        }
+      }
+    }
+
+    // Add tm select to search
+    if (this._tmSelected) {
+      Object.keys(this._tmSelected).forEach((key, index) => {
+        const s = {
+          column: key,
+          value: this._tmSelected[key]
+        }
+        if (this._tmSelected[key].length > 0) {
+          this._search.push(s);
+        }
+      });
+    }
+  }
+
 
   /**
    * Searches the dataset with every search function, so multiple filters can be applied. Always the current search 
@@ -618,6 +648,8 @@ export class TableSort {
           break;
       }
 
+      this.setSearchArray();
+      console.log(this._search);
       this.empty = this.arr.length > 0 ? false : true;
 
     }
