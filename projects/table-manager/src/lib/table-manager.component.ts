@@ -74,6 +74,7 @@ export class TableManagerComponent implements OnChanges, OnInit {
   btnAdvSearch_Click() {
     let arrSearch = [];
     arrSearch = this.input.arrCols;
+    
 
     const dialogRef = this.dialog.open(AdvancedSearchDialogComponent, {
       height: '60vh',
@@ -84,23 +85,6 @@ export class TableManagerComponent implements OnChanges, OnInit {
     dialogRef.afterClosed().subscribe(async result => {
       let arrResult = [];
 
-      /*arrResult = JSON.parse(
-        JSON.stringify(
-          this.advSearchService.searchCols(result, this.input.arrCopy)
-        )
-      );
-      if (arrResult.length === 0) {
-        this.input.empty = true;
-        this.input.arr = [];
-
-        this.output.emit(this.input);
-      } else {
-        this.input.arr = arrResult;
-        this.input.empty = false;
-        this.input.count = 30;
-
-        this.output.emit(this.input);
-      }*/
 
       this.input.advancedSearch(result);
       this.output.emit(this.input);
