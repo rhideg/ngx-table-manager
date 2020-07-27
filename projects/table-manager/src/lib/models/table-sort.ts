@@ -144,6 +144,29 @@ export class TableSort {
   }
 
   /**
+   * Add new data to array copy.
+   * @param dataSnippet Data snippet, has to be structured as current data
+   * @param filter Apply filters.
+   */
+  extendData(dataSnippet?: Array<any>, filter = true) {
+    if(!this.arrCols) {
+      console.log(dataSnippet);
+      this._createCols(dataSnippet);
+    }
+
+    if (dataSnippet) {
+      this.arrCopy = this.arrCopy.concat(dataSnippet);
+      this.arrSelected = [];
+    }
+
+    if (filter) {
+      this._completeSearch();
+    }
+  }
+
+
+
+  /**
    * Clears filter values.
    */
   clearFilters() {
