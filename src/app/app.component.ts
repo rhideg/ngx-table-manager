@@ -37,6 +37,8 @@ export class AppComponent implements OnInit {
     // SET MEMBERS:
     const search = { title: 'Name', name: 'name', show: true, sticky: false };
     this.tsTest = new TableSort(null, null, null, null, null, null, false, search);
+    
+    // this.tsTest.setLocalSearch = true;
 
     this.tsTest.setSelect = {
       type: 'select',

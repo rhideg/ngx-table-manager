@@ -1,7 +1,100 @@
-<div fxLayout="column" fxLayoutAlign="start stretch" style="height: 100%;">
+<div fxLayout="column" fxLayoutAlign="start stretch">
+  <div *ngFor="let line of arrAs" fxLayout="row" fxLayoutAlign="start center" 
+  style="width: 100%; padding: 5px; padding-left: 10px; padding-right: 10px; margin-bottom: 5px;">
+
+    <!-- Fields -->
+    <div fxFlex>
+      <mat-form-field>
+        <mat-label>Field</mat-label>
+        <mat-select [(ngModel)]="line.field" disabled>
+          <mat-option *ngFor="let col of arrColsAll" [value]="col.name">
+            {{col.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Operators -->
+    <div fxFlex>
+      <mat-form-field>
+        <mat-label>Operator</mat-label>
+        <mat-select [(ngModel)]="line.operator">
+          <mat-option *ngFor="let op of arrOperators" [value]="op">
+            {{op}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Value -->
+    <div fxFlex>
+      <mat-form-field>
+        <input matInput placeholder="Value" [(ngModel)]="line.value">
+      </mat-form-field>
+    </div>
+
+    <!-- Delete -->
+    <div>
+      <button mat-icon-button (click)="btnDel_Click(line)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="start center" 
+  style="width: 100%;padding: 5px; padding-left: 10px; padding-right: 10px">
+    <div fxFlex>
+      <mat-form-field>
+        <mat-label>Field</mat-label>
+        <mat-select [(ngModel)]="lineObj.field">
+          <mat-option *ngFor="let col of arrCols" [value]="col.name">
+            {{col.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Operators -->
+    <div fxFlex>
+      <mat-form-field>
+        <mat-label>Operator</mat-label>
+        <mat-select [(ngModel)]="lineObj.operator">
+          <mat-option *ngFor="let op of arrOperators" [value]="op">
+            {{op}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Value -->
+    <div fxFlex>
+      <mat-form-field>
+        <input matInput placeholder="Value" [(ngModel)]="lineObj.value"
+        (keydown.enter)="lineObj.field && lineObj.value ? btnAdd_Click() : null">
+      </mat-form-field>
+    </div>
+
+    <!-- Delete -->
+
+    <div>
+      <button mat-icon-button (click)="btnAdd_Click()"
+        [disabled]="!lineObj.field || !lineObj.operator || !lineObj.value">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+
+<!-- <div fxLayout="column" fxLayoutAlign="start stretch" style="height: 100%;">
   <div fxFlex style=" height: 100%;;overflow: auto;">
     <div fxLayout="row wrap">
-
 
       <div fxFlex="50" fxFlex.xs="100" *ngFor="let item of arrSearch">
         <div style="width: 100%;">
@@ -12,6 +105,7 @@
         </div>
 
       </div>
+
     </div>
     
   </div>
@@ -23,4 +117,4 @@
     </button>
   </div>
 
-</div>
+</div> -->

@@ -74,16 +74,21 @@ export class TableManagerComponent implements OnChanges, OnInit {
   btnAdvSearch_Click() {
     let arrSearch = [];
     arrSearch = this.input.arrCols;
+
+    console.log(arrSearch);
     
 
     const dialogRef = this.dialog.open(AdvancedSearchDialogComponent, {
       height: '60vh',
       width: '60vw',
-      data: arrSearch
+      data: {
+        cols: this.input.arrCols,
+        asArr: this.input.getAsArr
+      }
     });
 
     dialogRef.afterClosed().subscribe(async result => {
-      let arrResult = [];
+      console.log(result);
 
 
       this.input.advancedSearch(result);

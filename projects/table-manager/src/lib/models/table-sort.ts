@@ -30,22 +30,34 @@ export class TableSort {
   private _arrDispColsAll: Array<any>;
   private _arrColsAll: Array<any>;
 
-  private _search: Array<any>;
+  private _search: any;
+  private _localSearch: boolean = false;
 
 
   // Select get, set
-  public get getSelect(): Select {return this._select;}
-  public set setSelect(v: Select) {this._select = v;}
+  public get getSelect(): Select { return this._select; }
+  public set setSelect(v: Select) { this._select = v; }
 
   // ExtraCols get, set
-  public get getExtraCols(): Array<ExtraCols> {return this._extraCols;}
-  public set setExtraCols(v: Array<ExtraCols>) {this._extraCols = v;}
+  public get getExtraCols(): Array<ExtraCols> { return this._extraCols; }
+  public set setExtraCols(v: Array<ExtraCols>) { this._extraCols = v; }
 
-  public get getArrDispColsAll(): Array<any> {return this._createAllDispCols();}
-  public get getArrColsAll(): Array<any> {return this._createAllCols();}
+  public get getArrDispColsAll(): Array<any> { return this._createAllDispCols(); }
+  public get getArrColsAll(): Array<any> { return this._createAllCols(); }
 
   // Search object get set
-  public get getSearch() : Array<any> {return this._search;}
+  public get getSearch(): any { return this._search; }
+
+  // Return advanced search array
+  public get getAsArr(): Array<any> { return this._asArr; }
+
+  // Get set localsearch
+  public get getLocalSearch(): boolean { return this._localSearch; }
+  public set setLocalSearch(v: boolean) { this._localSearch = v; }
+
+
+
+
 
 
   /**
@@ -79,7 +91,7 @@ export class TableSort {
     this._tmSelected = {};
 
     this.arrSelected = [];
-    this._search = [];
+    this._search = {};
   }
 
   /**
@@ -128,8 +140,7 @@ export class TableSort {
    */
   refresh(newData?: Array<any>, filter = true) {
 
-    if(!this.arrCols) {
-      console.log(newData);
+    if (!this.arrCols) {
       this._createCols(newData);
     }
 
@@ -149,8 +160,7 @@ export class TableSort {
    * @param filter Apply filters.
    */
   extendData(dataSnippet?: Array<any>, filter = true) {
-    if(!this.arrCols) {
-      console.log(dataSnippet);
+    if (!this.arrCols) {
       this._createCols(dataSnippet);
     }
 
@@ -269,10 +279,9 @@ export class TableSort {
    * Create columns if it is not provided.
    */
   private _createCols(newData?: any) {
-    
+
     if (this.arr || newData) {
       const obj = this.arr ? this.arr[0] : newData[0];
-      console.log(obj);
       let arrCols = [];
 
       for (const key in obj) {
@@ -289,13 +298,12 @@ export class TableSort {
           col.format = typeof (e);
 
           arrCols.push(col);
-          console.log(col);
         }
       }
 
       this.arrCols = arrCols;
       this.arrDispCols =
-      (arrCols ? arrCols.map(data => { return data.name }) : null);
+        (arrCols ? arrCols.map(data => { return data.name }) : null);
       return arrCols;
     }
 
@@ -331,7 +339,7 @@ export class TableSort {
    */
   private _createAllCols(): Array<any> {
 
-    const ac = this.arrCols? this.arrCols : this._createCols();
+    const ac = this.arrCols ? this.arrCols : this._createCols();
     const s = this._select;
     const ec = this._extraCols;
 
@@ -359,39 +367,50 @@ export class TableSort {
    */
   private _qs(atf: Array<any>) {
 
-    // Array filtered quick search
-    let afQs = [];
+    // Add quick search to _search object. 
+    if (this.search.search_value || this._qsValue) {
+      const s = {
+        column: this.search.name,
+        value: this.search.search_value ? `~${this.search.search_value}` : `~${this._qsValue}`
+      };
+      this._search[s.column] = s.value;
+    };
 
-    // QUICK SEARCH
-    if (this._qsValue === undefined || this._qsValue === '') {
-      return atf;
-    } else {
-      let arrSearched = atf;
 
-      arrSearched = atf.filter(szall => {
-        if (
-          szall[`${this.search.name}`] &&
-          szall[`${this.search.name}`]
-            .toString()
-            .toLowerCase()
-            .includes(this._qsValue.toString().toLowerCase())
-        ) {
-          return szall;
-        }
-      });
+    if (!this._localSearch) {
 
-      afQs = arrSearched;
+      // Array filtered quick search
+      let afQs = [];
 
-      /*if (this.arr.length === 0) {
-        this.empty = true;
+      // QUICK SEARCH
+      if (this._qsValue === undefined || this._qsValue === '') {
+        return atf;
       } else {
-        this.count = 30;
-        this.empty = false;
-      }*/
+        let arrSearched = atf;
 
-      return afQs;
+        arrSearched = atf.filter(szall => {
+          if (
+            szall[`${this.search.name}`] &&
+            szall[`${this.search.name}`]
+              .toString()
+              .toLowerCase()
+              .includes(this._qsValue.toString().toLowerCase())
+          ) {
+            return szall;
+          }
+        });
+
+        afQs = arrSearched;
+
+        return afQs;
+      }
+
+    } else {
+      return atf;
     }
-    // QUICK SEARCH
+
+
+
   }
 
   /**
@@ -400,121 +419,32 @@ export class TableSort {
    */
   private _cs(atf: Array<any>) {
 
-    let afCs = [];
 
-    const arrCols = [];
-    for (const i in this._objColSearch) {
-      arrCols.push({
-        search_value: this._objColSearch[i],
-        name: i
+    // Add column search to search
+    if (this._objColSearch) {
+      Object.keys(this._objColSearch).forEach((key, index) => {
+        const s = {
+          column: key,
+          value: this._objColSearch[key]
+        }
+        this._search[s.column] = s.value;
       });
     }
 
-    const arrColsNotNull = arrCols.filter(col => {
-      if (!(col.search_value === undefined || col.search_value === '')) {
-        return col;
-      }
-    });
 
-    const emptySearch = (arrColsNotNull.length === 0) ? true : false;
+    if (!this._localSearch) {
 
-    if (!emptySearch) {
-      afCs = atf.filter(szall => {
-        let includes = true;
-        let result;
-        arrColsNotNull.forEach(col => {
-          const operator = col.search_value ? col.search_value.toString().toLocaleLowerCase().charAt(0) : null;
-          switch (operator) {
-            case '>':
-              if ((szall[`${col.name}`]) && !(Number(szall[`${col.name}`].toString()
-                .toLocaleLowerCase()) > Number(col.search_value.toString().toLocaleLowerCase().slice(1).trim()))) {
-                includes = false;
-              }
-              break;
-            case '<':
-              if ((szall[`${col.name}`]) && !(Number(szall[`${col.name}`].toString()
-                .toLocaleLowerCase()) < Number(col.search_value.toString().toLocaleLowerCase().slice(1).trim()))) {
-                includes = false;
-              }
-              break;
-            default:
-              if ((szall[`${col.name}`]) && !(szall[`${col.name}`].toString()
-                .toLocaleLowerCase().includes(col.search_value.toString().toLocaleLowerCase()))) {
-                includes = false;
-              }
-              break;
-          }
+      let afCs = [];
 
+      const arrCols = [];
+      for (const i in this._objColSearch) {
+        arrCols.push({
+          search_value: this._objColSearch[i],
+          name: i
         });
-
-        if (includes) {
-          arrColsNotNull.forEach(element => {
-            if (!(szall[`${element.name}`] === undefined || szall[`${element.name}`] === '')) {
-              result = szall;
-            }
-          });
-          return result;
-        }
-
-      });
-
-      return afCs;
-    } else {
-      return atf;
-    }
-
-  }
-
-  /**
-   * Tm select (table manager select) search. Searches for the values selected in the dropdown. 
-   * @param atf Array to filter.
-   */
-  private _ts(atf: Array<any>) {
-
-    // Array filtered tm select
-    let afTs = atf;
-
-
-    for (const key in this._tmSelected) {
-      if (this._tmSelected.hasOwnProperty(key)) {
-        const e = this._tmSelected[key];
-
-        if (!this._tmSelected || this._tmSelected[key]?.length === 0) {
-          continue;
-        } else {
-          afTs = afTs.filter(data =>
-            this._tmSelected[key].includes(data[key])
-          );
-
-        }
-
       }
-    }
 
-    return afTs;
-
-    /*
-    if (!this._tmSelected.arrSelected || this._tmSelected.arrSelected?.length === 0) {
-      return atf;
-    } else {
-      afTs = atf.filter(data =>
-        this._tmSelected.arrSelected.includes(data[`${this._tmSelected.column}`])
-      );
-      return afTs;
-    }*/
-  }
-
-
-  /**
-   * Advanced search, multiple search params apply, search for one or more column.
-   * @param atf Array to filter.
-   */
-  private _as(atf: Array<any>) {
-
-    if (!this._asArr) {
-      return atf;
-    } else {
-      const arrColsNotNull = this._asArr.filter(col => {
+      const arrColsNotNull = arrCols.filter(col => {
         if (!(col.search_value === undefined || col.search_value === '')) {
           return col;
         }
@@ -523,7 +453,7 @@ export class TableSort {
       const emptySearch = (arrColsNotNull.length === 0) ? true : false;
 
       if (!emptySearch) {
-        const arrFiltered = atf.filter(szall => {
+        afCs = atf.filter(szall => {
           let includes = true;
           let result;
           arrColsNotNull.forEach(col => {
@@ -548,6 +478,7 @@ export class TableSort {
                 }
                 break;
             }
+
           });
 
           if (includes) {
@@ -561,52 +492,22 @@ export class TableSort {
 
         });
 
-        return arrFiltered;
-
+        return afCs;
       } else {
         return atf;
       }
+
+    } else {
+      return atf;
     }
 
   }
 
-  private setSearchArray() {
-    this._search = [];
-
-    // Add quick search to _search object. 
-    if (this.search.search_value || this._qsValue ) {
-      const s = {
-        column: this.search.name,
-        value: this.search.search_value ? `~${this.search.search_value}` : `~${this._qsValue}`
-      };
-      this._search.push(s);
-    };
-
-    // Add column search to search
-    if (this._objColSearch) {
-      Object.keys(this._objColSearch).forEach((key, index) => {
-        const s = {
-          column: key,
-          value: this._objColSearch[key]
-        }
-        this._search.push(s);
-      });
-    }
-
-    // Add advanced search to search
-    if (this._asArr) {
-      for (let i = 0; i < this._asArr.length; i++) {
-        const e = this._asArr[i];
-        if (e.search_value) {
-          const s = {
-            column: e.name,
-            value: e.search_value
-          };
-          this._search.push(s);
-        }
-      }
-    }
-
+  /**
+   * Tm select (table manager select) search. Searches for the values selected in the dropdown. 
+   * @param atf Array to filter.
+   */
+  private _ts(atf: Array<any>) {
     // Add tm select to search
     if (this._tmSelected) {
       Object.keys(this._tmSelected).forEach((key, index) => {
@@ -615,11 +516,249 @@ export class TableSort {
           value: this._tmSelected[key]
         }
         if (this._tmSelected[key].length > 0) {
-          this._search.push(s);
+          this._search[s.column] = `[${s.value.toString()}]`;
         }
       });
     }
+
+
+    // Array filtered tm select
+    if (!this._localSearch) {
+
+
+      let afTs = atf;
+
+
+      for (const key in this._tmSelected) {
+        if (this._tmSelected.hasOwnProperty(key)) {
+          const e = this._tmSelected[key];
+
+          if (!this._tmSelected || this._tmSelected[key]?.length === 0) {
+            continue;
+          } else {
+            afTs = afTs.filter(data =>
+              this._tmSelected[key].includes(data[key])
+            );
+
+          }
+
+        }
+      }
+
+      return afTs;
+    } else {
+      return atf;
+    }
   }
+
+
+  /**
+   * Advanced search, multiple search params apply, search for one or more column.
+   * @param atf Array to filter.
+   */
+  private _as(atf: Array<any>) {
+
+    // Add advanced search to search
+
+    if (this._asArr) {
+      for (let i = 0; i < this._asArr.length; i++) {
+        const e = this._asArr[i];
+
+        if (e.value) {
+          const s = {
+            column: e.field,
+            value: e.value
+          };
+
+          switch (e.operator) {
+            case '=':
+              s.value = `=${s.value}`;
+              break;
+            case '>':
+              s.value = `>${s.value}`;
+              break;
+            case '>=':
+              s.value = `>=${s.value}`;
+              break;
+            case '<':
+              s.value = `<${s.value}`;
+              break;
+            case '<=':
+              s.value = `<=${s.value}`;
+              break;
+            case '~':
+              s.value = `~${s.value}`;
+              break;
+            case 'in':
+              const divider = e.value.includes(',') ? ','
+                : (e.value.includes(';') ? ';'
+                  : (e.value.includes(' and ') ? ' and '
+                    : (e.value.includes(' ') ? ' ' : null)));
+
+              const arr = e.value.split(divider);
+
+              if (e.value) {
+                s.column = e.field;
+                s.value = `[${arr.toString()}]`;
+              }
+
+              break;
+            case 'between':
+              const divBetween = e.value.includes(',') ? ','
+                : (e.value.includes(';') ? ';'
+                  : (e.value.includes(' and ') ? ' and '
+                    : (e.value.includes(' ') ? ' ' : null)));
+
+              if (divBetween) {
+                const arr = e.value.split(divBetween);
+                if (arr) {
+                  let a; // smaller
+                  let b; // larger
+                  if (+arr[0] < +arr[1]) {
+                    a = arr[0];
+                    b = arr[1];
+                  } else {
+                    a = arr[1];
+                    b = arr[0];
+                  }
+                  s.column = e.field;
+                  s.value = `>${a}<${b}`;
+                }
+              }
+              break;
+            default:
+              break;
+          }
+          this._search[s.column] = s.value;
+        }
+      }
+    }
+
+    if (!this._localSearch) {
+
+
+
+      // Actual search
+      if (!this._asArr || this._asArr.length === 0) {
+        return atf;
+      } else {
+
+        let arrFiltered = atf;
+
+        for (let i = 0; i < this._asArr.length; i++) {
+
+
+          arrFiltered = arrFiltered.filter(data => {
+            let includes = false;
+
+            const e = this._asArr[i];
+            const toCompare = data[e.field];
+            const compareWith = e.value;
+            const operator = e.operator;
+
+            switch (operator) {
+              case '=':
+                if (toCompare == compareWith) {
+                  includes = true;
+                }
+                break;
+              case '>':
+                if (toCompare > compareWith) {
+                  includes = true;
+                }
+                break;
+              case '>=':
+                if (toCompare >= compareWith) {
+                  includes = true;
+                }
+                break;
+              case '<':
+                if (toCompare < compareWith) {
+                  includes = true;
+                }
+                break;
+              case '<=':
+                if (toCompare <= compareWith) {
+                  includes = true;
+                }
+                break;
+              case '~':
+                if (toCompare.toString().toLocaleLowerCase().includes(compareWith.toString().toLocaleLowerCase())) {
+                  includes = true;
+                }
+                break;
+              case 'in':
+                const divider = compareWith.includes(',') ? ','
+                  : (compareWith.includes(';') ? ';'
+                    : (compareWith.includes(' and ') ? ' and '
+                      : (compareWith.includes(' ') ? ' ' : null)));
+                if (divider) {
+                  const arr = compareWith.split(divider);
+                  if (arr) {
+                    for (let j = 0; j < arr.length; j++) {
+                      const f = arr[j];
+                      if (f == toCompare) {
+                        includes = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+                break;
+              case 'between':
+
+                const divBetween = compareWith.includes(',') ? ','
+                  : (compareWith.includes(';') ? ';'
+                    : (compareWith.includes(' and ') ? ' and '
+                      : (compareWith.includes(' ') ? ' ' : null)));
+
+                if (divBetween) {
+                  const arr = compareWith.split(divBetween);
+                  if (arr) {
+
+                    let a; // smaller
+                    let b; // larger
+                    if (+arr[0] < +arr[1]) {
+                      a = arr[0];
+                      b = arr[1];
+                    } else {
+                      a = arr[1];
+                      b = arr[0];
+                    }
+
+                    if (toCompare > +a && toCompare < +b) {
+                      includes = true;
+                    }
+                  }
+                }
+                break;
+
+              default:
+                break;
+            }
+
+            return includes
+
+          });
+
+        };
+
+        if (arrFiltered) {
+
+          return arrFiltered;
+        } else {
+          return atf;
+        }
+
+      }
+
+    } else {
+      return atf;
+    }
+
+  }
+
+
 
 
   /**
@@ -641,6 +780,8 @@ export class TableSort {
       this.ds.sort = this._sort;
     } else {
 
+      this._search = {};
+
       switch (fn) {
         case 'as':
           this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
@@ -654,7 +795,6 @@ export class TableSort {
           break;
         case 'qs':
           this.arr = this._qs(this._as(this._cs(this._ts(this.arrCopy))));
-
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
           this.ds.sort = this._sort;
           break;
@@ -665,16 +805,12 @@ export class TableSort {
           break;
 
         default:
-          this.arr = this._as(this._cs(this._ts(this._qs(this.arrCopy))));
+          this.arr = this.arrCopy;
           this.ds = new MatTableDataSource(this.arr.slice(0, this.count));
           this.ds.sort = this._sort;
           break;
       }
-
-      this.setSearchArray();
-      console.log(this._search);
       this.empty = this.arr.length > 0 ? false : true;
-
     }
 
 
