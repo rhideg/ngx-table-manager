@@ -31,7 +31,7 @@ export class TableSort {
   private _arrColsAll: Array<any>;
 
   private _search: any;
-  private _localSearch: boolean = false;
+  private _localSearch: boolean = true;
 
 
   // Select get, set
@@ -54,10 +54,6 @@ export class TableSort {
   // Get set localsearch
   public get getLocalSearch(): boolean { return this._localSearch; }
   public set setLocalSearch(v: boolean) { this._localSearch = v; }
-
-
-
-
 
 
   /**
@@ -317,17 +313,26 @@ export class TableSort {
     const s = this._select;
     const ec = this._extraCols;
 
+    const f = ec.filter(c => c.inFront === true).map(d => {return d.type});
+    const b = ec.filter(c => !c.inFront).map(d => {return d.type});;
+
     this._arrDispColsAll = [];
 
+    // Mat select will be the front always 
     if (s) {
       this._arrDispColsAll.push(s.type);
     }
 
+    // Extra Columns - in front
+    if (f) {
+      this._arrDispColsAll = this._arrDispColsAll.concat(f)
+    }
+
     this._arrDispColsAll = this._arrDispColsAll.concat(adc);
 
-    if (ec) {
-      const ect = this._extraCols.map(data => { return data.type });
-      this._arrDispColsAll = this._arrDispColsAll.concat(ect);
+    // Extra Columns - in the back
+    if (b) {
+      this._arrDispColsAll = this._arrDispColsAll.concat(b)
     }
 
     return this._arrDispColsAll;
@@ -377,7 +382,7 @@ export class TableSort {
     };
 
 
-    if (!this._localSearch) {
+    if (this._localSearch) {
 
       // Array filtered quick search
       let afQs = [];
@@ -432,7 +437,7 @@ export class TableSort {
     }
 
 
-    if (!this._localSearch) {
+    if (this._localSearch) {
 
       let afCs = [];
 
@@ -523,7 +528,7 @@ export class TableSort {
 
 
     // Array filtered tm select
-    if (!this._localSearch) {
+    if (this._localSearch) {
 
 
       let afTs = atf;
@@ -634,7 +639,7 @@ export class TableSort {
       }
     }
 
-    if (!this._localSearch) {
+    if (this._localSearch) {
 
 
 

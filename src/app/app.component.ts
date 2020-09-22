@@ -36,9 +36,9 @@ export class AppComponent implements OnInit {
 
     // SET MEMBERS:
     const search = { title: 'Name', name: 'name', show: true, sticky: false };
+
     this.tsTest = new TableSort(null, null, null, null, null, null, false, search);
-    
-    // this.tsTest.setLocalSearch = true;
+    this.tsTest.setLocalSearch = true;
 
     this.tsTest.setSelect = {
       type: 'select',
@@ -54,7 +54,8 @@ export class AppComponent implements OnInit {
         icon: 'edit',
         filter: [
           { col: 'name', value: ['test1', 'test2'], relation: Relations.eq }
-        ]
+        ],
+        inFront: true
       },
       {
         type: 'del',
@@ -62,7 +63,7 @@ export class AppComponent implements OnInit {
         style: {
           color: '#FF6859'
         },
-        tooltip: 'Delete'
+        tooltip: 'Delete',
       }
     ];
 

@@ -9,7 +9,8 @@ import { Filter } from './filter';
     filter: [
         { col: 'name', value: ['test1', 'test3'], relation: '===' }
     ],
-    tooltip: 'Edit'
+    tooltip: 'Edit',
+    inFrom: true
  */
 export interface ExtraCols {
     type?: string;
@@ -17,5 +18,6 @@ export interface ExtraCols {
     style?: any;
     filter?: Array<Filter>;
     tooltip?: string;
+    inFront?: boolean;
 }
 
